@@ -10,13 +10,16 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.EnumAction;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MovingObjectPosition;
 import org.polyfrost.overflowanimations.config.OldAnimationsSettings;
 import org.polyfrost.overflowanimations.hooks.SwingHook;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -77,9 +80,22 @@ public abstract class MinecraftMixin {
         }
     }
 
+    @Redirect(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;clickBlock(Lnet/minecraft/util/BlockPos;Lnet/minecraft/util/EnumFacing;)Z"))
+    private boolean overflowAnimations$preventMiningWhenUsing(PlayerControllerMP instance, BlockPos itemstack, EnumFacing block1) {
+        if (OldAnimationsSettings.oldBlockhitting && OldAnimationsSettings.INSTANCE.enabled &&
+                overflowAnimations$hasUseAction() && gameSettings.keyBindUseItem.isKeyDown()) {
+            /* interestingly enough, badlion also does something like this */
+            return false;
+        }
+        return instance.clickBlock(itemstack, block1);
+    }
+
     @Redirect(method = "rightClickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;getIsHittingBlock()Z"))
     public boolean overflowAnimations$enabledRightClick(PlayerControllerMP instance) {
-        return (!OldAnimationsSettings.oldBlockhitting || !OldAnimationsSettings.INSTANCE.enabled) && instance.getIsHittingBlock();
+        if (OldAnimationsSettings.oldBlockhitting && OldAnimationsSettings.INSTANCE.enabled && overflowAnimations$hasUseAction()) {
+            return false;
+        }
+        return instance.getIsHittingBlock();
     }
 
     @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isPressed()Z", ordinal = 7))
@@ -103,6 +119,14 @@ public abstract class MinecraftMixin {
         if (OldAnimationsSettings.funnyFidget && OldAnimationsSettings.INSTANCE.enabled && thePlayer != null && thePlayer.getHeldItem() != null && thePlayer.getHeldItem().getItemUseAction() != EnumAction.NONE) {
             entityRenderer.itemRenderer.resetEquippedProgress();
         }
+    }
+
+    @Unique
+    private boolean overflowAnimations$hasUseAction() {
+        /* unironically, sk1er's old animations mod was on to something wtf */
+        return thePlayer.getHeldItem() != null &&
+                (thePlayer.getHeldItem().getItemUseAction() != EnumAction.NONE ||
+                        thePlayer.getHeldItem().getItem() instanceof ItemBlock);
     }
 
 }

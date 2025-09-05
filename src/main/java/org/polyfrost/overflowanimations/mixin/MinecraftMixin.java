@@ -47,8 +47,9 @@ public abstract class MinecraftMixin {
     public void overflowAnimations$blockHitAnimation(boolean leftClick, CallbackInfo ci) {
         if (OldAnimationsSettings.oldBlockhitting && OldAnimationsSettings.punching && OldAnimationsSettings.INSTANCE.enabled && gameSettings.keyBindUseItem.isKeyDown()) {
             if (leftClickCounter <= 0 && leftClick && objectMouseOver != null
+                    && objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
                     //todo: fix the logic
-                    && ((thePlayer.isUsingItem() && objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) || !OldAnimationsSettings.adventurePunching)) {
+                    && ((thePlayer.isUsingItem()) || !OldAnimationsSettings.adventurePunching)) {
                 BlockPos posBlock = objectMouseOver.getBlockPos();
                 if (!theWorld.isAirBlock(posBlock)) {
                     if ((thePlayer.isAllowEdit() || !OldAnimationsSettings.adventureParticles) && OldAnimationsSettings.punchingParticles) {
@@ -82,8 +83,7 @@ public abstract class MinecraftMixin {
 
     @Redirect(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;clickBlock(Lnet/minecraft/util/BlockPos;Lnet/minecraft/util/EnumFacing;)Z"))
     private boolean overflowAnimations$preventMiningWhenUsing(PlayerControllerMP instance, BlockPos itemstack, EnumFacing block1) {
-        if (OldAnimationsSettings.oldBlockhitting && OldAnimationsSettings.INSTANCE.enabled &&
-                overflowAnimations$hasUseAction() && gameSettings.keyBindUseItem.isKeyDown()) {
+        if (OldAnimationsSettings.oldBlockhitting && OldAnimationsSettings.INSTANCE.enabled && overflowAnimations$hasUseAction()) {
             /* interestingly enough, badlion also does something like this */
             return false;
         }

@@ -35,11 +35,11 @@ public class ItemPositionAdvancedSettings {
             text = "Reset",
             category = "Customize Item Positions", subcategory = "Item Swing Position"
     )
-    Runnable resetSwing = (() -> {
+    public void resetSwing() {
         itemSwingPositionX = 0.0F;
         itemSwingPositionY = 0.0F;
         itemSwingPositionZ = 0.0F;
-    });
+    }
 
     // Eating/Drinking Position
     @Slider(
@@ -110,7 +110,7 @@ public class ItemPositionAdvancedSettings {
             text = "Reset",
             category = "Customize Item Positions", subcategory = "Eating/Drinking Position"
     )
-    Runnable resetConsume = (() -> {
+    public void resetConsume() {
         consumePositionX = 0.0F;
         consumePositionY = 0.0F;
         consumePositionZ = 0.0F;
@@ -121,7 +121,7 @@ public class ItemPositionAdvancedSettings {
         consumeIntensity = 0.0F;
         consumeSpeed = 0.0F;
         shouldScaleEat = false;
-    });
+    }
 
     @Checkbox(
             title = "Scale Eating/Drinking Based on Item Position",
@@ -185,7 +185,7 @@ public class ItemPositionAdvancedSettings {
             text = "Reset",
             category = "Customize Item Positions", subcategory = "Sword Block Position"
     )
-    Runnable resetBlockItem = (() -> {
+    public void resetBlockItem() {
         blockedPositionX = 0.0F;
         blockedPositionY = 0.0F;
         blockedPositionZ = 0.0F;
@@ -193,7 +193,7 @@ public class ItemPositionAdvancedSettings {
         blockedRotationPitch = 0.0F;
         blockedRotationRoll = 0.0F;
         blockedScale = 0.0F;
-    });
+    }
 
     // Dropped Item Position
     @Slider(
@@ -250,7 +250,7 @@ public class ItemPositionAdvancedSettings {
             text = "Reset",
             category = "Customize Item Positions", subcategory = "Dropped Item Position"
     )
-    Runnable resetDropped = (() -> {
+    public void resetDropped() {
         droppedPositionX = 0.0F;
         droppedPositionY = 0.0F;
         droppedPositionZ = 0.0F;
@@ -258,7 +258,7 @@ public class ItemPositionAdvancedSettings {
         droppedRotationPitch = 0.0F;
         droppedRotationRoll = 0.0F;
         droppedScale = 0.0F;
-    });
+    }
 
     // Projectiles Position
     @Slider(
@@ -315,7 +315,7 @@ public class ItemPositionAdvancedSettings {
             text = "Reset",
             category = "Customize Item Positions", subcategory = "Thrown Projectile Position"
     )
-    Runnable resetProjectile = (() -> {
+    public void resetProjectile() {
         projectilePositionX = 0.0F;
         projectilePositionY = 0.0F;
         projectilePositionZ = 0.0F;
@@ -323,7 +323,7 @@ public class ItemPositionAdvancedSettings {
         projectileRotationPitch = 0.0F;
         projectileRotationRoll = 0.0F;
         projectileScale = 0.0F;
-    });
+    }
 
     // Fireball Position
     @Slider(
@@ -380,7 +380,7 @@ public class ItemPositionAdvancedSettings {
             text = "Reset",
             category = "Customize Item Positions", subcategory = "Fireball Projectile Position"
     )
-    Runnable resetFireball = (() -> {
+    public void resetFireball() {
         fireballPositionX = 0.0F;
         fireballPositionY = 0.0F;
         fireballPositionZ = 0.0F;
@@ -388,7 +388,7 @@ public class ItemPositionAdvancedSettings {
         fireballRotationPitch = 0.0F;
         fireballRotationRoll = 0.0F;
         fireballScale = 0.0F;
-    });
+    }
 
     // Fishing Line Position
 
@@ -425,10 +425,9 @@ public class ItemPositionAdvancedSettings {
             text = "Reset",
             category = "Customize Item Positions", subcategory = "Fishing Rod Line Position"
     )
-    Runnable resetFishingLine = (() -> {
+    public void resetFishingLine() {
         fishingLinePositionX = OldAnimationsSettings.fishingRodPosition ? -0.5f : -0.36f;
         fishingLinePositionY = 0.03f;
         fishingLinePositionZ = OldAnimationsSettings.fishingRodPosition ? 0.8f : 0.35f;
-    });
-
+    }
 }

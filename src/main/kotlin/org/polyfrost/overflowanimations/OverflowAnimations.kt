@@ -1,7 +1,10 @@
 package org.polyfrost.overflowanimations
 
 //#if FORGE
-import dev.deftu.omnicore.common.OmniLoader
+import com.mojang.brigadier.context.CommandContext
+import dev.deftu.omnicore.api.client.commands.OmniClientCommandSource
+import dev.deftu.omnicore.api.client.commands.OmniClientCommands
+import dev.deftu.omnicore.api.loader.OmniLoader
 import dulkirmod.config.Config
 import dulkirmod.config.DulkirConfig
 import net.minecraftforge.fml.common.Mod
@@ -13,13 +16,11 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 //#endif
 
 import net.minecraft.client.Minecraft
-import org.polyfrost.oneconfig.api.commands.v1.CommandManager
 import org.polyfrost.oneconfig.api.event.v1.EventManager
 import org.polyfrost.oneconfig.api.event.v1.events.RenderEvent
 import org.polyfrost.oneconfig.api.event.v1.invoke.impl.Subscribe
-import org.polyfrost.oneconfig.api.platform.v1.Platform
 import org.polyfrost.oneconfig.api.ui.v1.Notifications
-import org.polyfrost.overflowanimations.command.OldAnimationsCommand
+import org.polyfrost.oneconfig.utils.v1.dsl.createScreen
 import org.polyfrost.overflowanimations.config.OldAnimationsSettings
 
 //import org.polyfrost.overflowanimations.gui.PleaseMigrateDulkirModGui
@@ -62,10 +63,31 @@ object OverflowAnimations
 
     fun initialize() {
         OldAnimationsSettings.INSTANCE.preload()
-        CommandManager.register(OldAnimationsCommand())
+        initializeCommands()
+
         //#if FORGE
         EventManager.INSTANCE.register(this)
         //#endif
+    }
+
+    private fun initializeCommands() {
+        val executor = { ctx: CommandContext<OmniClientCommandSource> ->
+            ctx.source.openScreen(OldAnimationsSettings.INSTANCE.createScreen())
+        }
+
+        val node = OmniClientCommands.literal("animatium")
+            .executes(executor)
+            .build()
+        OmniClientCommands.register(node)
+
+        val aliases = listOf("overflowanimations", "oam", "oldanimations", "animations")
+        for (alias in aliases) {
+            val aliasNode = OmniClientCommands.literal(alias)
+                .executes(executor)
+                .redirect(node)
+                .build()
+            OmniClientCommands.register(aliasNode)
+        }
     }
 
     //#if FORGE
@@ -76,12 +98,12 @@ object OverflowAnimations
 
     @Mod.EventHandler
     fun postInit(event: FMLPostInitializationEvent) {
-        doTheFunnyDulkirThing = OmniLoader.isModLoaded("dulkirmod")
-        isPatcherPresent = OmniLoader.isModLoaded("patcher")
-        customCrosshair = OmniLoader.isModLoaded("custom-crosshair-mod")
-        isDamageTintPresent = OmniLoader.isModLoaded("damagetint")
-        isItemPhysics = OmniLoader.isModLoaded("itemphysic")
-        isNEUPresent = OmniLoader.isModLoaded("notenoughupdates")
+        doTheFunnyDulkirThing = OmniLoader.isLoaded("dulkirmod")
+        isPatcherPresent = OmniLoader.isLoaded("patcher")
+        customCrosshair = OmniLoader.isLoaded("custom-crosshair-mod")
+        isDamageTintPresent = OmniLoader.isLoaded("damagetint")
+        isItemPhysics = OmniLoader.isLoaded("itemphysic")
+        isNEUPresent = OmniLoader.isLoaded("notenoughupdates")
     }
 
     @Mod.EventHandler

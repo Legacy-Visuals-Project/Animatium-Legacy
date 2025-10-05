@@ -14,7 +14,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.polyfrost.overflowanimations.OverflowAnimations
 
 enum class CustomModelBakery(modelPath: String) {
-
     BOTTLE_OVERLAY("item/bottle_overlay"),
     BOTTLE_DRINKABLE_EMPTY("item/bottle_drinkable_empty"),
     BOTTLE_SPLASH_EMPTY("item/bottle_splash_empty"),
@@ -38,7 +37,6 @@ enum class CustomModelBakery(modelPath: String) {
     }
 
     companion object {
-
         init {
             MinecraftForge.EVENT_BUS.register(this)
         }
@@ -53,5 +51,4 @@ enum class CustomModelBakery(modelPath: String) {
             CustomModelBakery.entries.forEach { it.bake() }
         }
     }
-
 }

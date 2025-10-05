@@ -1,6 +1,6 @@
 package org.polyfrost.overflowanimations.hooks;
 
-import dev.deftu.omnicore.client.render.OmniResolution;
+import dev.deftu.omnicore.api.client.render.OmniResolution;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;

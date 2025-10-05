@@ -1,6 +1,6 @@
 package org.polyfrost.overflowanimations.mixin;
 
-import dev.deftu.omnicore.client.OmniClientPlayer;
+import dev.deftu.omnicore.api.client.OmniClient;
 import net.minecraft.entity.Entity;
 import org.polyfrost.overflowanimations.config.OldAnimationsSettings;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,10 +24,10 @@ public class EntityMixin {
     @Inject(method = "setVelocity", at = @At("HEAD"))
     private void directionalHurtCam(double x, double y, double z, CallbackInfo ci) {
         if (!OldAnimationsSettings.damageTilt) return;
-        if ((Entity) (Object) this == OmniClientPlayer.getInstance()) {
+        if ((Entity) (Object) this == OmniClient.getPlayer()) {
             float result = (float) (Math.atan2(z - motionZ, x - motionX) * (180D / Math.PI) - (double) rotationYaw);
             if (Float.isFinite(result)) {
-                OmniClientPlayer.getInstance().attackedAtYaw = result;
+                OmniClient.getPlayer().attackedAtYaw = result;
             }
         }
     }

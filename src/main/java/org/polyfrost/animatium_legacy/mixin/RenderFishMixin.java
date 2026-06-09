@@ -60,13 +60,12 @@ public abstract class RenderFishMixin {
 
     @Redirect(method = "doRender(Lnet/minecraft/entity/projectile/EntityFishHook;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;getEyeHeight()F"))
     private float animatium$modifyEyeHeight(final EntityPlayer instance) {
-        return SmoothSneakHook.getSmoothSneak();
+        return SmoothSneakHook.getSmoothSneak(instance.getEyeHeight());
     }
 
     @Inject(method = "doRender(Lnet/minecraft/entity/projectile/EntityFishHook;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WorldRenderer;begin(ILnet/minecraft/client/renderer/vertex/VertexFormat;)V", ordinal = 1))
     private void animatium$modifyLineThickness(final EntityFishHook entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled) {
-            // TODO: GLStateManager
             GL11.glLineWidth(AnimatiumSettings.INSTANCE.rodThickness + 1.0F);
         }
     }

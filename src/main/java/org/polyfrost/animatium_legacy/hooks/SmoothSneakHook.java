@@ -10,11 +10,11 @@ public final class SmoothSneakHook {
         SmoothSneakHook.sneakingHeight = sneakingHeight;
     }
 
-    public static float getSmoothSneak() {
+    public static float getSmoothSneak(final float originalEyeHeight) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.smoothSneaking) {
             return sneakingHeight;
         } else {
-            return Minecraft.getMinecraft().getRenderViewEntity().getEyeHeight();
+            return originalEyeHeight;
         }
     }
 }

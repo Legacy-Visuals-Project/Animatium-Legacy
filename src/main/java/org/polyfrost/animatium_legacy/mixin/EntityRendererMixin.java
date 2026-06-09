@@ -37,13 +37,13 @@ public abstract class EntityRendererMixin {
     }
 
     @ModifyVariable(method = "orientCamera", at = @At(value = "STORE", ordinal = 0), name = "f")
-    private float animatium$modifyEyeHeight(final float eyeHeight) {
-        return SmoothSneakHook.getSmoothSneak();
+    private float animatium$modifyEyeHeight(final float original) {
+        return SmoothSneakHook.getSmoothSneak(original);
     }
 
     @ModifyArg(method = "renderWorldDirections", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;translate(FFF)V"), index = 1)
     private float animatium$syncCrossHair(final float original) {
-        return SmoothSneakHook.getSmoothSneak();
+        return SmoothSneakHook.getSmoothSneak(original);
     }
 
     // TODO: WrapMethod

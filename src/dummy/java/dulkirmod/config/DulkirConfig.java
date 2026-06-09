@@ -111,5 +111,6 @@ public class DulkirConfig {
         drinkingSelector = n;
     }
 
-    public final void demoButton() {}
+    public final void demoButton() {
+    }
 }

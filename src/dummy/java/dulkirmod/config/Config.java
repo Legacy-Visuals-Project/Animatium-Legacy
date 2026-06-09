@@ -112,5 +112,6 @@ public class Config {
         drinkingSelector = n;
     }
 
-    public final void demoButton() {}
+    public final void demoButton() {
+    }
 }

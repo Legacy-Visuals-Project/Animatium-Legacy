@@ -1,0 +1,10 @@
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+
+[{*.json,*.mcmeta}]
+indent_style = tab
+indent_size = 4

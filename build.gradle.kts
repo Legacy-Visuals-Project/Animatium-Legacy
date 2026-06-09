@@ -53,7 +53,7 @@ loom {
         runConfigs {
             "client" {
                 programArgs("--tweakClass", "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker")
-                property("fml.coreMods.load", "org.polyfrost.overflowanimations.ModDetectorPlugin")
+                property("fml.coreMods.load", "org.polyfrost.animatium_legacy.ModDetectorPlugin")
                 property("mixin.debug.export", "true")
             }
         }
@@ -182,7 +182,7 @@ tasks {
                 "ModSide" to "CLIENT", // We aren't developing a server-side mod, so this is fine.
                 "ForceLoadAsMod" to true, // We want to load this jar as a mod, so we force Forge to do so.
                 "FMLCorePluginContainsFMLMod" to "Yes, yes it does",
-                "FMLCorePlugin" to "org.polyfrost.overflowanimations.ModDetectorPlugin",
+                "FMLCorePlugin" to "org.polyfrost.animatium_legacy.ModDetectorPlugin",
                 "TweakOrder" to "0", // Makes sure that the OneConfig launch wrapper is loaded as soon as possible.
                 "MixinConfigs" to "mixins.${mod_id}.json", // We want to use our mixin configuration, so we specify it here.
                 "TweakClass" to "cc.polyfrost.oneconfig.loader.stage0.LaunchWrapperTweaker" // Loads the OneConfig launch wrapper.

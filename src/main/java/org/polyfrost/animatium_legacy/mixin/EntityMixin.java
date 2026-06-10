@@ -10,8 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Entity.class)
-public class EntityMixin {
-
+public abstract class EntityMixin {
     @Shadow
     public double motionZ;
 
@@ -22,10 +21,9 @@ public class EntityMixin {
     public float rotationYaw;
 
     @Inject(method = "setVelocity", at = @At("HEAD"))
-    private void directionalHurtCam(double x, double y, double z, CallbackInfo ci) {
-        if (!AnimatiumSettings.damageTilt) return;
-        if ((Object) this == UMinecraft.getPlayer()) {
-            float result = (float) (Math.atan2(z - motionZ, x - motionX) * (180D / Math.PI) - (double) rotationYaw);
+    private void directionalHurtCam(final double x, final double y, final double z, final CallbackInfo ci) {
+        if (AnimatiumSettings.damageTilt && (Object) this == UMinecraft.getPlayer()) {
+            final float result = (float) (Math.atan2(z - motionZ, x - motionX) * (180D / Math.PI) - (double) rotationYaw);
             if (Float.isFinite(result)) {
                 UMinecraft.getPlayer().attackedAtYaw = result;
             }

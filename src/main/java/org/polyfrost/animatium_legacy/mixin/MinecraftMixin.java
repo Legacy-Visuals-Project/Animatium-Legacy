@@ -89,7 +89,6 @@ public abstract class MinecraftMixin {
     @Redirect(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;clickBlock(Lnet/minecraft/util/BlockPos;Lnet/minecraft/util/EnumFacing;)Z"))
     private boolean animatium$preventMiningWhenUsing(final PlayerControllerMP instance, final BlockPos blockPos, final EnumFacing facing) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldBlockhitting && animatium$hasUseAction()) {
-            /* interestingly enough, badlion also does something like this */
             return false;
         } else {
             return instance.clickBlock(blockPos, facing);

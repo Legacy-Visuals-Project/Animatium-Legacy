@@ -10,10 +10,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = ForgeHooksClient.class, remap = false)
-public class ForgeHooksClientMixin {
-
+public abstract class ForgeHooksClientMixin {
     @Inject(method = "handleCameraTransforms", at = @At("HEAD"))
-    private static void animatium$getCameraPerspective(IBakedModel model, ItemCameraTransforms.TransformType cameraTransformType, CallbackInfoReturnable<IBakedModel> cir) {
+    private static void animatium$getCameraPerspective(final IBakedModel model, final ItemCameraTransforms.TransformType cameraTransformType, final CallbackInfoReturnable<IBakedModel> cir) {
         TransformTypeHook.transform = cameraTransformType;
     }
 }

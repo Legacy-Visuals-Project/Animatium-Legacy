@@ -30,7 +30,7 @@ public abstract class EntityRendererMixin {
     private float animatium$previousHeight;
 
     @Inject(method = "setupCameraTransform", at = @At("HEAD"))
-    protected void animatium$getInterpolatedEyeHeight(float tickDelta, int pass, CallbackInfo ci) {
+    protected void animatium$getInterpolatedEyeHeight(final float tickDelta, final int pass, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled) {
             SmoothSneakHook.setSneakingHeight(MathUtils.lerp(tickDelta, this.animatium$previousHeight, this.animatium$height));
         }

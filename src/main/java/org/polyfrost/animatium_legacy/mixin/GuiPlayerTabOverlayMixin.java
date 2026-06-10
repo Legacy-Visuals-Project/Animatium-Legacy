@@ -17,21 +17,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = GuiPlayerTabOverlay.class, priority = 999)
 public abstract class GuiPlayerTabOverlayMixin {
-
     @Shadow
     @Final
     private static Ordering<NetworkPlayerInfo> field_175252_a;
 
     @Inject(method = "renderPlayerlist", at = @At("HEAD"), cancellable = true)
-    private void animatium$renderOldTab(int width, Scoreboard scoreboardIn, ScoreObjective var37, CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.tabMode == 0 && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$renderOldTab(final int width, final Scoreboard scoreboardIn, final ScoreObjective objective, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.tabMode == 0) {
             ci.cancel();
-            TabOverlayHook.renderOldTab(((GuiPlayerTabOverlay) (Object) this), var37, field_175252_a);
+            TabOverlayHook.renderOldTab(((GuiPlayerTabOverlay) (Object) this), objective, field_175252_a);
         }
     }
 
-    @ModifyVariable(method = "renderPlayerlist", at = @At("STORE"), index = 11)
-    private boolean animatium$disablePlayerHead(boolean original) {
-        return (AnimatiumSettings.INSTANCE.tabMode != 2 || !AnimatiumSettings.INSTANCE.enabled) && original;
+    @ModifyVariable(method = "renderPlayerlist", at = @At("STORE"), name = "bl")
+    private boolean animatium$disablePlayerHead(final boolean original) {
+        return original && (!AnimatiumSettings.INSTANCE.enabled || AnimatiumSettings.INSTANCE.tabMode != 2);
     }
 }

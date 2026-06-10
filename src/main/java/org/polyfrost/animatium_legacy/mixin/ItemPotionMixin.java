@@ -11,7 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemPotion.class)
 public abstract class ItemPotionMixin {
-
     @Shadow
     public abstract int getColorFromDamage(int meta);
 
@@ -21,5 +20,4 @@ public abstract class ItemPotionMixin {
             cir.setReturnValue(getColorFromDamage(stack.getMetadata()));
         }
     }
-
 }

@@ -4,8 +4,7 @@ import net.minecraft.client.renderer.ItemModelMesher;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(ItemModelMesher.class)
-public class ItemModelMesherMixin {
-
+public abstract class ItemModelMesherMixin {
 //    @Inject(
 //            method = "getItemModel(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/client/resources/model/IBakedModel;",
 //            at = @At(
@@ -20,5 +19,4 @@ public class ItemModelMesherMixin {
 //            cir.setReturnValue(SkullModelHook.INSTANCE.getSkullModel(stack));
 //        }
 //    }
-
 }

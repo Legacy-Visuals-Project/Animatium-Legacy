@@ -27,7 +27,7 @@ public abstract class LayerArmorBaseMixin<T extends ModelBase> implements LayerR
     private static ModelBase animatium$entity = null;
 
     @ModifyVariable(method = "renderLayer", at = @At(value = "STORE"), name = "t")
-    private T animatium$captureT(final T entity) {
+    private T animatium$captureEntity(final T entity) {
         animatium$entity = entity;
         return entity;
     }

@@ -19,52 +19,51 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
-
     @Shadow
     @Final
     private Minecraft mc;
+
     @Shadow
     private int equippedItemSlot;
+
     @Shadow
     private ItemStack itemToRender;
+
     @Shadow
     @Final
     private RenderItem itemRenderer;
 
     @Shadow
-    protected abstract void rotateWithPlayerRotations(EntityPlayerSP entityplayerspIn, float tickDelta);
+    protected abstract void rotateWithPlayerRotations(final EntityPlayerSP player, final float tickDelta);
 
     @Unique
-    private static float animatium$f1 = 0.0F;
+    private static float animatium$swingProgress = 0.0F;
 
-    @ModifyVariable(
-            method = "renderItemInFirstPerson",
-            at = @At(
-                    value = "STORE"
-            ),
-            index = 4
-    )
-    private float animatium$captureF1(float f1) {
-        animatium$f1 = f1;
-        return f1;
+    @ModifyVariable(method = "renderItemInFirstPerson", at = @At(value = "STORE"), name = "f1")
+    private float animatium$captureF1(final float original) {
+        animatium$swingProgress = original;
+        return original;
     }
 
-    @ModifyArg(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;transformFirstPersonItem(FF)V"),
+    @ModifyArg(
+            method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;transformFirstPersonItem(FF)V"),
             slice = @Slice(
                     from = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;performDrinking(Lnet/minecraft/client/entity/AbstractClientPlayer;F)V"),
                     to = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;doBowTransformations(FLnet/minecraft/client/entity/AbstractClientPlayer;)V")
-            ), index = 1
+            ),
+            index = 1
     )
-    private float animatium$useF1(float swingProgress) {
-        if (AnimatiumSettings.oldBlockhitting && AnimatiumSettings.INSTANCE.enabled) {
-            return animatium$f1;
+    private float animatium$useSwingProgress(float swingProgress) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldBlockhitting) {
+            return animatium$swingProgress;
+        } else {
+            return swingProgress;
         }
-        return swingProgress;
     }
 
     @Inject(method = "doBowTransformations", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;scale(FFF)V"))
-    private void animatium$preBowTransform(float tickDelta, AbstractClientPlayer clientPlayer, CallbackInfo ci) {
-        if (AnimatiumSettings.firstTransformations && !AnimatiumSettings.lunarPositions && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$preBowTransform(final float tickDelta, final AbstractClientPlayer clientPlayer, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstTransformations && !AnimatiumSettings.lunarPositions) {
             GlStateManager.rotate(-335.0F, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(-50.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(0.0F, 0.5F, 0.0F);
@@ -72,8 +71,8 @@ public abstract class ItemRendererMixin {
     }
 
     @Inject(method = "doBowTransformations", at = @At(value = "TAIL"))
-    private void animatium$postBowTransform(float tickDelta, AbstractClientPlayer clientPlayer, CallbackInfo ci) {
-        if (AnimatiumSettings.firstTransformations && !AnimatiumSettings.lunarPositions && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$postBowTransform(final float tickDelta, final AbstractClientPlayer clientPlayer, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstTransformations && !AnimatiumSettings.lunarPositions) {
             GlStateManager.translate(0.0F, -0.5F, 0.0F);
             GlStateManager.rotate(50.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(335.0F, 0.0F, 0.0F, 1.0F);
@@ -81,67 +80,60 @@ public abstract class ItemRendererMixin {
     }
 
     @Inject(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;renderItem(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V"))
-    private void animatium$firstPersonItemPositions(float tickDelta, CallbackInfo ci) {
+    private void animatium$firstPersonItemPositions(final float tickDelta, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && !AnimatiumSettings.lunarPositions && !itemRenderer.shouldRenderItemIn3D(itemToRender)) {
             if ((AnimatiumSettings.fishingRodPosition && itemToRender.getItem().shouldRotateAroundWhenRendering())) {
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
-                animatium$itemTransforms();
+                animatium$applyItemTransforms();
             } else if (AnimatiumSettings.firstTransformations && !(itemToRender.getItem() instanceof ItemSword && AnimatiumSettings.lunarBlockhit)) {
-                animatium$itemTransforms();
+                animatium$applyItemTransforms();
             }
         }
     }
 
     @Redirect(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;rotateWithPlayerRotations(Lnet/minecraft/client/entity/EntityPlayerSP;F)V"))
-    private void animatium$removeRotations(ItemRenderer instance, EntityPlayerSP entityPlayerSP, float v) {
+    private void animatium$removeRotations(final ItemRenderer instance, final EntityPlayerSP entityPlayerSP, final float tickDelta) {
         if (!AnimatiumSettings.oldItemRotations || !AnimatiumSettings.INSTANCE.enabled) {
-            rotateWithPlayerRotations(entityPlayerSP, v);
+            rotateWithPlayerRotations(entityPlayerSP, tickDelta);
         }
     }
 
     @Unique
-    private static void animatium$itemTransforms() {
-        float scale = 1.5F / 1.7F;
+    private static void animatium$applyItemTransforms() {
+        final float scale = 1.5F / 1.7F;
         GlStateManager.scale(scale, scale, scale);
         GlStateManager.rotate(5.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.29F, 0.149F, -0.0328F);
     }
 
     @ModifyConstant(method = "updateEquippedItem", constant = @Constant(floatValue = 0.4F))
-    private float animatium$changeEquipSpeed(float original) {
+    private float animatium$changeEquipSpeed(final float original) {
         return AnimatiumSettings.INSTANCE.enabled ? AnimatiumSettings.INSTANCE.reequipSpeed : original;
     }
 
     @Inject(method = "resetEquippedProgress", at = @At(value = "HEAD"), cancellable = true)
-    private void animatium$disableReEquip1(CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.itemSwitchMode == 0 && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$disableReEquip1(final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == 0) {
             ci.cancel();
         }
     }
 
     @Inject(method = "resetEquippedProgress2", at = @At(value = "HEAD"), cancellable = true)
-    private void animatium$disableReEquip2(CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.itemSwitchMode == 0 && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$disableReEquip2(final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == 0) {
             ci.cancel();
         }
     }
 
-    @ModifyVariable(
-            method = "updateEquippedItem",
-            at = @At(
-                    value = "STORE",
-                    ordinal = 3
-            ),
-            index = 3
-    )
-    private boolean animatium$disableReEquip(boolean flag) {
-        if (AnimatiumSettings.INSTANCE.itemSwitchMode == 0 && AnimatiumSettings.INSTANCE.enabled) {
-            EntityPlayer entityplayer = this.mc.thePlayer;
-            this.itemToRender = entityplayer.inventory.getCurrentItem();
-            this.equippedItemSlot = entityplayer.inventory.currentItem;
+    @ModifyVariable(method = "updateEquippedItem", at = @At(value = "STORE", ordinal = 3), name = "flag")
+    private boolean animatium$disableReEquip(final boolean original) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == 0) {
+            final EntityPlayer player = this.mc.thePlayer;
+            this.itemToRender = player.inventory.getCurrentItem();
+            this.equippedItemSlot = player.inventory.currentItem;
             return false;
+        } else {
+            return original;
         }
-        return flag;
     }
-
 }

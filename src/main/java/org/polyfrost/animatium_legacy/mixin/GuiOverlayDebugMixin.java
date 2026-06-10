@@ -12,17 +12,16 @@ import java.util.List;
 
 @Mixin(GuiOverlayDebug.class)
 public abstract class GuiOverlayDebugMixin {
-
     @Inject(method = "call", at = @At("HEAD"), cancellable = true)
-    private void animatium$oldDebugLeft(CallbackInfoReturnable<List<String>> cir) {
-        if (AnimatiumSettings.INSTANCE.debugScreenMode == 0 && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$oldDebugLeft(final CallbackInfoReturnable<List<String>> cir) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugScreenMode == 0) {
             cir.setReturnValue(DebugOverlayHook.getDebugInfoLeft());
         }
     }
 
     @Inject(method = "getDebugInfoRight", at = @At("HEAD"), cancellable = true)
-    private void animatium$oldDebugRight(CallbackInfoReturnable<List<String>> cir) {
-        if (AnimatiumSettings.INSTANCE.debugScreenMode == 0 && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$oldDebugRight(final CallbackInfoReturnable<List<String>> cir) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugScreenMode == 0) {
             cir.setReturnValue(DebugOverlayHook.getDebugInfoRight());
         }
     }

@@ -12,29 +12,28 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityPickupFX.class)
-public class EntityPickupFXMixin {
-
+public abstract class EntityPickupFXMixin {
     @Shadow
     private float field_174841_aA;
+
     @Shadow
     private Entity field_174843_ax;
 
     @Inject(method = "renderParticle", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/particle/EntityPickupFX;field_174841_aA:F"))
-    private void animatium$factorInEyeHeight(WorldRenderer worldRendererIn, Entity entityIn, float tickDelta, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, CallbackInfo ci) {
-        if (!AnimatiumSettings.INSTANCE.enabled) {
-            return;
+    private void animatium$factorInEyeHeight(final WorldRenderer worldRendererIn, final Entity entityIn, final float tickDelta, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled) {
+            if (AnimatiumSettings.oldPickup) {
+                field_174841_aA = (field_174843_ax.getEyeHeight() / 2);
+            }
+
+            field_174841_aA += AnimatiumSettings.INSTANCE.pickupPosition;
         }
-        if (AnimatiumSettings.oldPickup) {
-            field_174841_aA = (field_174843_ax.getEyeHeight() / 2);
-        }
-        field_174841_aA += AnimatiumSettings.INSTANCE.pickupPosition;
     }
 
     @Inject(method = "renderParticle", at = @At("HEAD"), cancellable = true)
-    private void animatium$disableCollectParticle(WorldRenderer worldRendererIn, Entity entityIn, float tickDelta, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ, CallbackInfo ci) {
-        if (AnimatiumSettings.disablePickup && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$disableCollectParticle(final WorldRenderer worldRendererIn, final Entity entityIn, final float tickDelta, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.disablePickup) {
             ci.cancel();
         }
     }
-
 }

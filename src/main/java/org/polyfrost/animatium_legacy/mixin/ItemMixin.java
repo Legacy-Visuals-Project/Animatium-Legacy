@@ -11,10 +11,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Item.class)
-public class ItemMixin {
-
+public abstract class ItemMixin {
     @Inject(method = "shouldCauseReequipAnimation", at = @At("HEAD"), cancellable = true, remap = false)
-    private void animatium$modifyReequip(ItemStack oldStack, ItemStack newStack, boolean slotChanged, CallbackInfoReturnable<Boolean> cir) {
+    private void animatium$modifyReequip(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged, final CallbackInfoReturnable<Boolean> cir) {
         if (AnimatiumSettings.INSTANCE.enabled) {
             if (AnimatiumSettings.INSTANCE.itemSwitchMode == 0) {
                 cir.setReturnValue(false);
@@ -25,5 +24,4 @@ public class ItemMixin {
             }
         }
     }
-
 }

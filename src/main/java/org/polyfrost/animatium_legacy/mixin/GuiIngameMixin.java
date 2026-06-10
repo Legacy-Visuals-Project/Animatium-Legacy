@@ -8,13 +8,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = GuiIngame.class, priority = 1001)
-public class GuiIngameMixin {
-
+public abstract class GuiIngameMixin {
     @Inject(method = "showCrosshair", at = @At("HEAD"), cancellable = true)
-    private void animatium$renderCrosshair(CallbackInfoReturnable<Boolean> cir) {
-        if (AnimatiumSettings.INSTANCE.debugCrosshairMode == 0 && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$renderCrosshair(final CallbackInfoReturnable<Boolean> cir) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugCrosshairMode == 0) {
             cir.setReturnValue(true);
         }
     }
-
 }

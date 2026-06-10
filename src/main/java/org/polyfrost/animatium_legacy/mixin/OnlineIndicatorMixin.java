@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class OnlineIndicatorMixin {
     @Dynamic("Essential")
     @Inject(method = "drawTabIndicator", at = @At("HEAD"), cancellable = true, remap = false)
-    private static void animatium$removeTabIndicator(CallbackInfo ci) {
+    private static void animatium$removeTabIndicator(final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.tabMode == 2) {
             ci.cancel(); // TODO: WrapMethod
         }

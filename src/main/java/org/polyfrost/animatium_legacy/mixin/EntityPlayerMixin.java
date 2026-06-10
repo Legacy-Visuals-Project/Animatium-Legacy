@@ -13,16 +13,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityPlayer.class)
-public class EntityPlayerMixin {
-
+public abstract class EntityPlayerMixin {
     @Inject(method = "dropItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;getEyeHeight()F"))
-    private void animatium$dropItemSwing(ItemStack droppedItem, boolean dropAround, boolean traceItem, CallbackInfoReturnable<EntityItem> cir) {
-        if (AnimatiumSettings.modernDropSwing && AnimatiumSettings.INSTANCE.enabled && Minecraft.getMinecraft().theWorld.isRemote) {
-            if (AnimatiumSettings.modernDropSwingFix && Minecraft.getMinecraft().currentScreen instanceof GuiChest) {
-                return;
-            }
+    private void animatium$dropItemSwing(final ItemStack droppedItem, final boolean dropAround, final boolean traceItem, final CallbackInfoReturnable<EntityItem> cir) {
+        if (AnimatiumSettings.INSTANCE.enabled
+                && AnimatiumSettings.modernDropSwing
+                && Minecraft.getMinecraft().theWorld.isRemote
+                && !(AnimatiumSettings.modernDropSwingFix && Minecraft.getMinecraft().currentScreen instanceof GuiChest)) {
             SwingHook.swingItem();
         }
     }
-
 }

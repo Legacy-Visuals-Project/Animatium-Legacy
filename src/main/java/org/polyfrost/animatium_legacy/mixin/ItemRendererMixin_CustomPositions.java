@@ -16,13 +16,12 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemRenderer.class)
-public class ItemRendererMixin_CustomPositions {
-
+public abstract class ItemRendererMixin_CustomPositions {
     @Shadow
     private ItemStack itemToRender;
 
     @Inject(method = "transformFirstPersonItem(FF)V", at = @At("HEAD"), cancellable = true)
-    private void animatium$itemTransform(float equipProgress, float swingProgress, CallbackInfo ci) {
+    private void animatium$itemTransform(final float equipProgress, final float swingProgress, final CallbackInfo ci) {
         AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         if (settings.enabled) {
             Item item = itemToRender.getItem();
@@ -46,12 +45,9 @@ public class ItemRendererMixin_CustomPositions {
                     }
                 }
             }
+
             if (AnimatiumSettings.globalPositions) {
-                GlStateManager.translate(
-                        0.56f * (1.0F + settings.itemPositionX),
-                        -0.52f * (1.0F - settings.itemPositionY),
-                        -0.72f * (1.0F + settings.itemPositionZ)
-                );
+                GlStateManager.translate(0.56f * (1.0F + settings.itemPositionX), -0.52f * (1.0F - settings.itemPositionY), -0.72f * (1.0F + settings.itemPositionZ));
                 GlStateManager.translate(0.0f, equipProgress * -0.6f, 0.0f);
                 GlStateManager.rotate(settings.itemRotationPitch, 1.0f, 0.0f, 0.0f);
                 GlStateManager.rotate(settings.itemRotationYaw, 0.0f, 1.0f, 0.0f);
@@ -70,7 +66,7 @@ public class ItemRendererMixin_CustomPositions {
     }
 
     @Inject(method = "doItemUsedTransformations", at = @At("HEAD"), cancellable = true)
-    private void animatium$swingTransformations(float swingProgress, CallbackInfo ci) {
+    private void animatium$swingTransformations(final float swingProgress, final CallbackInfo ci) {
         AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
         if (AnimatiumSettings.globalPositions && settings.enabled) {
@@ -88,15 +84,11 @@ public class ItemRendererMixin_CustomPositions {
     }
 
     @Inject(method = "doBlockTransformations", at = @At("HEAD"), cancellable = true)
-    private void animatium$blockedItemTransform(CallbackInfo ci) {
+    private void animatium$blockedItemTransform(final CallbackInfo ci) {
         AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
         if (AnimatiumSettings.globalPositions && settings.enabled) {
-            GlStateManager.translate(
-                    -0.5f * (1.0F + advanced.blockedPositionX),
-                    0.2f * (1.0F + advanced.blockedPositionY),
-                    0.0f + advanced.blockedPositionZ
-            );
+            GlStateManager.translate(-0.5f * (1.0F + advanced.blockedPositionX), 0.2f * (1.0F + advanced.blockedPositionY), 0.0f + advanced.blockedPositionZ);
             GlStateManager.rotate(advanced.blockedRotationPitch, 1.0f, 0.0f, 0.0f);
             GlStateManager.rotate(advanced.blockedRotationYaw, 0.0f, 1.0f, 0.0f);
             GlStateManager.rotate(advanced.blockedRotationRoll, 0.0f, 0.0f, 1.0f);
@@ -110,14 +102,15 @@ public class ItemRendererMixin_CustomPositions {
                 GlStateManager.rotate(1.0F, 0.25F, 0.0F, 0.0F);
                 GlStateManager.rotate(2.0F, 0.0F, 2.0F, 0.0F);
             }
-            double scale = 1.0f * Math.exp(advanced.blockedScale);
+
+            final double scale = 1.0f * Math.exp(advanced.blockedScale);
             GlStateManager.scale(scale, scale, scale);
             ci.cancel();
         }
     }
 
     @Inject(method = "doBlockTransformations", at = @At("TAIL"))
-    private void animatium$lunarTransform(CallbackInfo ci) {
+    private void animatium$lunarTransform(final CallbackInfo ci) {
         AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         if (AnimatiumSettings.lunarBlockhit && !AnimatiumSettings.globalPositions && settings.enabled) {
             GlStateManager.translate(-0.55F, 0.2F, 0.1F);
@@ -129,14 +122,14 @@ public class ItemRendererMixin_CustomPositions {
     }
 
     @ModifyArg(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;transformFirstPersonItem(FF)V", ordinal = 2), index = 0)
-    private float animatium$modifyBlockEquip(float original) {
+    private float animatium$modifyBlockEquip(final float original) {
         return AnimatiumSettings.lunarBlockhit && AnimatiumSettings.INSTANCE.enabled ? 0.2F : original;
     }
 
     // TODO: add customization for equip / swing progress
 
     @Inject(method = "performDrinking", at = @At("HEAD"), cancellable = true)
-    private void animatium$drinkingItemTransform(AbstractClientPlayer clientPlayer, float tickDelta, CallbackInfo ci) {
+    private void animatium$drinkingItemTransform(final AbstractClientPlayer clientPlayer, final float tickDelta, final CallbackInfo ci) {
         AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
         if (AnimatiumSettings.globalPositions && settings.enabled) {
@@ -146,6 +139,7 @@ public class ItemRendererMixin_CustomPositions {
             if (f1 >= 0.8f) {
                 f2 = 0.0f;
             }
+
             float posX = 0.56f * (1.0F + settings.itemPositionX);
             float posY = -0.52f * (1.0F - settings.itemPositionY);
             float posZ = -0.72f * (1.0F + settings.itemPositionZ);
@@ -153,6 +147,7 @@ public class ItemRendererMixin_CustomPositions {
                 GlStateManager.translate(-0.56f, 0.52f, 0.72f);
                 GlStateManager.translate(posX, posY, posZ);
             }
+
             GlStateManager.translate(advanced.consumePositionX, advanced.consumePositionY, advanced.consumePositionZ);
             GlStateManager.translate(0.0f, f2 * (1.0F + advanced.consumeIntensity), 0.0f);
             float f3 = 1.0f - (float) Math.pow(f1, 27.0f * (1.0F + advanced.consumeSpeed));
@@ -167,40 +162,52 @@ public class ItemRendererMixin_CustomPositions {
                 GlStateManager.translate(0.56f, -0.52f, -0.72f);
                 GlStateManager.translate(-posX, -posY, -posZ);
             }
+
             ci.cancel();
         }
     }
 
     @Inject(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;transformFirstPersonItem(FF)V", ordinal = 1, shift = At.Shift.AFTER))
-    private void animatium$drinkingItemScale(float tickDelta, CallbackInfo ci) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        if (AnimatiumSettings.globalPositions && settings.enabled) {
-            double scale = 1.0f * Math.exp(AnimatiumSettings.advancedSettings.consumeScale);
+    private void animatium$drinkingItemScale(final float tickDelta, final CallbackInfo ci) {
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        if (settings.enabled && AnimatiumSettings.globalPositions) {
+            final double scale = 1.0f * Math.exp(AnimatiumSettings.advancedSettings.consumeScale);
             GlStateManager.scale(scale, scale, scale);
         }
     }
 
     @ModifyConstant(method = "performDrinking", constant = @Constant(floatValue = 0.6f))
-    private float animatium$lunarDrinking(float original) {
-        return AnimatiumSettings.lunarPositions && AnimatiumSettings.INSTANCE.enabled ? 0.66f : original;
+    private float animatium$lunarDrinking(final float original) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.lunarPositions) {
+            return 0.66F;
+        } else {
+            return original;
+        }
     }
 
     @ModifyConstant(method = "performDrinking", constant = @Constant(floatValue = 10.0f))
-    private float animatium$lunarDrinking2(float original) {
-        return AnimatiumSettings.lunarPositions && AnimatiumSettings.INSTANCE.enabled ? 5.0f : original;
+    private float animatium$lunarDrinking2(final float original) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.lunarPositions) {
+            return 5.0F;
+        } else {
+            return original;
+        }
     }
 
     @ModifyConstant(method = "performDrinking", constant = @Constant(floatValue = 30.0f))
-    private float animatium$lunarDrinking3(float original) {
-        return AnimatiumSettings.lunarPositions && AnimatiumSettings.INSTANCE.enabled ? 28.0f : original;
+    private float animatium$lunarDrinking3(final float original) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.lunarPositions) {
+            return 28.0F;
+        } else {
+            return original;
+        }
     }
 
     @Inject(method = "doBowTransformations", at = @At("HEAD"))
-    private void animatium$lunarBowPosition(float tickDelta, AbstractClientPlayer clientPlayer, CallbackInfo ci) {
-        if (AnimatiumSettings.lunarPositions && AnimatiumSettings.INSTANCE.enabled) {
+    private void animatium$lunarBowPosition(final float tickDelta, final AbstractClientPlayer clientPlayer, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.lunarPositions) {
             GlStateManager.translate(-0.2D, 0.0D, -0.175D);
             GlStateManager.rotate(1.0F, 0.0F, 0.0F, -1.25F);
         }
     }
-
 }

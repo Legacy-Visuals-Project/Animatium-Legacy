@@ -18,65 +18,70 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = EntityLivingBase.class, priority = 980)
 public abstract class EntityLivingBaseMixin extends Entity {
-
-    public EntityLivingBaseMixin(World worldIn) {
+    public EntityLivingBaseMixin(final World worldIn) {
         super(worldIn);
     }
 
     @Shadow
-    public abstract boolean isPotionActive(Potion potionIn);
+    public abstract boolean isPotionActive(final Potion potion);
 
     @Shadow
-    public abstract PotionEffect getActivePotionEffect(Potion potionIn);
+    public abstract PotionEffect getActivePotionEffect(final Potion potion);
 
     @Shadow
     public float swingProgress;
+
     @Shadow
     public float renderYawOffset;
+
     @Shadow
     public float rotationYawHead;
+
     @Unique
     protected float animatium$newHeadYaw;
+
     @Unique
     protected int animatium$headYawLerpWeight;
 
     @Inject(method = "setRotationYawHead", at = @At("HEAD"), cancellable = true)
-    private void animatium$setAsNewHeadYaw(float rotation, CallbackInfo ci) {
-        if (!AnimatiumSettings.INSTANCE.enabled || !AnimatiumSettings.headYawFix) return;
-        ci.cancel();
-        animatium$newHeadYaw = MathHelper.wrapAngleTo180_float(rotation);
-        animatium$headYawLerpWeight = 3;
-    }
-
-    @Inject(method = "onLivingUpdate", at = @At("HEAD"))
-    private void animatium$updateHeadYaw(CallbackInfo ci) {
-        if (!AnimatiumSettings.INSTANCE.enabled || !AnimatiumSettings.headYawFix) return;
-        if (animatium$headYawLerpWeight <= 0) return;
-        rotationYawHead += MathHelper.wrapAngleTo180_float(animatium$newHeadYaw - rotationYawHead) / animatium$headYawLerpWeight;
-        rotationYawHead = MathHelper.wrapAngleTo180_float(rotationYawHead);
-        animatium$headYawLerpWeight--;
-    }
-
-    //todo: hook swing speed
-    @Inject(method = "getArmSwingAnimationEnd()I", at = @At("HEAD"), cancellable = true)
-    private void animatium$modifySwingSpeed(CallbackInfoReturnable<Integer> cir) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        if (!AnimatiumSettings.globalPositions || !settings.enabled) return;
-        int length = 6;
-        if (isPotionActive(Potion.digSpeed) && !AnimatiumSettings.ignoreHaste) {
-            length -= (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier());
-            cir.setReturnValue(Math.max((int) (length * Math.exp(-settings.itemSwingSpeedHaste)), 1));
-        } else if (isPotionActive(Potion.digSlowdown) && !AnimatiumSettings.ignoreFatigue) {
-            length += (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
-            cir.setReturnValue(Math.max((int) (length * Math.exp(-settings.itemSwingSpeedFatigue)), 1));
-        } else {
-            cir.setReturnValue(Math.max((int) (length * Math.exp(-settings.itemSwingSpeed)), 1));
+    private void animatium$setAsNewHeadYaw(final float rotation, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.headYawFix) {
+            ci.cancel();
+            animatium$newHeadYaw = MathHelper.wrapAngleTo180_float(rotation);
+            animatium$headYawLerpWeight = 3;
         }
     }
 
-    //todo: see if i can write this better
+    @Inject(method = "onLivingUpdate", at = @At("HEAD"))
+    private void animatium$updateHeadYaw(final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.headYawFix && animatium$headYawLerpWeight > 0) {
+            rotationYawHead += MathHelper.wrapAngleTo180_float(animatium$newHeadYaw - rotationYawHead) / animatium$headYawLerpWeight;
+            rotationYawHead = MathHelper.wrapAngleTo180_float(rotationYawHead);
+            animatium$headYawLerpWeight--;
+        }
+    }
+
+    // TODO: hook swing speed
+    @Inject(method = "getArmSwingAnimationEnd()I", at = @At("HEAD"), cancellable = true)
+    private void animatium$modifySwingSpeed(final CallbackInfoReturnable<Integer> cir) {
+        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        if (settings.enabled && AnimatiumSettings.globalPositions) {
+            int length = 6;
+            if (isPotionActive(Potion.digSpeed) && !AnimatiumSettings.ignoreHaste) {
+                length -= (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier());
+                cir.setReturnValue(Math.max((int) (length * Math.exp(-settings.itemSwingSpeedHaste)), 1));
+            } else if (isPotionActive(Potion.digSlowdown) && !AnimatiumSettings.ignoreFatigue) {
+                length += (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
+                cir.setReturnValue(Math.max((int) (length * Math.exp(-settings.itemSwingSpeedFatigue)), 1));
+            } else {
+                cir.setReturnValue(Math.max((int) (length * Math.exp(-settings.itemSwingSpeed)), 1));
+            }
+        }
+    }
+
+    // TODO: see if i can write this better
     @ModifyArg(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;updateDistance(FF)F"), index = 0)
-    private float animatium$modifyYaw(float p_1101461) {
+    private float animatium$modifyYaw(final float yaw) {
         double d0 = posX - prevPosX;
         double d1 = posZ - prevPosZ;
         float f = (float) (d0 * d0 + d1 * d1);
@@ -86,10 +91,11 @@ public abstract class EntityLivingBaseMixin extends Entity {
             float g = MathHelper.abs(MathHelper.wrapAngleTo180_float(rotationYaw) - f1);
             h = f1 - (95.0F < g && g < 265.0F ? 180.0F : 0.0F);
         }
+
         if (swingProgress > 0.0F) {
             h = rotationYaw;
         }
-        return AnimatiumSettings.modernMovement ? h : p_1101461;
-    }
 
+        return AnimatiumSettings.modernMovement ? h : yaw;
+    }
 }

@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
+import org.polyfrost.animatium_legacy.config.DebugCrosshairMode;
 import org.polyfrost.animatium_legacy.hooks.DebugCrosshairHook;
 import org.polyfrost.animatium_legacy.hooks.DebugOverlayHook;
 import org.polyfrost.animatium_legacy.hooks.SmoothSneakHook;
@@ -49,7 +50,7 @@ public abstract class EntityRendererMixin {
     // TODO: WrapMethod
     @Inject(method = "renderWorldDirections", at = @At("HEAD"), cancellable = true)
     private void animatium$renderCrosshair(final float tickDelta, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugCrosshairMode != 1) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugCrosshairMode != DebugCrosshairMode.V1_8) {
             ci.cancel();
         }
     }
@@ -91,7 +92,7 @@ public abstract class EntityRendererMixin {
 
     @Inject(method = "updateCameraAndRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiIngame;renderGameOverlay(F)V"))
     private void draw(float tickDelta, long nanoTime, CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugCrosshairMode == 2 && this.mc.gameSettings.showDebugInfo && !this.mc.thePlayer.hasReducedDebug() && !this.mc.gameSettings.reducedDebugInfo) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugCrosshairMode == DebugCrosshairMode.MODERN && this.mc.gameSettings.showDebugInfo && !this.mc.thePlayer.hasReducedDebug() && !this.mc.gameSettings.reducedDebugInfo) {
             this.setupOverlayRendering();
             DebugCrosshairHook.renderDirections(tickDelta, this.mc);
         }

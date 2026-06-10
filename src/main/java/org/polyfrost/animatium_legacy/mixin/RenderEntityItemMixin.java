@@ -20,7 +20,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderEntityItem.class)
 public abstract class RenderEntityItemMixin extends Render<EntityItem> {
-
     //    @Shadow @Final private RenderItem itemRenderer;
     @Unique
     private boolean animatium$isGui3d;
@@ -28,7 +27,7 @@ public abstract class RenderEntityItemMixin extends Render<EntityItem> {
 //    @Unique
 //    private ItemStack animatium$stack = null;
 
-    protected RenderEntityItemMixin(RenderManager renderManager) {
+    protected RenderEntityItemMixin(final RenderManager renderManager) {
         super(renderManager);
     }
 
@@ -38,38 +37,33 @@ public abstract class RenderEntityItemMixin extends Render<EntityItem> {
                     value = "HEAD"
             )
     )
-    private void animatium$setHook(EntityItem entity, double x, double y, double z, float entityYaw, float tickDelta, CallbackInfo ci) {
+    private void animatium$setHook(final EntityItem entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
         DroppedItemHook.isItemDropped = true;
     }
 
-    @Inject(
-            method = "doRender(Lnet/minecraft/entity/item/EntityItem;DDDFF)V",
-            at = @At(
-                    value = "TAIL"
-            )
-    )
-    private void animatium$setHook2(EntityItem entity, double x, double y, double z, float entityYaw, float tickDelta, CallbackInfo ci) {
+    @Inject(method = "doRender(Lnet/minecraft/entity/item/EntityItem;DDDFF)V", at = @At(value = "TAIL"))
+    private void animatium$setHook2(final EntityItem entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
         DroppedItemHook.isItemDropped = false;
     }
 
-    @ModifyVariable(method = "func_177077_a", at = @At("STORE"), ordinal = 0)
-    private boolean animatium$hookGui3d(boolean isGui3d) {
-        animatium$isGui3d = isGui3d;
-        return isGui3d;
+    @ModifyVariable(method = "func_177077_a", at = @At("STORE"), name = "flag")
+    private boolean animatium$hookGui3d(final boolean original) {
+        animatium$isGui3d = original;
+        return original;
     }
 
     @ModifyArg(method = "func_177077_a", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V"), index = 0)
-    private float animatium$apply2dItem(float angle) {
-        if (!animatium$isGui3d && AnimatiumSettings.itemSprites && AnimatiumSettings.INSTANCE.enabled && !Animatium.isItemPhysics) {
+    private float animatium$apply2dItem(final float original) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.itemSprites && !Animatium.isItemPhysics && !animatium$isGui3d) {
             return 180.0F - renderManager.playerViewY;
-
+        } else {
+            return original;
         }
-        return angle;
     }
 
     @Inject(method = "func_177077_a", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V", shift = At.Shift.AFTER))
-    private void animatium$fix2dRotation(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_, CallbackInfoReturnable<Integer> cir) {
-        if (!animatium$isGui3d && AnimatiumSettings.itemSprites && AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.rotationFix && !Animatium.isItemPhysics) {
+    private void animatium$fix2dRotation(final EntityItem itemIn, final double p_177077_2_, final double p_177077_4_, final double p_177077_6_, final float p_177077_8_, final IBakedModel p_177077_9_, final CallbackInfoReturnable<Integer> cir) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.itemSprites && AnimatiumSettings.rotationFix && !Animatium.isItemPhysics && !animatium$isGui3d) {
             GlStateManager.rotate(-renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
         }
     }
@@ -121,5 +115,4 @@ public abstract class RenderEntityItemMixin extends Render<EntityItem> {
 //    private IBakedModel animatium$getBottleModel(ItemStack stack) {
 //        return ItemPotion.isSplash(stack.getMetadata()) ? CustomModelBakery.BOTTLE_SPLASH_EMPTY.getBakedModel() : CustomModelBakery.BOTTLE_DRINKABLE_EMPTY.getBakedModel();
 //    }
-
 }

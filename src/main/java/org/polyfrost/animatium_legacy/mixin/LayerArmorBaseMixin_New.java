@@ -20,29 +20,28 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
  */
 @Mixin(LayerArmorBase.class)
 public abstract class LayerArmorBaseMixin_New<T extends ModelBase> implements LayerRenderer<EntityLivingBase> {
-
     @Inject(method = "renderGlint(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/client/model/ModelBase;FFFFFFF)V", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/GlStateManager.color(FFFF)V", ordinal = 0))
-    private void animatium$renderNewArmorGlintPre(EntityLivingBase entitylivingbaseIn, T modelbaseIn, float p_177183_3_, float p_177183_4_, float p_177183_5_, float p_177183_6_, float p_177183_7_, float p_177183_8_, float p_177183_9_, CallbackInfo info) {
-        if (AnimatiumSettings.enchantmentGlintNew && AnimatiumSettings.INSTANCE.enabled) {
-            float light = 240.0F;
+    private void animatium$renderNewArmorGlintPre(final EntityLivingBase entitylivingbaseIn, final T modelbaseIn, final float p_177183_3_, final float p_177183_4_, final float tickDelta, final float p_177183_6_, final float p_177183_7_, final float p_177183_8_, final float scale, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.enchantmentGlintNew) {
+            final float light = 240.0F;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, light, light);
         }
     }
 
     @Inject(method = "renderGlint(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/client/model/ModelBase;FFFFFFF)V", at = @At(value = "INVOKE", target = "net/minecraft/client/model/ModelBase.render(Lnet/minecraft/entity/Entity;FFFFFF)V"))
-    private void animatium$renderNewArmorGlintPost(EntityLivingBase entitylivingbaseIn, T modelbaseIn, float p_177183_3_, float p_177183_4_, float tickDelta, float p_177183_6_, float p_177183_7_, float p_177183_8_, float scale, CallbackInfo ci) {
-        if (AnimatiumSettings.enchantmentGlintNew && AnimatiumSettings.INSTANCE.enabled) {
-            int i = entitylivingbaseIn.getBrightnessForRender(tickDelta);
-            int j = i % 65536;
-            int k = i / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j, k);
+    private void animatium$renderNewArmorGlintPost(final EntityLivingBase entitylivingbaseIn, final T modelbaseIn, final float p_177183_3_, final float p_177183_4_, final float tickDelta, final float p_177183_6_, final float p_177183_7_, final float p_177183_8_, final float scale, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.enchantmentGlintNew) {
+            final int light = entitylivingbaseIn.getBrightnessForRender(tickDelta);
+            final int u = light % 65536;
+            final int v = light / 65536;
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, u, v);
         }
     }
 
     @ModifyArgs(method = "renderGlint(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/client/model/ModelBase;FFFFFFF)V", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/GlStateManager.color(FFFF)V", ordinal = 1))
-    private void animatium$newArmorGlintColor(Args args) {
-        if (AnimatiumSettings.enchantmentGlintNew && AnimatiumSettings.INSTANCE.enabled) {
-            int rgb = animatium$getRGB((int) (((float) args.get(0)) * 255), (int) (((float) args.get(1)) * 255), (int) (((float) args.get(2)) * 255), (int) (((float) args.get(3)) * 255));
+    private void animatium$newArmorGlintColor(final Args args) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.enchantmentGlintNew) {
+            final int rgb = animatium$getRGB((int) (((float) args.get(0)) * 255), (int) (((float) args.get(1)) * 255), (int) (((float) args.get(2)) * 255), (int) (((float) args.get(3)) * 255));
             if (rgb == -8372020 || rgb == -10473317) {
                 args.set(0, 0.5608F);
                 args.set(1, 0.3408F);
@@ -53,10 +52,7 @@ public abstract class LayerArmorBaseMixin_New<T extends ModelBase> implements La
     }
 
     @Unique
-    private static int animatium$getRGB(int r, int g, int b, int a) {
-        return ((a & 0xFF) << 24) |
-                ((r & 0xFF) << 16) |
-                ((g & 0xFF) << 8) |
-                ((b & 0xFF));
+    private static int animatium$getRGB(final int r, final int g, final int b, final int a) {
+        return ((a & 0xFF) << 24) | ((r & 0xFF) << 16) | ((g & 0xFF) << 8) | ((b & 0xFF));
     }
 }

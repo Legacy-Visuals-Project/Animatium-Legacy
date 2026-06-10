@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
+import org.polyfrost.animatium_legacy.config.ItemSwitchMode;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -53,7 +54,7 @@ public abstract class ItemRendererMixin {
             ),
             index = 1
     )
-    private float animatium$useSwingProgress(float swingProgress) {
+    private float animatium$useSwingProgress(final float swingProgress) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldBlockhitting) {
             return animatium$swingProgress;
         } else {
@@ -113,21 +114,21 @@ public abstract class ItemRendererMixin {
 
     @Inject(method = "resetEquippedProgress", at = @At(value = "HEAD"), cancellable = true)
     private void animatium$disableReEquip1(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == 0) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == ItemSwitchMode.DISABLED) {
             ci.cancel();
         }
     }
 
     @Inject(method = "resetEquippedProgress2", at = @At(value = "HEAD"), cancellable = true)
     private void animatium$disableReEquip2(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == 0) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == ItemSwitchMode.DISABLED) {
             ci.cancel();
         }
     }
 
     @ModifyVariable(method = "updateEquippedItem", at = @At(value = "STORE", ordinal = 3), name = "flag")
     private boolean animatium$disableReEquip(final boolean original) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == 0) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == ItemSwitchMode.DISABLED) {
             final EntityPlayer player = this.mc.thePlayer;
             this.itemToRender = player.inventory.getCurrentItem();
             this.equippedItemSlot = player.inventory.currentItem;

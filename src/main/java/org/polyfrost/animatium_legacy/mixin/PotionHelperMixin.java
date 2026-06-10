@@ -21,7 +21,7 @@ import static net.minecraft.potion.PotionHelper.calcPotionLiquidColor;
 import static net.minecraft.potion.PotionHelper.getPotionEffects;
 
 @Mixin(value = PotionHelper.class)
-public class PotionHelperMixin {
+public abstract class PotionHelperMixin {
     @Shadow
     @Final
     private static Map<Integer, Integer> DATAVALUE_COLORS;

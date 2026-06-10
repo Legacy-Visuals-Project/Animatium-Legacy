@@ -3,115 +3,115 @@ package dulkirmod.config;
 public class Config {
     public static final Config INSTANCE = new Config();
 
-    private static boolean customAnimations;
-    private static float customSize;
-    private static boolean doesScaleSwing;
-    private static float customX;
-    private static float customY;
-    private static float customZ;
-    private static float customYaw;
-    private static float customPitch;
-    private static float customRoll;
-    private static float customSpeed;
-    private static boolean ignoreHaste;
-    private static int drinkingSelector;
+    protected boolean customAnimations;
+    protected float customSize;
+    protected boolean doesScaleSwing;
+    protected float customX;
+    protected float customY;
+    protected float customZ;
+    protected float customYaw;
+    protected float customPitch;
+    protected float customRoll;
+    protected float customSpeed;
+    protected boolean ignoreHaste;
+    protected int drinkingSelector;
 
-    public final boolean getCustomAnimations() {
+    public boolean getCustomAnimations() {
         return customAnimations;
     }
 
-    public final void setCustomAnimations(boolean bl) {
+    public void setCustomAnimations(final boolean bl) {
         customAnimations = bl;
     }
 
-    public final float getCustomSize() {
+    public float getCustomSize() {
         return customSize;
     }
 
-    public final void setCustomSize(float f) {
+    public void setCustomSize(final float f) {
         customSize = f;
     }
 
-    public final boolean getDoesScaleSwing() {
+    public boolean getDoesScaleSwing() {
         return doesScaleSwing;
     }
 
-    public final void setDoesScaleSwing(boolean bl) {
+    public void setDoesScaleSwing(final boolean bl) {
         doesScaleSwing = bl;
     }
 
-    public final float getCustomX() {
+    public float getCustomX() {
         return customX;
     }
 
-    public final void setCustomX(float f) {
+    public void setCustomX(final float f) {
         customX = f;
     }
 
-    public final float getCustomY() {
+    public float getCustomY() {
         return customY;
     }
 
-    public final void setCustomY(float f) {
+    public void setCustomY(final float f) {
         customY = f;
     }
 
-    public final float getCustomZ() {
+    public float getCustomZ() {
         return customZ;
     }
 
-    public final void setCustomZ(float f) {
+    public void setCustomZ(final float f) {
         customZ = f;
     }
 
-    public final float getCustomYaw() {
+    public float getCustomYaw() {
         return customYaw;
     }
 
-    public final void setCustomYaw(float f) {
+    public void setCustomYaw(final float f) {
         customYaw = f;
     }
 
-    public final float getCustomPitch() {
+    public float getCustomPitch() {
         return customPitch;
     }
 
-    public final void setCustomPitch(float f) {
+    public void setCustomPitch(final float f) {
         customPitch = f;
     }
 
-    public final float getCustomRoll() {
+    public float getCustomRoll() {
         return customRoll;
     }
 
-    public final void setCustomRoll(float f) {
+    public void setCustomRoll(final float f) {
         customRoll = f;
     }
 
-    public final float getCustomSpeed() {
+    public float getCustomSpeed() {
         return customSpeed;
     }
 
-    public final void setCustomSpeed(float f) {
+    public void setCustomSpeed(final float f) {
         customSpeed = f;
     }
 
-    public final boolean getIgnoreHaste() {
+    public boolean getIgnoreHaste() {
         return ignoreHaste;
     }
 
-    public final void setIgnoreHaste(boolean bl) {
+    public void setIgnoreHaste(final boolean bl) {
         ignoreHaste = bl;
     }
 
-    public final int getDrinkingSelector() {
+    public int getDrinkingSelector() {
         return drinkingSelector;
     }
 
-    public final void setDrinkingSelector(int n) {
+    public void setDrinkingSelector(final int n) {
         drinkingSelector = n;
     }
 
-    public final void demoButton() {
+    public void demoButton() {
     }
 }

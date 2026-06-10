@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
 import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
-import org.polyfrost.animatium_legacy.command.OldAnimationsCommand
+import org.polyfrost.animatium_legacy.command.AnimatiumCommand
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings
 import org.polyfrost.animatium_legacy.gui.PleaseMigrateDulkirModGui
 import java.net.URI
@@ -54,7 +54,7 @@ object Animatium {
     @Mod.EventHandler
     fun init(event: FMLInitializationEvent) {
         AnimatiumSettings.INSTANCE.preload()
-        CommandManager.INSTANCE.registerCommand(OldAnimationsCommand())
+        CommandManager.INSTANCE.registerCommand(AnimatiumCommand())
         EventManager.INSTANCE.register(this)
     }
 
@@ -78,10 +78,10 @@ object Animatium {
             AnimatiumSettings.INSTANCE.save()
             sendNotification(
                 "Custom Crosshair Mod has been detected, which is written poorly and causes major issues with Animatium Legacy. Disabling Smooth Model Sneak. If you want a better crosshair mod, please click here to use PolyCrosshair instead.",
-                5000f,
-                Runnable {
-                    UDesktop.browse(URI("https://modrinth.com/mod/crosshair"))
-                })
+                5000f
+            ) {
+                UDesktop.browse(URI("https://modrinth.com/mod/crosshair"))
+            }
         }
     }
 
@@ -90,14 +90,12 @@ object Animatium {
         if (event.stage == Stage.START && Minecraft.getMinecraft().currentScreen == null && Minecraft.getMinecraft().theWorld != null && Minecraft.getMinecraft().thePlayer != null && doTheFunnyDulkirThing && !AnimatiumSettings.didTheFunnyDulkirThingElectricBoogaloo) {
             try {
                 Class.forName("dulkirmod.config.DulkirConfig")
-                if (DulkirConfig.INSTANCE.customAnimations) {
-                    dulkirTrollage()
-                }
-            } catch (e: ClassNotFoundException) {
+            } catch (ignored: ClassNotFoundException) {
                 oldDulkirMod = true
-                if (Config.INSTANCE.customAnimations) {
-                    dulkirTrollage()
-                }
+            }
+
+            if ((oldDulkirMod && Config.INSTANCE.customAnimations) || DulkirConfig.INSTANCE.customAnimations) {
+                dulkirTrollage()
             }
         }
     }

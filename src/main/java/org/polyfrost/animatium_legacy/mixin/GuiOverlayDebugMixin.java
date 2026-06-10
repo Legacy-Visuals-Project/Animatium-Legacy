@@ -2,6 +2,7 @@ package org.polyfrost.animatium_legacy.mixin;
 
 import net.minecraft.client.gui.GuiOverlayDebug;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
+import org.polyfrost.animatium_legacy.config.DebugScreenMode;
 import org.polyfrost.animatium_legacy.hooks.DebugOverlayHook;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,14 +15,14 @@ import java.util.List;
 public abstract class GuiOverlayDebugMixin {
     @Inject(method = "call", at = @At("HEAD"), cancellable = true)
     private void animatium$oldDebugLeft(final CallbackInfoReturnable<List<String>> cir) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugScreenMode == 0) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugScreenMode == DebugScreenMode.V1_7) {
             cir.setReturnValue(DebugOverlayHook.getDebugInfoLeft());
         }
     }
 
     @Inject(method = "getDebugInfoRight", at = @At("HEAD"), cancellable = true)
     private void animatium$oldDebugRight(final CallbackInfoReturnable<List<String>> cir) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugScreenMode == 0) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugScreenMode == DebugScreenMode.V1_7) {
             cir.setReturnValue(DebugOverlayHook.getDebugInfoRight());
         }
     }

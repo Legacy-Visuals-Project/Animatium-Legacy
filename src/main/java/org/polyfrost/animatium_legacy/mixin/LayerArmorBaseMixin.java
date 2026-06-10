@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.entity.layers.LayerArmorBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
+import org.polyfrost.animatium_legacy.config.ArmorTintStyle;
 import org.polyfrost.animatium_legacy.mixin.interfaces.RendererLivingEntityInvoker;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,15 +34,15 @@ public abstract class LayerArmorBaseMixin<T extends ModelBase> implements LayerR
     }
 
     @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.AFTER))
-    private void animatium$addRender(EntityLivingBase entitylivingbaseIn, float p_177182_2_, float p_177182_3_, float tickDelta, float p_177182_5_, float p_177182_6_, float p_177182_7_, float scale, int armorSlot, CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == 3 && ((RendererLivingEntityInvoker) renderer).animatium$setDoRenderBrightness(entitylivingbaseIn, tickDelta)) {
+    private void animatium$addRender(final EntityLivingBase entitylivingbaseIn, final float p_177182_2_, final float p_177182_3_, final float tickDelta, final float p_177182_5_, final float p_177182_6_, final float p_177182_7_, final float scale, final int armorSlot, final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == ArmorTintStyle.V1_8 && ((RendererLivingEntityInvoker) renderer).animatium$setDoRenderBrightness(entitylivingbaseIn, tickDelta)) {
             animatium$entity.render(entitylivingbaseIn, p_177182_2_, p_177182_3_, p_177182_5_, p_177182_6_, p_177182_7_, scale);
-            ((RendererLivingEntityInvoker) renderer).animatium$unsetBrightness();
+            ((RendererLivingEntityInvoker) this.renderer).animatium$unsetBrightness();
         }
     }
 
     @Inject(method = "shouldCombineTextures", at = @At(value = "HEAD"), cancellable = true)
-    private void animatium$allowCombine(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(AnimatiumSettings.INSTANCE.enabled && (AnimatiumSettings.INSTANCE.armorDamageTintStyle == 2 || AnimatiumSettings.INSTANCE.armorDamageTintStyle == 4));
+    private void animatium$allowCombine(final CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle.hasRedOverlay());
     }
 }

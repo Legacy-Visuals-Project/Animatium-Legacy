@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.RenderSheep;
 import net.minecraft.client.renderer.entity.layers.LayerSheepWool;
 import net.minecraft.entity.passive.EntitySheep;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
+import org.polyfrost.animatium_legacy.config.ArmorTintStyle;
 import org.polyfrost.animatium_legacy.hooks.HitColorHook;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,7 +26,7 @@ public abstract class LayerSheepWoolMixin {
 
     @Inject(method = "doRenderLayer(Lnet/minecraft/entity/passive/EntitySheep;FFFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelSheep1;render(Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.AFTER))
     private void animatium$renderHitColor(final EntitySheep sheep, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.armorDamageTintStyle == 1 && AnimatiumSettings.INSTANCE.enabled) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == ArmorTintStyle.V1_7) {
             final boolean hurt = sheep.hurtTime > 0 || sheep.deathTime > 0;
             HitColorHook.renderHitColorPre(sheep, hurt, tickDelta, this.sheepRenderer);
             if (hurt) {

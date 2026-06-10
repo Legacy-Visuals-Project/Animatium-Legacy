@@ -12,27 +12,17 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(RenderEntityItem.class)
-public class RenderEntityItemMixin_CustomPositions {
-
+public abstract class RenderEntityItemMixin_CustomPositions {
     @Inject(method = "func_177077_a", at = @At("TAIL"))
     private void animatium$droppedItemTransforms(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_, CallbackInfoReturnable<Integer> cir) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
-        if (AnimatiumSettings.globalPositions && settings.enabled) {
-            GlStateManager.translate(
-                    advanced.droppedPositionX,
-                    advanced.droppedPositionY,
-                    advanced.droppedPositionZ
-            );
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        if (settings.enabled && AnimatiumSettings.globalPositions) {
+            final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
+            GlStateManager.translate(advanced.droppedPositionX, advanced.droppedPositionY, advanced.droppedPositionZ);
             GlStateManager.rotate(advanced.droppedRotationPitch, 1.0f, 0.0f, 0.0f);
             GlStateManager.rotate(advanced.droppedRotationYaw, 0.0f, 1.0f, 0.0f);
             GlStateManager.rotate(advanced.droppedRotationRoll, 0.0f, 0.0f, 1.0f);
-            GlStateManager.scale(
-                    1.0f * Math.exp(advanced.droppedScale),
-                    1.0f * Math.exp(advanced.droppedScale),
-                    1.0f * Math.exp(advanced.droppedScale)
-            );
+            GlStateManager.scale(1.0F * Math.exp(advanced.droppedScale), 1.0F * Math.exp(advanced.droppedScale), 1.0F * Math.exp(advanced.droppedScale));
         }
     }
-
 }

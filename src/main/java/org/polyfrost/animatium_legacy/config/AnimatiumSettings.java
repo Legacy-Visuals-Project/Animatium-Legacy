@@ -102,7 +102,7 @@ public class AnimatiumSettings extends Config {
             category = "Animations",
             subcategory = "Interaction"
     )
-    public int armorDamageTintStyle = 3;
+    public ArmorTintStyle armorDamageTintStyle = ArmorTintStyle.V1_8;
 
     @Dropdown(
             name = "1.7 Item Switching Animation",
@@ -118,7 +118,7 @@ public class AnimatiumSettings extends Config {
             category = "Animations",
             subcategory = "Interaction"
     )
-    public int itemSwitchMode = 1;
+    public ItemSwitchMode itemSwitchMode = ItemSwitchMode.V1_7;
 
     @Switch(
             name = "1.7 Miss Penalty Swing Animation",
@@ -298,7 +298,7 @@ public class AnimatiumSettings extends Config {
             subcategory = "HUD",
             options = {"1.7", "1.8", "1.12+"}
     )
-    public int debugCrosshairMode = 2;
+    public DebugCrosshairMode debugCrosshairMode = DebugCrosshairMode.MODERN;
 
     @Dropdown(
             name = "Debug Menu Style",
@@ -306,7 +306,7 @@ public class AnimatiumSettings extends Config {
             options = {"1.7", "1.8", "Disable Background"},
             subcategory = "HUD"
     )
-    public int debugScreenMode = 1;
+    public DebugScreenMode debugScreenMode = DebugScreenMode.V1_8;
 
     @Dropdown(
             name = "Tab Menu Style",
@@ -314,7 +314,7 @@ public class AnimatiumSettings extends Config {
             options = {"1.7", "1.8", "Disable Heads"},
             subcategory = "HUD"
     )
-    public int tabMode = 1;
+    public TabMode tabMode = TabMode.V1_8;
 
     // Miscellaneous
     @Switch(

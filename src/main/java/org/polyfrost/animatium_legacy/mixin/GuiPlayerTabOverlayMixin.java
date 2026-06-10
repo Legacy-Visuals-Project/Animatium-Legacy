@@ -6,6 +6,7 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
+import org.polyfrost.animatium_legacy.config.TabMode;
 import org.polyfrost.animatium_legacy.hooks.TabOverlayHook;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +24,7 @@ public abstract class GuiPlayerTabOverlayMixin {
 
     @Inject(method = "renderPlayerlist", at = @At("HEAD"), cancellable = true)
     private void animatium$renderOldTab(final int width, final Scoreboard scoreboardIn, final ScoreObjective objective, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.tabMode == 0) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.tabMode == TabMode.V1_7) {
             ci.cancel();
             TabOverlayHook.renderOldTab(((GuiPlayerTabOverlay) (Object) this), objective, field_175252_a);
         }
@@ -31,6 +32,6 @@ public abstract class GuiPlayerTabOverlayMixin {
 
     @ModifyVariable(method = "renderPlayerlist", at = @At("STORE"), name = "bl")
     private boolean animatium$disablePlayerHead(final boolean original) {
-        return original && (!AnimatiumSettings.INSTANCE.enabled || AnimatiumSettings.INSTANCE.tabMode != 2);
+        return original && (!AnimatiumSettings.INSTANCE.enabled || AnimatiumSettings.INSTANCE.tabMode != TabMode.DISABLE_HEADS);
     }
 }

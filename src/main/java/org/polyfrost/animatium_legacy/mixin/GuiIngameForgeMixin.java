@@ -18,7 +18,7 @@ public abstract class GuiIngameForgeMixin extends GuiIngame {
 
     @Redirect(method = "renderHUDText", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/client/GuiIngameForge;drawRect(IIIII)V"))
     private void animatium$cancelBackgroundDrawing(final int left, final int top, final int right, final int bottom, final int color) {
-        if (!AnimatiumSettings.INSTANCE.enabled || !(AnimatiumSettings.INSTANCE.debugScreenMode == 0 || AnimatiumSettings.INSTANCE.debugScreenMode == 2)) {
+        if (!AnimatiumSettings.INSTANCE.enabled || AnimatiumSettings.INSTANCE.debugScreenMode.hasBackground()) {
             GuiIngameForge.drawRect(left, top, right, bottom, color);
         }
     }
@@ -29,7 +29,7 @@ public abstract class GuiIngameForgeMixin extends GuiIngame {
                 text,
                 x, y,
                 color,
-                AnimatiumSettings.INSTANCE.enabled && (AnimatiumSettings.INSTANCE.debugScreenMode == 0 || AnimatiumSettings.INSTANCE.debugScreenMode == 2));
+                AnimatiumSettings.INSTANCE.enabled && !AnimatiumSettings.INSTANCE.debugScreenMode.hasBackground());
     }
 
     @ModifyVariable(method = "renderHealth", at = @At(value = "LOAD", ordinal = 1), remap = false, name = "highlight")

@@ -21,41 +21,44 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(LayerHeldItem.class)
 public abstract class LayerHeldItemMixin {
-
     @Unique
-    public ItemStack simpliefied$itemStack;
+    private ItemStack animatium$stack;
 
     @Inject(method = "doRenderLayer", at = @At(value = "HEAD"))
-    private void animatium$hookHeldItem(EntityLivingBase entitylivingbaseIn, float f, float g, float tickDelta, float h, float i, float j, float scale, CallbackInfo ci) {
-        simpliefied$itemStack = entitylivingbaseIn.getHeldItem();
+    private void animatium$hookHeldItem(final EntityLivingBase entitylivingbaseIn, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
+        this.animatium$stack = entitylivingbaseIn.getHeldItem();
     }
 
     @Inject(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBiped;postRenderArm(F)V"))
-    private void animatium$applyOldSneaking(EntityLivingBase entitylivingbaseIn, float f, float g, float tickDelta, float h, float i, float j, float scale, CallbackInfo ci) {
+    private void animatium$applyOldSneaking(final EntityLivingBase entitylivingbaseIn, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && entitylivingbaseIn.isSneaking()) {
             GlStateManager.translate(0.0F, 0.2F, 0.0F);
         }
     }
 
     @Redirect(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;isSneaking()Z"))
-    private boolean animatium$cancelNewSneaking(EntityLivingBase instance) {
-        return instance.isSneaking() && !AnimatiumSettings.INSTANCE.enabled;
+    private boolean animatium$cancelNewSneaking(final EntityLivingBase instance) {
+        return !AnimatiumSettings.INSTANCE.enabled && instance.isSneaking();
     }
 
-    @Inject(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void animatium$changeItemToStick(EntityLivingBase entitylivingbaseIn, float f, float g, float tickDelta, float h, float i, float j, float scale, CallbackInfo ci, ItemStack itemStack) {
+    @Inject(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
+    private void animatium$changeItemToStick(final EntityLivingBase entitylivingbaseIn, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
         if (entitylivingbaseIn instanceof EntityPlayer && ((EntityPlayer) entitylivingbaseIn).fishEntity != null) {
-            simpliefied$itemStack = new ItemStack(Items.stick, 0);
+            this.animatium$stack = new ItemStack(Items.stick, 0);
         }
     }
 
     @Redirect(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    private Item animatium$replaceStack(ItemStack instance) {
-        return AnimatiumSettings.fishingStick && AnimatiumSettings.INSTANCE.enabled ? simpliefied$itemStack.getItem() : instance.getItem();
+    private Item animatium$replaceStack(final ItemStack instance) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fishingStick) {
+            return this.animatium$stack.getItem();
+        } else {
+            return instance.getItem();
+        }
     }
 
     @Inject(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;renderItem(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
-    private void animatium$thirdPersonItemPositions(EntityLivingBase entitylivingbaseIn, float f, float g, float tickDelta, float h, float i, float j, float s, CallbackInfo ci, ItemStack stack, Item item) {
+    private void animatium$thirdPersonItemPositions(final EntityLivingBase entitylivingbaseIn, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float s, final CallbackInfo ci, final ItemStack stack, final Item item) {
         if (AnimatiumSettings.INSTANCE.enabled) {
             if (AnimatiumSettings.thirdPersonBlock && entitylivingbaseIn instanceof AbstractClientPlayer && ((AbstractClientPlayer) entitylivingbaseIn).isBlocking()) {
                 GlStateManager.translate(0.05F, 0.0F, -0.1F);
@@ -63,8 +66,8 @@ public abstract class LayerHeldItemMixin {
                 GlStateManager.rotate(-10.0F, 1.0F, 0.0F, 0.0F);
                 GlStateManager.rotate(-60.0F, 0.0F, 0.0F, 1.0F);
             }
-            if (AnimatiumSettings.thirdTransformations && (entitylivingbaseIn instanceof EntityPlayer || !AnimatiumSettings.entityTransforms)
-                    && !Minecraft.getMinecraft().getRenderItem().shouldRenderItemIn3D(stack) && !(stack.getItem() instanceof ItemSkull || stack.getItem() instanceof ItemBanner)) {
+
+            if (AnimatiumSettings.thirdTransformations && (entitylivingbaseIn instanceof EntityPlayer || !AnimatiumSettings.entityTransforms) && !Minecraft.getMinecraft().getRenderItem().shouldRenderItemIn3D(stack) && !(stack.getItem() instanceof ItemSkull || stack.getItem() instanceof ItemBanner)) {
                 float scale = 1.5F * 0.625F;
                 if (item instanceof ItemBow) {
                     GlStateManager.rotate(-12.0F, 0.0f, 1.0f, 0.0f);
@@ -79,6 +82,7 @@ public abstract class LayerHeldItemMixin {
                     if (item.shouldRotateAroundWhenRendering()) {
                         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                     }
+
                     GlStateManager.scale(scale / 0.85F, scale / 0.85F, scale / 0.85F);
                     GlStateManager.rotate(-2.4F, 0.0F, 1.0F, 0.0F);
                     GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F);
@@ -97,13 +101,17 @@ public abstract class LayerHeldItemMixin {
     }
 
     @ModifyArg(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;renderItem(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V"))
-    private ItemStack animatium$replaceStack2(ItemStack heldStack) {
-        return AnimatiumSettings.fishingStick && AnimatiumSettings.INSTANCE.enabled ? simpliefied$itemStack : heldStack;
+    private ItemStack animatium$replaceStack2(final ItemStack heldStack) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fishingStick) {
+            return this.animatium$stack;
+        } else {
+            return heldStack;
+        }
     }
 
     @Inject(method = "shouldCombineTextures", at = @At(value = "HEAD"), cancellable = true)
-    private void animatium$allowCombine(CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(AnimatiumSettings.damageHeldItems && AnimatiumSettings.INSTANCE.enabled);
+    private void animatium$allowCombine(final CallbackInfoReturnable<Boolean> cir) {
+        cir.setReturnValue(AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.damageHeldItems);
     }
 
 }

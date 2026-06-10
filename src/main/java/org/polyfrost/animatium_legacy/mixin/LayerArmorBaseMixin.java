@@ -35,7 +35,7 @@ public abstract class LayerArmorBaseMixin<T extends ModelBase> implements LayerR
 
     @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.AFTER))
     private void animatium$addRender(final EntityLivingBase entitylivingbaseIn, final float p_177182_2_, final float p_177182_3_, final float tickDelta, final float p_177182_5_, final float p_177182_6_, final float p_177182_7_, final float scale, final int armorSlot, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == ArmorTintStyle.V1_8 && ((RendererLivingEntityInvoker) renderer).animatium$setDoRenderBrightness(entitylivingbaseIn, tickDelta)) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_8 && ((RendererLivingEntityInvoker) renderer).animatium$setDoRenderBrightness(entitylivingbaseIn, tickDelta)) {
             animatium$entity.render(entitylivingbaseIn, p_177182_2_, p_177182_3_, p_177182_5_, p_177182_6_, p_177182_7_, scale);
             ((RendererLivingEntityInvoker) this.renderer).animatium$unsetBrightness();
         }
@@ -43,6 +43,6 @@ public abstract class LayerArmorBaseMixin<T extends ModelBase> implements LayerR
 
     @Inject(method = "shouldCombineTextures", at = @At(value = "HEAD"), cancellable = true)
     private void animatium$allowCombine(final CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle.hasRedOverlay());
+        cir.setReturnValue(AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle().hasRedOverlay());
     }
 }

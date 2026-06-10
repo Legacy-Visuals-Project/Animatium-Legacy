@@ -16,11 +16,11 @@ public abstract class ItemMixin {
     @Inject(method = "shouldCauseReequipAnimation", at = @At("HEAD"), cancellable = true, remap = false)
     private void animatium$modifyReequip(final ItemStack oldStack, final ItemStack newStack, final boolean slotChanged, final CallbackInfoReturnable<Boolean> cir) {
         if (AnimatiumSettings.INSTANCE.enabled) {
-            if (AnimatiumSettings.INSTANCE.itemSwitchMode == ItemSwitchMode.DISABLED) {
+            if (AnimatiumSettings.INSTANCE.itemSwitchMode() == ItemSwitchMode.DISABLED) {
                 cir.setReturnValue(false);
-            } else if (AnimatiumSettings.fixReequip && AnimatiumSettings.INSTANCE.itemSwitchMode != ItemSwitchMode.V1_7 && !slotChanged) {
+            } else if (AnimatiumSettings.fixReequip && AnimatiumSettings.INSTANCE.itemSwitchMode() != ItemSwitchMode.V1_7 && !slotChanged) {
                 cir.setReturnValue(false);
-            } else if (AnimatiumSettings.INSTANCE.itemSwitchMode == ItemSwitchMode.V1_7) {
+            } else if (AnimatiumSettings.INSTANCE.itemSwitchMode() == ItemSwitchMode.V1_7) {
                 cir.setReturnValue(!AnimatiumSettings.fixReequip || slotChanged || Minecraft.getMinecraft().currentScreen instanceof GuiContainer);
             }
         }

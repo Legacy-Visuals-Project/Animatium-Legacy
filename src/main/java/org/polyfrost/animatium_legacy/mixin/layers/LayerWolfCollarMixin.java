@@ -21,7 +21,7 @@ public abstract class LayerWolfCollarMixin {
 
     @Inject(method = "doRenderLayer(Lnet/minecraft/entity/passive/EntityWolf;FFFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.AFTER))
     private void animatium$renderHitColor(final EntityWolf wolf, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == ArmorTintStyle.V1_7) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             final boolean hurt = wolf.hurtTime > 0 || wolf.deathTime > 0;
             HitColorHook.renderHitColorPre(wolf, hurt, tickDelta, this.wolfRenderer);
             if (hurt) {

@@ -39,17 +39,17 @@ public abstract class RendererLivingEntityMixin<T extends EntityLivingBase> exte
 
     @Redirect(method = "doRender(Lnet/minecraft/entity/EntityLivingBase;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RendererLivingEntity;setDoRenderBrightness(Lnet/minecraft/entity/EntityLivingBase;F)Z"))
     private boolean animatium$disableBrightness(final RendererLivingEntity<?> instance, final T entityLivingBaseIn, final float tickDelta) {
-        return (!AnimatiumSettings.INSTANCE.enabled || AnimatiumSettings.INSTANCE.armorDamageTintStyle != ArmorTintStyle.V1_7) && setDoRenderBrightness(entityLivingBaseIn, tickDelta);
+        return (!AnimatiumSettings.INSTANCE.enabled || AnimatiumSettings.INSTANCE.armorDamageTintStyle() != ArmorTintStyle.V1_7) && setDoRenderBrightness(entityLivingBaseIn, tickDelta);
     }
 
     @Redirect(method = "renderLayers", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RendererLivingEntity;setBrightness(Lnet/minecraft/entity/EntityLivingBase;FZ)Z"))
     private boolean animatium$disableLayerBrightness(final RendererLivingEntity<?> instance, final T entitylivingbaseIn, float tickDelta, final boolean combineTextures) {
-        return (!AnimatiumSettings.INSTANCE.enabled || AnimatiumSettings.INSTANCE.armorDamageTintStyle != ArmorTintStyle.V1_7) && setBrightness(entitylivingbaseIn, tickDelta, combineTextures);
+        return (!AnimatiumSettings.INSTANCE.enabled || AnimatiumSettings.INSTANCE.armorDamageTintStyle() != ArmorTintStyle.V1_7) && setBrightness(entitylivingbaseIn, tickDelta, combineTextures);
     }
 
     @Inject(method = "doRender(Lnet/minecraft/entity/EntityLivingBase;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;depthMask(Z)V"))
     private void animatium$renderHitColor(final T entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == ArmorTintStyle.V1_7) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             float f = interpolateRotation(entity.prevRenderYawOffset, entity.renderYawOffset, tickDelta);
             float f1 = interpolateRotation(entity.prevRotationYawHead, entity.rotationYawHead, tickDelta);
             float f2 = f1 - f;
@@ -77,7 +77,7 @@ public abstract class RendererLivingEntityMixin<T extends EntityLivingBase> exte
 
     @ModifyArg(method = "setBrightness", at = @At(value = "INVOKE", target = "Ljava/nio/FloatBuffer;put(F)Ljava/nio/FloatBuffer;", ordinal = 3), index = 0)
     private float animatium$orangesHitColor(final float original) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == ArmorTintStyle.V1_8_ORANGE_MARSHALL) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_8_ORANGE_MARSHALL) {
             return 0.5F;
         } else {
             return original;

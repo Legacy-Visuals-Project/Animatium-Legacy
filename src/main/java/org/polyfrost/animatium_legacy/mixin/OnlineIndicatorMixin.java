@@ -15,7 +15,7 @@ public abstract class OnlineIndicatorMixin {
     @Dynamic("Essential")
     @Inject(method = "drawTabIndicator", at = @At("HEAD"), cancellable = true, remap = false)
     private static void animatium$removeTabIndicator(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.tabMode == TabMode.DISABLE_HEADS) {
+        if (AnimatiumSettings.INSTANCE.enabled && TabMode.DISABLE_HEADS.equals(AnimatiumSettings.INSTANCE.tabMode())) {
             ci.cancel(); // TODO: WrapMethod
         }
     }

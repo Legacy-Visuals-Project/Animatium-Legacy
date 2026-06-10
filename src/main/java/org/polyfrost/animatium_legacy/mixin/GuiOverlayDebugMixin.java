@@ -15,14 +15,14 @@ import java.util.List;
 public abstract class GuiOverlayDebugMixin {
     @Inject(method = "call", at = @At("HEAD"), cancellable = true)
     private void animatium$oldDebugLeft(final CallbackInfoReturnable<List<String>> cir) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugScreenMode == DebugScreenMode.V1_7) {
+        if (AnimatiumSettings.INSTANCE.enabled && DebugScreenMode.V1_7.equals(AnimatiumSettings.INSTANCE.debugScreenMode())) {
             cir.setReturnValue(DebugOverlayHook.getDebugInfoLeft());
         }
     }
 
     @Inject(method = "getDebugInfoRight", at = @At("HEAD"), cancellable = true)
     private void animatium$oldDebugRight(final CallbackInfoReturnable<List<String>> cir) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.debugScreenMode == DebugScreenMode.V1_7) {
+        if (AnimatiumSettings.INSTANCE.enabled && DebugScreenMode.V1_7.equals(AnimatiumSettings.INSTANCE.debugScreenMode())) {
             cir.setReturnValue(DebugOverlayHook.getDebugInfoRight());
         }
     }

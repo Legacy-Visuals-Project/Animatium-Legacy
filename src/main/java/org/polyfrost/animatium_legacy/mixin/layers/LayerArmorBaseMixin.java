@@ -26,7 +26,7 @@ public abstract class LayerArmorBaseMixin<T extends ModelBase> implements LayerR
 
     @Inject(method = "renderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBase;render(Lnet/minecraft/entity/Entity;FFFFFF)V", ordinal = 1, shift = At.Shift.AFTER))
     private void animatium$renderHitColor(final EntityLivingBase entitylivingbaseIn, final float p_177182_2_, final float p_177182_3_, final float tickDelta, final float p_177182_5_, final float p_177182_6_, final float p_177182_7_, final float scale, final int armorSlot, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == ArmorTintStyle.V1_7) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             final T armorModel = this.getArmorModel(armorSlot);
 
             final boolean hurt = entitylivingbaseIn.hurtTime > 0 || entitylivingbaseIn.deathTime > 0;

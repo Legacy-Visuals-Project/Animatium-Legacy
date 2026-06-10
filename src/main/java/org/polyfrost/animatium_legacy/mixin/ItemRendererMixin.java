@@ -114,21 +114,21 @@ public abstract class ItemRendererMixin {
 
     @Inject(method = "resetEquippedProgress", at = @At(value = "HEAD"), cancellable = true)
     private void animatium$disableReEquip1(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == ItemSwitchMode.DISABLED) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode() == ItemSwitchMode.DISABLED) {
             ci.cancel();
         }
     }
 
     @Inject(method = "resetEquippedProgress2", at = @At(value = "HEAD"), cancellable = true)
     private void animatium$disableReEquip2(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == ItemSwitchMode.DISABLED) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode() == ItemSwitchMode.DISABLED) {
             ci.cancel();
         }
     }
 
     @ModifyVariable(method = "updateEquippedItem", at = @At(value = "STORE", ordinal = 3), name = "flag")
     private boolean animatium$disableReEquip(final boolean original) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode == ItemSwitchMode.DISABLED) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode() == ItemSwitchMode.DISABLED) {
             final EntityPlayer player = this.mc.thePlayer;
             this.itemToRender = player.inventory.getCurrentItem();
             this.equippedItemSlot = player.inventory.currentItem;

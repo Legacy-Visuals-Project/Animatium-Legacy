@@ -102,7 +102,11 @@ public class AnimatiumSettings extends Config {
             category = "Animations",
             subcategory = "Interaction"
     )
-    public ArmorTintStyle armorDamageTintStyle = ArmorTintStyle.V1_8;
+    private int armorDamageTintStyle = ArmorTintStyle.V1_8.ordinal();
+
+    public ArmorTintStyle armorDamageTintStyle() {
+        return ArmorTintStyle.VALUES[this.armorDamageTintStyle % (ArmorTintStyle.VALUES.length + 1)];
+    }
 
     @Dropdown(
             name = "1.7 Item Switching Animation",
@@ -118,7 +122,11 @@ public class AnimatiumSettings extends Config {
             category = "Animations",
             subcategory = "Interaction"
     )
-    public ItemSwitchMode itemSwitchMode = ItemSwitchMode.V1_7;
+    private int itemSwitchMode = ItemSwitchMode.V1_7.ordinal();
+
+    public ItemSwitchMode itemSwitchMode() {
+        return ItemSwitchMode.VALUES[this.itemSwitchMode % (ItemSwitchMode.VALUES.length + 1)];
+    }
 
     @Switch(
             name = "1.7 Miss Penalty Swing Animation",
@@ -298,7 +306,11 @@ public class AnimatiumSettings extends Config {
             subcategory = "HUD",
             options = {"1.7", "1.8", "1.12+"}
     )
-    public DebugCrosshairMode debugCrosshairMode = DebugCrosshairMode.MODERN;
+    private int debugCrosshairMode = DebugCrosshairMode.MODERN.ordinal();
+
+    public DebugCrosshairMode debugCrosshairMode() {
+        return DebugCrosshairMode.VALUES[this.debugCrosshairMode % (DebugCrosshairMode.VALUES.length + 1)];
+    }
 
     @Dropdown(
             name = "Debug Menu Style",
@@ -306,7 +318,11 @@ public class AnimatiumSettings extends Config {
             options = {"1.7", "1.8", "Disable Background"},
             subcategory = "HUD"
     )
-    public DebugScreenMode debugScreenMode = DebugScreenMode.V1_8;
+    private int debugScreenMode = DebugScreenMode.V1_8.ordinal();
+
+    public DebugScreenMode debugScreenMode() {
+        return DebugScreenMode.VALUES[this.debugScreenMode % (DebugScreenMode.VALUES.length + 1)];
+    }
 
     @Dropdown(
             name = "Tab Menu Style",
@@ -314,7 +330,11 @@ public class AnimatiumSettings extends Config {
             options = {"1.7", "1.8", "Disable Heads"},
             subcategory = "HUD"
     )
-    public TabMode tabMode = TabMode.V1_8;
+    private int tabMode = TabMode.V1_8.ordinal();
+
+    public TabMode tabMode() {
+        return TabMode.VALUES[this.tabMode % (TabMode.VALUES.length + 1)];
+    }
 
     // Miscellaneous
     @Switch(

@@ -3,5 +3,7 @@ package org.polyfrost.animatium_legacy.config;
 public enum TabMode {
     V1_7,
     V1_8,
-    DISABLE_HEADS
+    DISABLE_HEADS;
+
+    public static final TabMode[] VALUES = values();
 }

@@ -26,7 +26,7 @@ public abstract class LayerSaddleMixin {
 
     @Inject(method = "doRenderLayer(Lnet/minecraft/entity/passive/EntityPig;FFFFFFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelPig;render(Lnet/minecraft/entity/Entity;FFFFFF)V", shift = At.Shift.AFTER))
     private void animatium$renderHitColor(final EntityPig pig, final float var2, final float var3, final float var4, final float var5, final float var6, final float var7, final float var8, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle == ArmorTintStyle.V1_7) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             final boolean hurt = pig.hurtTime > 0 || pig.deathTime > 0;
             HitColorHook.renderHitColorPre(pig, hurt, var4, this.pigRenderer);
             if (hurt) {

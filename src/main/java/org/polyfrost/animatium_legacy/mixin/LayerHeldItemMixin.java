@@ -67,7 +67,7 @@ public abstract class LayerHeldItemMixin {
                 GlStateManager.rotate(-60.0F, 0.0F, 0.0F, 1.0F);
             }
 
-            if (AnimatiumSettings.thirdTransformations && (entitylivingbaseIn instanceof EntityPlayer || !AnimatiumSettings.entityTransforms) && !Minecraft.getMinecraft().getRenderItem().shouldRenderItemIn3D(stack) && !(stack.getItem() instanceof ItemSkull || stack.getItem() instanceof ItemBanner)) {
+            if (AnimatiumSettings.thirdPersonTransformations && (entitylivingbaseIn instanceof EntityPlayer || !AnimatiumSettings.entityTransforms) && !Minecraft.getMinecraft().getRenderItem().shouldRenderItemIn3D(stack) && !(stack.getItem() instanceof ItemSkull || stack.getItem() instanceof ItemBanner)) {
                 float scale = 1.5F * 0.625F;
                 if (item instanceof ItemBow) {
                     GlStateManager.rotate(-12.0F, 0.0f, 1.0f, 0.0f);

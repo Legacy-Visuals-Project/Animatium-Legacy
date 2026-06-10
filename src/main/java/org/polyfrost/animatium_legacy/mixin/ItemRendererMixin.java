@@ -64,7 +64,7 @@ public abstract class ItemRendererMixin {
 
     @Inject(method = "doBowTransformations", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;scale(FFF)V"))
     private void animatium$preBowTransform(final float tickDelta, final AbstractClientPlayer clientPlayer, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstTransformations && !AnimatiumSettings.lunarPositions) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstPersonTransformations && !AnimatiumSettings.lunarPositions) {
             GlStateManager.rotate(-335.0F, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(-50.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(0.0F, 0.5F, 0.0F);
@@ -73,7 +73,7 @@ public abstract class ItemRendererMixin {
 
     @Inject(method = "doBowTransformations", at = @At(value = "TAIL"))
     private void animatium$postBowTransform(final float tickDelta, final AbstractClientPlayer clientPlayer, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstTransformations && !AnimatiumSettings.lunarPositions) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstPersonTransformations && !AnimatiumSettings.lunarPositions) {
             GlStateManager.translate(0.0F, -0.5F, 0.0F);
             GlStateManager.rotate(50.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(335.0F, 0.0F, 0.0F, 1.0F);
@@ -86,7 +86,7 @@ public abstract class ItemRendererMixin {
             if ((AnimatiumSettings.fishingRodPosition && itemToRender.getItem().shouldRotateAroundWhenRendering())) {
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 animatium$applyItemTransforms();
-            } else if (AnimatiumSettings.firstTransformations && !(itemToRender.getItem() instanceof ItemSword && AnimatiumSettings.lunarBlockhit)) {
+            } else if (AnimatiumSettings.firstPersonTransformations && !(itemToRender.getItem() instanceof ItemSword && AnimatiumSettings.lunarBlockhit)) {
                 animatium$applyItemTransforms();
             }
         }

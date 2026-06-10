@@ -133,7 +133,7 @@ public class AnimatiumSettings extends Config {
             description = "This option is purely visual. During the miss penalty, the player's arm will still swing and show particles just like in 1.7.",
             subcategory = "Interaction"
     )
-    public static boolean visualSwing = true;
+    public static boolean fakeMissPenaltySwing = true;
 
     @Switch(
             name = "1.7 Punching During Usage",
@@ -144,14 +144,14 @@ public class AnimatiumSettings extends Config {
             category = "Animations",
             subcategory = "Interaction"
     )
-    public static boolean punching = true;
+    public static boolean usagePunching = true;
 
     @Checkbox(
             name = "1.7 Punch-During-Usage Particles",
             description = "Spawns Particles whilst Punching During Usage",
             subcategory = "Interaction"
     )
-    public static boolean punchingParticles = true;
+    public static boolean usagePunchingParticles = true;
 
     // Positions
     @Switch(
@@ -159,14 +159,14 @@ public class AnimatiumSettings extends Config {
             description = "Brings back the old item positions from 1.7.",
             subcategory = "Position"
     )
-    public static boolean firstTransformations = true;
+    public static boolean firstPersonTransformations = true;
 
     @Switch(
             name = "1.7 Third-Person Item Transformations",
             description = "Brings back the old item positions from 1.7.",
             subcategory = "Position"
     )
-    public static boolean thirdTransformations = true;
+    public static boolean thirdPersonTransformations = true;
 
     @Checkbox(
             name = "1.7 First-Person Fishing Rod Position",
@@ -287,7 +287,6 @@ public class AnimatiumSettings extends Config {
     public static boolean fishingStick = false;
 
     // HUD
-
     @Switch(
             name = "1.7 Health Bar Flashing",
             description = "Disables the heart flashing texture while taking damage similar to 1.7.",

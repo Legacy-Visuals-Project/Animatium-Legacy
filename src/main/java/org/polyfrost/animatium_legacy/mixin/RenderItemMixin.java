@@ -122,10 +122,10 @@ public abstract class RenderItemMixin {
                 if (AnimatiumSettings.fishingRodPosition && isRod) {
                     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                     GlStateManager.rotate(50.0F, 0.0F, 0.0F, 1.0F);
-                } else if (AnimatiumSettings.firstTransformations && AnimatiumSettings.firstPersonCarpetPosition && isCarpet) {
+                } else if (AnimatiumSettings.firstPersonTransformations && AnimatiumSettings.firstPersonCarpetPosition && isCarpet) {
                     GlStateManager.translate(0.0F, -5.25F * 0.0625F, 0.0F);
                 }
-            } else if (AnimatiumSettings.thirdTransformations && cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && (animatium$entityLivingBase instanceof EntityPlayer || !AnimatiumSettings.entityTransforms)) {
+            } else if (AnimatiumSettings.thirdPersonTransformations && cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && (animatium$entityLivingBase instanceof EntityPlayer || !AnimatiumSettings.entityTransforms)) {
                 if (isRod) {
                     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                     GlStateManager.rotate(110.0F, 0.0F, 0.0F, 1.0F);

@@ -45,20 +45,22 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "sendClickBlockToController", at = @At("HEAD"))
     private void animatium$blockHitAnimation(final boolean leftClick, final CallbackInfo ci) {
-        if (AnimatiumSettings.oldBlockhitting && AnimatiumSettings.punching && AnimatiumSettings.INSTANCE.enabled && gameSettings.keyBindUseItem.isKeyDown()) {
-            if (this.leftClickCounter <= 0 && leftClick && this.objectMouseOver != null
-                    && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
-                    //todo: fix the logic
-                    && ((thePlayer.isUsingItem()) || !AnimatiumSettings.adventurePunching)) {
-                final BlockPos posBlock = this.objectMouseOver.getBlockPos();
-                if (!theWorld.isAirBlock(posBlock)) {
-                    if ((this.thePlayer.isAllowEdit() || !AnimatiumSettings.adventureParticles) && AnimatiumSettings.punchingParticles) {
-                        effectRenderer.addBlockHitEffects(posBlock, this.objectMouseOver.sideHit);
-                    }
+        final boolean allowedUsage = AnimatiumSettings.usagePunching &&
+                this.thePlayer != null &&
+                !(this.thePlayer.getHeldItem() == null || !this.thePlayer.isUsingItem() || !this.gameSettings.keyBindAttack.isKeyDown());
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldBlockhitting && allowedUsage) {
+            final MovingObjectPosition object = this.objectMouseOver;
+            if (object != null && object.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+                final BlockPos blockPos = this.objectMouseOver.getBlockPos();
+                if (AnimatiumSettings.usagePunchingParticles &&
+                        (this.thePlayer.isAllowEdit() || !AnimatiumSettings.adventureParticles) &&
+                        this.theWorld != null &&
+                        !this.theWorld.isAirBlock(blockPos)) {
+                    this.effectRenderer.addBlockHitEffects(blockPos, this.objectMouseOver.sideHit);
+                }
 
-                    if ((this.thePlayer.isAllowEdit() || !AnimatiumSettings.adventureBlockHit)) {
-                        SwingHook.swingItem();
-                    }
+                if ((!AnimatiumSettings.adventureBlockHit || this.thePlayer.isAllowEdit())) {
+                    SwingHook.swingItem();
                 }
             }
         }
@@ -66,7 +68,7 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "clickMouse", at = @At(value = "TAIL"))
     private void animatium$onHitParticles(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.visualSwing && this.leftClickCounter > 0) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fakeMissPenaltySwing && this.leftClickCounter > 0) {
             if (this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && !this.objectMouseOver.entityHit.hitByEntity(thePlayer) && this.objectMouseOver.entityHit instanceof EntityLivingBase) {
                 if (this.thePlayer.fallDistance > 0.0F && !this.thePlayer.onGround && !this.thePlayer.isOnLadder() && !this.thePlayer.isInWater() && !this.thePlayer.isPotionActive(Potion.blindness) && this.thePlayer.ridingEntity == null) {
                     this.thePlayer.onCriticalHit(this.objectMouseOver.entityHit);

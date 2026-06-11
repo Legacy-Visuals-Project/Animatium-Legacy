@@ -50,7 +50,7 @@ public abstract class MinecraftMixin {
     @Inject(method = "sendClickBlockToController", at = @At("HEAD"))
     private void animatium$blockHitAnimation(final boolean leftClick, final CallbackInfo ci) {
         final boolean isAdventure = this.playerController.getCurrentGameType().isAdventure();
-        boolean allowedUsage = AnimatiumSettings.usagePunching &&
+        final boolean allowedUsage = AnimatiumSettings.usagePunching &&
                 this.thePlayer != null &&
                 !(this.thePlayer.getHeldItem() == null || !this.thePlayer.isUsingItem() || !this.gameSettings.keyBindAttack.isKeyDown()) &&
                 !(isAdventure && AnimatiumSettings.disableAdventurePunching);
@@ -59,13 +59,13 @@ public abstract class MinecraftMixin {
             if (object != null && object.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 final BlockPos blockPos = this.objectMouseOver.getBlockPos();
                 if (AnimatiumSettings.usagePunchingParticles &&
-                        (this.thePlayer.isAllowEdit() || !AnimatiumSettings.disableAdventureUsageParticles) &&
+                        (!isAdventure || !AnimatiumSettings.disableAdventureUsageParticles) &&
                         this.theWorld != null &&
                         !this.theWorld.isAirBlock(blockPos)) {
                     this.effectRenderer.addBlockHitEffects(blockPos, this.objectMouseOver.sideHit);
                 }
 
-                if ((!AnimatiumSettings.disableAdventureBlockHit || this.thePlayer.isAllowEdit())) {
+                if ((!AnimatiumSettings.disableAdventureBlockHit || !isAdventure)) {
                     SwingHook.swingItem();
                 }
             }

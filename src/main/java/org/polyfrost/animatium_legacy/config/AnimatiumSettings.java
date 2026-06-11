@@ -500,13 +500,6 @@ public class AnimatiumSettings extends Config {
     )
     public static boolean damageCape = false;
 
-    @Checkbox(
-            name = "Disable Drop Item Arm Swing in Chests",
-            description = "Disables the arm swinging animation upon dropping items while in Chests.",
-            category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
-    )
-    public static boolean modernDropSwingFix = true;
-
     @Switch(
             name = "Disable Entity/Mob Third-Person Item Transformations",
             description = "Allows/Disallows mobs or entities to have third person item positions applied to them.",
@@ -519,7 +512,7 @@ public class AnimatiumSettings extends Config {
             description = "Allows/Disallows swinging at the ground in Adventure Mode.",
             category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
     )
-    public static boolean adventurePunching = false;
+    public static boolean adventurePunching = false; // TODO/FIX
 
     @Switch(
             name = "Disable Punching During Usage in Adventure Mode",

@@ -9,7 +9,6 @@
 		"EntityMixin",
 		"EntityOtherPlayerMPMixin",
 		"EntityPickupFXMixin",
-		"EntityPlayerMixin",
 		"EntityRendererMixin",
 		"ForgeHooksClientMixin",
 		"GuiIngameForgeMixin",

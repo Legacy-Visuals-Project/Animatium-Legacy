@@ -6,6 +6,7 @@ pluginManagement {
         mavenCentral()
         maven("https://repo.polyfrost.org/releases") // Adds the Polyfrost maven repository to get Polyfrost Gradle Toolkit
     }
+
     plugins {
         val pgtVersion = "0.6.5" // Sets the default versions for Polyfrost Gradle Toolkit
         id("org.polyfrost.multi-version.root") version pgtVersion
@@ -13,7 +14,7 @@ pluginManagement {
 }
 
 plugins {
-	id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.+"
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.+"
 }
 
 val mod_name: String by settings

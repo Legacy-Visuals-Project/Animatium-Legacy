@@ -43,6 +43,7 @@ public abstract class MinecraftMixin {
     @Shadow
     public EntityRenderer entityRenderer;
 
+    // TODO: adventurePunching
     @Inject(method = "sendClickBlockToController", at = @At("HEAD"))
     private void animatium$blockHitAnimation(final boolean leftClick, final CallbackInfo ci) {
         final boolean allowedUsage = AnimatiumSettings.usagePunching &&
@@ -86,7 +87,7 @@ public abstract class MinecraftMixin {
     @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/settings/KeyBinding;isPressed()Z", ordinal = 7))
     private void animatium$fakeBlockHit(final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fakeBlockHit) {
-            while (gameSettings.keyBindAttack.isPressed()) {
+            while (this.gameSettings.keyBindAttack.isPressed()) {
                 SwingHook.swingItem();
             }
         }
@@ -101,8 +102,8 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "rightClickMouse", at = @At(value = "HEAD"))
     private void animatium$funnyFidgetyThing(final CallbackInfo ci) {
-        if (AnimatiumSettings.funnyFidget && AnimatiumSettings.INSTANCE.enabled && this.thePlayer != null && this.thePlayer.getHeldItem() != null && this.thePlayer.getHeldItem().getItemUseAction() != EnumAction.NONE) {
-            entityRenderer.itemRenderer.resetEquippedProgress();
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.funnyFidget && this.thePlayer != null && this.thePlayer.getHeldItem() != null && this.thePlayer.getHeldItem().getItemUseAction() != EnumAction.NONE) {
+            this.entityRenderer.itemRenderer.resetEquippedProgress();
         }
     }
 }

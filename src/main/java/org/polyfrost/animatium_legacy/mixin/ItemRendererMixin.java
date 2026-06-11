@@ -95,7 +95,7 @@ public abstract class ItemRendererMixin {
     @Redirect(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;rotateWithPlayerRotations(Lnet/minecraft/client/entity/EntityPlayerSP;F)V"))
     private void animatium$removeRotations(final ItemRenderer instance, final EntityPlayerSP entityPlayerSP, final float tickDelta) {
         if (!AnimatiumSettings.oldItemRotations || !AnimatiumSettings.INSTANCE.enabled) {
-            rotateWithPlayerRotations(entityPlayerSP, tickDelta);
+            this.rotateWithPlayerRotations(entityPlayerSP, tickDelta);
         }
     }
 

@@ -26,8 +26,8 @@ public abstract class RenderFireballMixin extends Render<EntityFireball> {
     @Inject(method = "doRender(Lnet/minecraft/entity/projectile/EntityFireball;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;scale(FFF)V", shift = At.Shift.AFTER), cancellable = true)
     private void animatium$changeToModel(final EntityFireball entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
         final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
         if (settings.enabled) {
+            final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
             if (AnimatiumSettings.globalPositions) {
                 GlStateManager.translate(advanced.fireballPositionX, advanced.fireballPositionY, advanced.fireballPositionZ);
                 GlStateManager.rotate(advanced.fireballRotationPitch, 1.0F, 0.0F, 0.0F);
@@ -37,8 +37,8 @@ public abstract class RenderFireballMixin extends Render<EntityFireball> {
             }
 
             if (AnimatiumSettings.fireballModel) {
-                RenderItem instance = Minecraft.getMinecraft().getRenderItem();
-                ItemStack stack = new ItemStack(Items.fire_charge, 1, 0);
+                final RenderItem instance = Minecraft.getMinecraft().getRenderItem();
+                final ItemStack stack = new ItemStack(Items.fire_charge, 1, 0);
                 GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
                 GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
                 instance.renderItem(stack, ItemCameraTransforms.TransformType.GROUND);

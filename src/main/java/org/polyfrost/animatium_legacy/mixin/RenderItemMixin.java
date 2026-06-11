@@ -54,26 +54,27 @@ public abstract class RenderItemMixin {
 
     @Inject(method = "renderModel(Lnet/minecraft/client/resources/model/IBakedModel;ILnet/minecraft/item/ItemStack;)V", at = @At("HEAD"))
     private void animatium$setModel(final IBakedModel model, final int color, final ItemStack stack, final CallbackInfo ci) {
-        animatium$model = model;
+        this.animatium$model = model;
     }
 
     @Inject(method = "renderItemModelForEntity", at = @At("HEAD"))
     private void animatium$getLastEntity(final ItemStack stack, final EntityLivingBase entityToRenderFor, final ItemCameraTransforms.TransformType cameraTransformType, final CallbackInfo ci) {
-        animatium$entityLivingBase = entityToRenderFor;
+        this.animatium$entityLivingBase = entityToRenderFor;
     }
 
     @ModifyArg(method = "renderModel(Lnet/minecraft/client/resources/model/IBakedModel;ILnet/minecraft/item/ItemStack;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RenderItem;renderQuads(Lnet/minecraft/client/renderer/WorldRenderer;Ljava/util/List;ILnet/minecraft/item/ItemStack;)V", ordinal = 1), index = 1)
     private List<BakedQuad> animatium$changeToSprite(final List<BakedQuad> quads) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.itemSprites && !animatium$model.isGui3d() && TransformTypeHook.shouldBeSprite() && !DroppedItemHook.isItemPhysicsAndEntityDropped()) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.itemSprites && !this.animatium$model.isGui3d() && TransformTypeHook.shouldBeSprite() && !DroppedItemHook.isItemPhysicsAndEntityDropped()) {
             return quads.stream().filter(baked -> baked.getFace() == EnumFacing.SOUTH).collect(Collectors.toList());
         } else {
             return quads;
         }
     }
 
+    // TODO: Double check accuracy as didn't <=1.7 and below not have diffuse lighting or whatever
     @ModifyArgs(method = "putQuadNormal", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WorldRenderer;putNormal(FFF)V"))
     private void animatium$modifyNormalValue(final Args args) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.itemSprites && AnimatiumSettings.itemSpritesColor && !animatium$model.isGui3d() && !(Minecraft.getMinecraft().currentScreen instanceof GuiFlatPresets) && TransformTypeHook.shouldNotHaveGlint() && !DroppedItemHook.isItemPhysicsAndEntityDropped()) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.itemSprites && AnimatiumSettings.itemSpritesColor && !this.animatium$model.isGui3d() && !(Minecraft.getMinecraft().currentScreen instanceof GuiFlatPresets) && TransformTypeHook.shouldNotHaveGlint() && !DroppedItemHook.isItemPhysicsAndEntityDropped()) {
             args.setAll(args.get(0), args.get(2), args.get(1));
         }
     }
@@ -82,7 +83,7 @@ public abstract class RenderItemMixin {
     @Inject(method = "renderEffect", at = @At(value = "HEAD"), cancellable = true)
     private void animatium$disableGlint(final IBakedModel model, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled) {
-            if (AnimatiumSettings.potionGlint && animatium$stack.getItem() instanceof ItemPotion) {
+            if (AnimatiumSettings.potionGlint && this.animatium$stack.getItem() instanceof ItemPotion) {
                 ci.cancel();
             }
 
@@ -106,9 +107,7 @@ public abstract class RenderItemMixin {
 
     @Inject(method = "renderItemModelTransform", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RenderItem;renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/resources/model/IBakedModel;)V"))
     private void animatium$modifyModelPosition(final ItemStack stack, final IBakedModel model, final ItemCameraTransforms.TransformType cameraTransformType, final CallbackInfo ci) {
-        if (stack == null) return;
-        if (stack.getItem() == null) return;
-        if (AnimatiumSettings.INSTANCE.enabled && !(stack.getItem() instanceof ItemBanner)) {
+        if (AnimatiumSettings.INSTANCE.enabled && stack != null && stack.getItem() != null && !(stack.getItem() instanceof ItemBanner)) {
             final boolean isRod = stack.getItem().shouldRotateAroundWhenRendering();
             final boolean isBlock = stack.getItem() instanceof ItemBlock;
 
@@ -125,7 +124,7 @@ public abstract class RenderItemMixin {
                 } else if (AnimatiumSettings.firstPersonTransformations && AnimatiumSettings.firstPersonCarpetPosition && isCarpet) {
                     GlStateManager.translate(0.0F, -5.25F * 0.0625F, 0.0F);
                 }
-            } else if (AnimatiumSettings.thirdPersonTransformations && cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && (animatium$entityLivingBase instanceof EntityPlayer || !AnimatiumSettings.entityTransforms)) {
+            } else if (AnimatiumSettings.thirdPersonTransformations && cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && (this.animatium$entityLivingBase instanceof EntityPlayer || !AnimatiumSettings.entityTransforms)) {
                 if (isRod) {
                     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                     GlStateManager.rotate(110.0F, 0.0F, 0.0F, 1.0F);
@@ -153,27 +152,28 @@ public abstract class RenderItemMixin {
     private IBakedModel animatium$rodBowModelTexture(final ItemModelMesher instance, final ItemStack stack) {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.rodBowGuiFix && player != null) {
-            Item item = stack.getItem();
-
+            final Item item = stack.getItem();
             if (stack == player.getHeldItem()) {
-                ModelResourceLocation modelresourcelocation = null;
+                ModelResourceLocation location = null;
+
+                final int itemInUseTicks = player.getItemInUseCount();
                 if (item instanceof ItemBow && player.getItemInUse() != null) {
-                    int i = stack.getMaxItemUseDuration() - player.getItemInUseCount();
-                    if (i >= 18) {
-                        modelresourcelocation = animatium$inventoryModel("bow_pulling_2");
-                    } else if (i > 13) {
-                        modelresourcelocation = animatium$inventoryModel("bow_pulling_1");
-                    } else if (i > 0) {
-                        modelresourcelocation = animatium$inventoryModel("bow_pulling_0");
+                    final int ticks = stack.getMaxItemUseDuration() - itemInUseTicks;
+                    if (ticks >= 18) {
+                        location = animatium$inventoryModel("bow_pulling_2");
+                    } else if (ticks > 13) {
+                        location = animatium$inventoryModel("bow_pulling_1");
+                    } else if (ticks > 0) {
+                        location = animatium$inventoryModel("bow_pulling_0");
                     }
                 } else if (item instanceof ItemFishingRod && player.fishEntity != null) {
-                    modelresourcelocation = animatium$inventoryModel("fishing_rod_cast");
+                    location = animatium$inventoryModel("fishing_rod_cast");
                 } else {
-                    modelresourcelocation = item.getModel(stack, player, player.getItemInUseCount());
+                    location = item.getModel(stack, player, itemInUseTicks);
                 }
 
-                if (modelresourcelocation != null) {
-                    return instance.getModelManager().getModel(modelresourcelocation);
+                if (location != null) {
+                    return instance.getModelManager().getModel(location);
                 }
             }
         }
@@ -197,13 +197,16 @@ public abstract class RenderItemMixin {
 
     @ModifyArg(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/resources/model/IBakedModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RenderItem;renderEffect(Lnet/minecraft/client/resources/model/IBakedModel;)V"))
     private IBakedModel animatium$replaceModel(final IBakedModel model) {
-        if (!AnimatiumSettings.enchantmentGlint || !AnimatiumSettings.INSTANCE.enabled) return model;
-        return GlintModelHook.INSTANCE.getGlint(model);
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.enchantmentGlint) {
+            return GlintModelHook.INSTANCE.getGlint(model);
+        } else {
+            return model;
+        }
     }
 
     @ModifyArg(method = "renderEffect", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;translate(FFF)V"), index = 0)
     private float animatium$modifySpeed(final float original) {
-        if (AnimatiumSettings.enchantmentGlint && AnimatiumSettings.INSTANCE.enabled) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.enchantmentGlint) {
             return original * 64.0F;
         } else {
             return original;

@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(ItemPotion.class)
 public abstract class ItemPotionMixin {
     @Shadow
-    public abstract int getColorFromDamage(int meta);
+    public abstract int getColorFromDamage(final int meta);
 
     @Inject(method = "getColorFromItemStack", at = @At("HEAD"), cancellable = true)
     private void animatium$allowPotColors(final ItemStack stack, final int renderPass, final CallbackInfoReturnable<Integer> cir) {

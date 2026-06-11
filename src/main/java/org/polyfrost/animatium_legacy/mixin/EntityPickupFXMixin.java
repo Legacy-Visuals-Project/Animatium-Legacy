@@ -23,10 +23,10 @@ public abstract class EntityPickupFXMixin {
     private void animatium$factorInEyeHeight(final WorldRenderer worldRendererIn, final Entity entityIn, final float tickDelta, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled) {
             if (AnimatiumSettings.oldPickup) {
-                field_174841_aA = (field_174843_ax.getEyeHeight() / 2);
+                this.field_174841_aA = (this.field_174843_ax.getEyeHeight() / 2);
             }
 
-            field_174841_aA += AnimatiumSettings.INSTANCE.pickupPosition;
+            this.field_174841_aA += AnimatiumSettings.INSTANCE.pickupPosition;
         }
     }
 

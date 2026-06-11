@@ -10,6 +10,10 @@ import org.spongepowered.asm.mixin.injection.ModifyConstant;
 public abstract class NetHandlerPlayClientMixin {
     @ModifyConstant(method = "handleSpawnExperienceOrb", constant = @Constant(doubleValue = 32.0D))
     private double animatium$oldXPOrbs(final double original) {
-        return AnimatiumSettings.oldXPOrbs && AnimatiumSettings.INSTANCE.enabled ? original / 32.0D : original;
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldXPOrbs) {
+            return original / 32.0D;
+        } else {
+            return original;
+        }
     }
 }

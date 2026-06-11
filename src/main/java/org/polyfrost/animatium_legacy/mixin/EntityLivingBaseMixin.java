@@ -47,24 +47,24 @@ public abstract class EntityLivingBaseMixin extends Entity {
     private void animatium$setAsNewHeadYaw(final float rotation, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.headYawFix) {
             ci.cancel();
-            animatium$newHeadYaw = MathHelper.wrapAngleTo180_float(rotation);
-            animatium$headYawLerpWeight = 3;
+            this.animatium$newHeadYaw = MathHelper.wrapAngleTo180_float(rotation);
+            this.animatium$headYawLerpWeight = 3;
         }
     }
 
     @Inject(method = "onLivingUpdate", at = @At("HEAD"))
     private void animatium$updateHeadYaw(final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.headYawFix && animatium$headYawLerpWeight > 0) {
-            rotationYawHead += MathHelper.wrapAngleTo180_float(animatium$newHeadYaw - rotationYawHead) / animatium$headYawLerpWeight;
-            rotationYawHead = MathHelper.wrapAngleTo180_float(rotationYawHead);
-            animatium$headYawLerpWeight--;
+            this.rotationYawHead += MathHelper.wrapAngleTo180_float(this.animatium$newHeadYaw - this.rotationYawHead) / this.animatium$headYawLerpWeight;
+            this.rotationYawHead = MathHelper.wrapAngleTo180_float(this.rotationYawHead);
+            this.animatium$headYawLerpWeight--;
         }
     }
 
     // TODO: hook swing speed
     @Inject(method = "getArmSwingAnimationEnd()I", at = @At("HEAD"), cancellable = true)
     private void animatium$modifySwingSpeed(final CallbackInfoReturnable<Integer> cir) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         if (settings.enabled && AnimatiumSettings.globalPositions) {
             int length = 6;
             if (isPotionActive(Potion.digSpeed) && !AnimatiumSettings.ignoreHaste) {
@@ -82,20 +82,23 @@ public abstract class EntityLivingBaseMixin extends Entity {
     // TODO: see if i can write this better
     @ModifyArg(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;updateDistance(FF)F"), index = 0)
     private float animatium$modifyYaw(final float yaw) {
-        double d0 = posX - prevPosX;
-        double d1 = posZ - prevPosZ;
-        float f = (float) (d0 * d0 + d1 * d1);
-        float h = renderYawOffset;
-        if (f > 0.0025000002F) {
-            float f1 = (float) MathHelper.atan2(d1, d0) * 180.0F / 3.1415927F - 90.0F;
-            float g = MathHelper.abs(MathHelper.wrapAngleTo180_float(rotationYaw) - f1);
-            h = f1 - (95.0F < g && g < 265.0F ? 180.0F : 0.0F);
+        final double xDiff = this.posX - this.prevPosX;
+        final double zDiff = this.posZ - this.prevPosZ;
+        final float mvE = (float) (xDiff * xDiff + zDiff * zDiff);
+
+        float yawOffset = this.renderYawOffset;
+        if (this.swingProgress > 0.0F) {
+            yawOffset = this.rotationYaw;
+        } else if (mvE > 0.0025000002F) {
+            final float f1 = (float) MathHelper.atan2(zDiff, xDiff) * 180.0F / 3.1415927F - 90.0F;
+            final float g = MathHelper.abs(MathHelper.wrapAngleTo180_float(this.rotationYaw) - f1);
+            yawOffset = f1 - (95.0F < g && g < 265.0F ? 180.0F : 0.0F);
         }
 
-        if (swingProgress > 0.0F) {
-            h = rotationYaw;
+        if (AnimatiumSettings.modernMovement) {
+            return yawOffset;
+        } else {
+            return yaw;
         }
-
-        return AnimatiumSettings.modernMovement ? h : yaw;
     }
 }

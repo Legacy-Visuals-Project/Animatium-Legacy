@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = RenderFish.class, priority = 2000)
 public abstract class RenderFishMixin {
-    @ModifyVariable(method = "doRender(Lnet/minecraft/entity/projectile/EntityFishHook;DDDFF)V", at = @At(value = "STORE", ordinal = 0), index = 23)
+    @ModifyVariable(method = "doRender(Lnet/minecraft/entity/projectile/EntityFishHook;DDDFF)V", at = @At(value = "STORE", ordinal = 0), name = "vec3")
     private Vec3 animatium$modifyLinePosition(final Vec3 vec3) {
         if (AnimatiumSettings.INSTANCE.enabled) {
             final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
@@ -60,7 +60,11 @@ public abstract class RenderFishMixin {
 
     @Redirect(method = "doRender(Lnet/minecraft/entity/projectile/EntityFishHook;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;getEyeHeight()F"))
     private float animatium$modifyEyeHeight(final EntityPlayer instance) {
-        return SmoothSneakHook.getSmoothSneak(instance.getEyeHeight());
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.smoothSneaking) {
+            return SmoothSneakHook.getSmoothSneak();
+        } else {
+            return instance.getEyeHeight();
+        }
     }
 
     @Inject(method = "doRender(Lnet/minecraft/entity/projectile/EntityFishHook;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WorldRenderer;begin(ILnet/minecraft/client/renderer/vertex/VertexFormat;)V", ordinal = 1))

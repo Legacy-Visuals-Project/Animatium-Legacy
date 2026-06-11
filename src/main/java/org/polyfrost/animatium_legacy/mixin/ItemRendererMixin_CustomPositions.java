@@ -22,10 +22,10 @@ public abstract class ItemRendererMixin_CustomPositions {
 
     @Inject(method = "transformFirstPersonItem(FF)V", at = @At("HEAD"), cancellable = true)
     private void animatium$itemTransform(final float equipProgress, final float swingProgress, final CallbackInfo ci) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         if (settings.enabled) {
-            Item item = itemToRender.getItem();
-            if (AnimatiumSettings.lunarPositions && AnimatiumSettings.INSTANCE.enabled && item != null) {
+            final Item item = this.itemToRender.getItem();
+            if (AnimatiumSettings.lunarPositions && item != null) {
                 if (item instanceof ItemSword) {
                     GlStateManager.translate(0.0F, 0.0F, -0.02F);
                     GlStateManager.rotate(1.0F, 0.0F, 0.0F, -0.1F);
@@ -67,16 +67,16 @@ public abstract class ItemRendererMixin_CustomPositions {
 
     @Inject(method = "doItemUsedTransformations", at = @At("HEAD"), cancellable = true)
     private void animatium$swingTransformations(final float swingProgress, final CallbackInfo ci) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
-        if (AnimatiumSettings.globalPositions && settings.enabled) {
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        if (settings.enabled && AnimatiumSettings.globalPositions) {
+            final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
             if (settings.swingSetting == 2) {
                 ci.cancel();
             } else {
-                float scale = (1.0F + (settings.swingSetting == 1 ? settings.itemScale : 0.0F));
-                float f = (-0.4f * (1.0F + advanced.itemSwingPositionX)) * MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI) * scale;
-                float f1 = 0.2f * (1.0F - advanced.itemSwingPositionY) * MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI * 2.0f) * scale;
-                float f2 = -0.2f * (1.0F + advanced.itemSwingPositionZ) * MathHelper.sin(swingProgress * (float) Math.PI) * scale;
+                final float scale = (1.0F + (settings.swingSetting == 1 ? settings.itemScale : 0.0F));
+                final float f = (-0.4f * (1.0F + advanced.itemSwingPositionX)) * MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI) * scale;
+                final float f1 = 0.2f * (1.0F - advanced.itemSwingPositionY) * MathHelper.sin(MathHelper.sqrt_float(swingProgress) * (float) Math.PI * 2.0f) * scale;
+                final float f2 = -0.2f * (1.0F + advanced.itemSwingPositionZ) * MathHelper.sin(swingProgress * (float) Math.PI) * scale;
                 GlStateManager.translate(f, f1, f2);
                 ci.cancel();
             }
@@ -85,9 +85,9 @@ public abstract class ItemRendererMixin_CustomPositions {
 
     @Inject(method = "doBlockTransformations", at = @At("HEAD"), cancellable = true)
     private void animatium$blockedItemTransform(final CallbackInfo ci) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
-        if (AnimatiumSettings.globalPositions && settings.enabled) {
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        if (settings.enabled && AnimatiumSettings.globalPositions) {
+            final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
             GlStateManager.translate(-0.5f * (1.0F + advanced.blockedPositionX), 0.2f * (1.0F + advanced.blockedPositionY), 0.0f + advanced.blockedPositionZ);
             GlStateManager.rotate(advanced.blockedRotationPitch, 1.0f, 0.0f, 0.0f);
             GlStateManager.rotate(advanced.blockedRotationYaw, 0.0f, 1.0f, 0.0f);
@@ -111,8 +111,8 @@ public abstract class ItemRendererMixin_CustomPositions {
 
     @Inject(method = "doBlockTransformations", at = @At("TAIL"))
     private void animatium$lunarTransform(final CallbackInfo ci) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        if (AnimatiumSettings.lunarBlockhit && !AnimatiumSettings.globalPositions && settings.enabled) {
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        if (settings.enabled && AnimatiumSettings.lunarBlockhit && !AnimatiumSettings.globalPositions) {
             GlStateManager.translate(-0.55F, 0.2F, 0.1F);
             GlStateManager.scale(0.85F, 0.85F, 0.85F);
             GlStateManager.rotate(1.0F, 0.0F, 0.0F, -1.0F);
@@ -123,16 +123,20 @@ public abstract class ItemRendererMixin_CustomPositions {
 
     @ModifyArg(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;transformFirstPersonItem(FF)V", ordinal = 2), index = 0)
     private float animatium$modifyBlockEquip(final float original) {
-        return AnimatiumSettings.lunarBlockhit && AnimatiumSettings.INSTANCE.enabled ? 0.2F : original;
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.lunarBlockhit) {
+            return 0.2F;
+        } else {
+            return original;
+        }
     }
 
     // TODO: add customization for equip / swing progress
 
     @Inject(method = "performDrinking", at = @At("HEAD"), cancellable = true)
     private void animatium$drinkingItemTransform(final AbstractClientPlayer clientPlayer, final float tickDelta, final CallbackInfo ci) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
-        if (AnimatiumSettings.globalPositions && settings.enabled) {
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        if (settings.enabled && AnimatiumSettings.globalPositions) {
+            final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
             float f = (float) clientPlayer.getItemInUseCount() - tickDelta + 1.0f;
             float f1 = f / (float) itemToRender.getMaxItemUseDuration();
             float f2 = MathHelper.abs(MathHelper.cos(f / 4.0f * (float) Math.PI) * 0.1f);

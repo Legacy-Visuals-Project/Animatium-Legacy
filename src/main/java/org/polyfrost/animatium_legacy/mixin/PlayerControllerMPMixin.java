@@ -19,11 +19,20 @@ public abstract class PlayerControllerMPMixin {
 
     @ModifyArg(method = {"clickBlock", "onPlayerDamageBlock"}, at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/WorldClient;sendBlockBreakProgress(ILnet/minecraft/util/BlockPos;I)V"), index = 2)
     private int animatium$fixDelay(final int original) {
-        return original + (AnimatiumSettings.modernBreak && AnimatiumSettings.INSTANCE.enabled ? 1 : 0);
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.modernBreak) {
+            return original + 1;
+        } else {
+            return original;
+        }
     }
 
     @Redirect(method = "onPlayerDamageBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/PlayerControllerMP;isHittingPosition(Lnet/minecraft/util/BlockPos;)Z"))
     private boolean animatium$fixLogic(final PlayerControllerMP instance, final BlockPos pos) {
-        return AnimatiumSettings.breakFix && AnimatiumSettings.INSTANCE.enabled ? isHittingPosition(pos) && getIsHittingBlock() : isHittingPosition(pos);
+        final boolean isHittingPos = this.isHittingPosition(pos);
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.breakFix) {
+            return isHittingPos && this.getIsHittingBlock();
+        } else {
+            return isHittingPos;
+        }
     }
 }

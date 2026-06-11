@@ -23,17 +23,18 @@ public abstract class RendererLivingEntityMixin<T extends EntityLivingBase> exte
 
     @Inject(method = "doRender(Lnet/minecraft/entity/EntityLivingBase;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;translate(FFF)V"))
     private void animatium$movePlayerModel(final T entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
-        if (AnimatiumSettings.smoothModelSneak && AnimatiumSettings.INSTANCE.enabled && entity instanceof EntityPlayerSP && entity.getName().equals(Minecraft.getMinecraft().thePlayer.getName())) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.smoothModelSneak && entity instanceof EntityPlayerSP && entity.getName().equals(Minecraft.getMinecraft().thePlayer.getName())) {
             if (entity.isSneaking()) {
                 GlStateManager.translate(0.0F, -0.2F, 0.0F);
             }
 
-            GlStateManager.translate(0.0F, 1.62F - SmoothSneakHook.getSmoothSneak(entity.getEyeHeight()), 0.0F);
+            final float eyeHeightOffset = AnimatiumSettings.smoothSneaking ? SmoothSneakHook.getSmoothSneak() : entity.getEyeHeight();
+            GlStateManager.translate(0.0F, 1.62F - eyeHeightOffset, 0.0F);
         }
     }
 
     @Inject(method = "rotateCorpse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V", shift = At.Shift.AFTER))
-    private void animatium$rotateCorpse(final T bat, final float p_77043_2_, final float p_77043_3_, final float tickDelta, final CallbackInfo ci) {
+    private void animatium$rotateCorpse(final T bat, final float p_77043_2_, final float p_77043_3_, final float partialTicks, final CallbackInfo ci) {
         final boolean isLocalPlayer = bat.getName().equals(Minecraft.getMinecraft().thePlayer.getName());
         if (AnimatiumSettings.INSTANCE.enabled) {
             if (AnimatiumSettings.dinnerBoneMode && isLocalPlayer) {

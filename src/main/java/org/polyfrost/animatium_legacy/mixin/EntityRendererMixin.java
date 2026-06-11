@@ -86,7 +86,7 @@ public abstract class EntityRendererMixin {
     // TODO: WrapMethod
     @Inject(method = "hurtCameraEffect", at = @At("HEAD"), cancellable = true)
     private void animatium$cancelHurtCamera(final float tickDelta, final CallbackInfo ci) {
-        if (AnimatiumSettings.noHurtCam && AnimatiumSettings.INSTANCE.enabled) {
+        if (AnimatiumSettings.disableHutCam && AnimatiumSettings.INSTANCE.enabled) {
             ci.cancel();
         }
     }

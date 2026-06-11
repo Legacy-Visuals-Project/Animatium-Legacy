@@ -124,7 +124,7 @@ public abstract class RenderItemMixin {
                 } else if (AnimatiumSettings.firstPersonTransformations && AnimatiumSettings.firstPersonCarpetPosition && isCarpet) {
                     GlStateManager.translate(0.0F, -5.25F * 0.0625F, 0.0F);
                 }
-            } else if (AnimatiumSettings.thirdPersonTransformations && cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && (this.animatium$entityLivingBase instanceof EntityPlayer || !AnimatiumSettings.entityTransforms)) {
+            } else if (AnimatiumSettings.thirdPersonTransformations && cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && (this.animatium$entityLivingBase instanceof EntityPlayer || !AnimatiumSettings.disableEntityItemTransforms)) {
                 if (isRod) {
                     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                     GlStateManager.rotate(110.0F, 0.0F, 0.0F, 1.0F);

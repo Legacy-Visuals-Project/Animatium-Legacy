@@ -491,49 +491,49 @@ public class AnimatiumSettings extends Config {
             description = "Applies the damage tint to entity held items.",
             category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
     )
-    public static boolean damageHeldItems = false;
+    public static boolean damageTintHeldItems = false;
 
     @Switch(
             name = "Apply Damage Tint to Capes",
             description = "Applies the damage tint to capes.",
             category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
     )
-    public static boolean damageCape = false;
+    public static boolean damageTintCape = false;
 
     @Switch(
             name = "Disable Entity/Mob Third-Person Item Transformations",
             description = "Allows/Disallows mobs or entities to have third person item positions applied to them.",
             category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
     )
-    public static boolean entityTransforms = true;
+    public static boolean disableEntityItemTransforms = true;
 
     @Switch(
             name = "Disable swinging at the ground in Adventure Mode",
             description = "Allows/Disallows swinging at the ground in Adventure Mode.",
             category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
     )
-    public static boolean adventurePunching = false; // TODO/FIX
+    public static boolean disableAdventurePunching = false;
 
     @Switch(
             name = "Disable Punching During Usage in Adventure Mode",
             description = "Allows/Disallows the punching during usage feature in Adventure Mode.",
             category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
     )
-    public static boolean adventureBlockHit = false;
+    public static boolean disableAdventureBlockHit = false;
 
     @Checkbox(
             name = "Disable Punch-During-Usage Particles in Adventure Mode",
             description = "Allows/Disallows the particles played while punching during usage to appear while in Adventure Mode.",
             category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
     )
-    public static boolean adventureParticles = true;
+    public static boolean disableAdventureUsageParticles = true;
 
     @Switch(
             name = "Disable Hurt Camera Shake",
             description = "Disables the camera damage shake.",
             category = "Misc", subcategory = "Fixes, QOL, and Tweaks"
     )
-    public static boolean noHurtCam = false;
+    public static boolean disableHutCam = false;
 
     @Switch(
             name = "Old Lunar/CheatBreaker Block-Hit Position",

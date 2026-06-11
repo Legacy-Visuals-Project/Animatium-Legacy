@@ -2,6 +2,7 @@ package org.polyfrost.animatium_legacy.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.multiplayer.PlayerControllerMP;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.EntityRenderer;
@@ -43,24 +44,28 @@ public abstract class MinecraftMixin {
     @Shadow
     public EntityRenderer entityRenderer;
 
-    // TODO: adventurePunching
+    @Shadow
+    public PlayerControllerMP playerController;
+
     @Inject(method = "sendClickBlockToController", at = @At("HEAD"))
     private void animatium$blockHitAnimation(final boolean leftClick, final CallbackInfo ci) {
-        final boolean allowedUsage = AnimatiumSettings.usagePunching &&
+        final boolean isAdventure = this.playerController.getCurrentGameType().isAdventure();
+        boolean allowedUsage = AnimatiumSettings.usagePunching &&
                 this.thePlayer != null &&
-                !(this.thePlayer.getHeldItem() == null || !this.thePlayer.isUsingItem() || !this.gameSettings.keyBindAttack.isKeyDown());
+                !(this.thePlayer.getHeldItem() == null || !this.thePlayer.isUsingItem() || !this.gameSettings.keyBindAttack.isKeyDown()) &&
+                !(isAdventure && AnimatiumSettings.disableAdventurePunching);
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldBlockhitting && allowedUsage) {
             final MovingObjectPosition object = this.objectMouseOver;
             if (object != null && object.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
                 final BlockPos blockPos = this.objectMouseOver.getBlockPos();
                 if (AnimatiumSettings.usagePunchingParticles &&
-                        (this.thePlayer.isAllowEdit() || !AnimatiumSettings.adventureParticles) &&
+                        (this.thePlayer.isAllowEdit() || !AnimatiumSettings.disableAdventureUsageParticles) &&
                         this.theWorld != null &&
                         !this.theWorld.isAirBlock(blockPos)) {
                     this.effectRenderer.addBlockHitEffects(blockPos, this.objectMouseOver.sideHit);
                 }
 
-                if ((!AnimatiumSettings.adventureBlockHit || this.thePlayer.isAllowEdit())) {
+                if ((!AnimatiumSettings.disableAdventureBlockHit || this.thePlayer.isAllowEdit())) {
                     SwingHook.swingItem();
                 }
             }

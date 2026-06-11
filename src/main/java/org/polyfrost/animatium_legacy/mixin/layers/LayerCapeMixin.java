@@ -11,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class LayerCapeMixin {
     @Inject(method = "shouldCombineTextures", at = @At(value = "HEAD"), cancellable = true)
     private void animatium$allowCombine(final CallbackInfoReturnable<Boolean> cir) {
-        cir.setReturnValue(AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.damageCape);
+        cir.setReturnValue(AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.damageTintCape);
     }
 }

@@ -144,7 +144,8 @@ public class AnimatiumSettings extends Config {
     @Switch(
             name = "1.7 Block-Hitting Animation",
             description = "Re-enables the block-hitting animations.",
-            subcategory = "Interaction"
+            subcategory = "Interaction",
+            size = 2
     )
     @VigilanceName(
             name = "Block-Hitting Animation",
@@ -178,7 +179,7 @@ public class AnimatiumSettings extends Config {
     )
     public static boolean usagePunching = true;
 
-    @Checkbox(
+    @Switch(
             name = "1.7 Punch-During-Usage Particles",
             description = "Spawns Particles whilst Punching During Usage",
             subcategory = "Interaction"

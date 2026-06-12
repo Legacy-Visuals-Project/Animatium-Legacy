@@ -153,6 +153,31 @@ public class AnimatiumSettings extends Config {
     )
     public static boolean oldBlockhitting = true;
 
+    @Switch(
+            name = "1.7 Miss Penalty Swing Animation",
+            description = "This option is purely visual. During the miss penalty, the player's arm will still swing and show particles just like in 1.7.",
+            subcategory = "Interaction"
+    )
+    public static boolean fakeMissPenaltySwing = true;
+
+    @Switch(
+            name = "1.7 Punching During Usage",
+            description = "Purely visual feature. Re-enables the ability to consume food or block a sword whilst punching a block.",
+            subcategory = "Interaction")
+    @VigilanceName(
+            name = "Punching During Usage",
+            category = "Animations",
+            subcategory = "Interaction"
+    )
+    public static boolean usagePunching = true;
+
+    @Checkbox(
+            name = "1.7 Punch-During-Usage Particles",
+            description = "Spawns Particles whilst Punching During Usage",
+            subcategory = "Interaction"
+    )
+    public static boolean usagePunchingParticles = true;
+
     @Dropdown(
             name = "Armor Damage Tint Style",
             description = "Applies a damage tint to armor. " +
@@ -194,31 +219,6 @@ public class AnimatiumSettings extends Config {
     public ItemSwitchMode itemSwitchMode() {
         return ItemSwitchMode.VALUES[this.itemSwitchMode % (ItemSwitchMode.VALUES.length + 1)];
     }
-
-    @Switch(
-            name = "1.7 Miss Penalty Swing Animation",
-            description = "This option is purely visual. During the miss penalty, the player's arm will still swing and show particles just like in 1.7.",
-            subcategory = "Interaction"
-    )
-    public static boolean fakeMissPenaltySwing = true;
-
-    @Switch(
-            name = "1.7 Punching During Usage",
-            description = "Purely visual feature. Re-enables the ability to consume food or block a sword whilst punching a block.",
-            subcategory = "Interaction")
-    @VigilanceName(
-            name = "Punching During Usage",
-            category = "Animations",
-            subcategory = "Interaction"
-    )
-    public static boolean usagePunching = true;
-
-    @Checkbox(
-            name = "1.7 Punch-During-Usage Particles",
-            description = "Spawns Particles whilst Punching During Usage",
-            subcategory = "Interaction"
-    )
-    public static boolean usagePunchingParticles = true;
 
     // 2D Items
     @Switch(

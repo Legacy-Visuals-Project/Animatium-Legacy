@@ -3,7 +3,9 @@
 - Rebrand to Animatium Legacy
 - Mod resources/textures are now under the "animatium" namespace
 - Reorganize order of config categories and some settings
-- Re-added "1.7 Skull Models" setting
+- Restore "1.7 Skull Models" setting
+- Restore "1.7 Potion Models (Held/Dropped/GUI)" settings
+    - oldPotionsDropped & oldPotionsGui are now ON by default
 - Added option for Orange Marshalls armor tint
 - Added separate option for third-person fishing rod position
 - Removed block breaking stop-age when using a item as it caused issues (flagged anti-cheats)

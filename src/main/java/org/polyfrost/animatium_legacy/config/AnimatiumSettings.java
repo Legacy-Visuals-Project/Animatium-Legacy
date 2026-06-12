@@ -268,26 +268,26 @@ public class AnimatiumSettings extends Config {
     )
     public static boolean enchantmentGlintGui = false;
 
-//    @Switch(
-//            name = "1.7 Potion Models (Held)",
-//            description = "Use the old potion models from 1.7, making the enchantment glint appear only on the colored part of the potion.",
-//            subcategory = "Enchantment Glint"
-//    )
-//    public static boolean oldPotions = true;
-//
-//    @Switch(
-//            name = "1.7 Potion Models (Dropped)",
-//            description = "Use the old potion models from 1.7, making the enchantment glint appear only on the colored part of the potion for dropped items as well.",
-//            subcategory = "Enchantment Glint"
-//    )
-//    public static boolean oldPotionsDropped = false;
-//
-//    @Switch(
-//            name = "1.7 Potion Models (GUI)",
-//            description = "Use the old potion models from 1.7, making the enchantment glint appear only on the colored part of the potion for gui items as well.",
-//            subcategory = "Enchantment Glint"
-//    )
-//    public static boolean oldPotionsGui = false;
+    @Switch(
+            name = "1.7 Potion Models (Held)",
+            description = "Use the old potion models from 1.7, making the enchantment glint appear only on the colored part of the potion.",
+            subcategory = "Enchantment Glint"
+    )
+    public static boolean oldPotions = true;
+
+    @Switch(
+            name = "1.7 Potion Models (Dropped)",
+            description = "Use the old potion models from 1.7, making the enchantment glint appear only on the colored part of the potion for dropped items as well.",
+            subcategory = "Enchantment Glint"
+    )
+    public static boolean oldPotionsDropped = true;
+
+    @Switch(
+            name = "1.7 Potion Models (GUI)",
+            description = "Use the old potion models from 1.7, making the enchantment glint appear only on the colored part of the potion for gui items as well.",
+            subcategory = "Enchantment Glint"
+    )
+    public static boolean oldPotionsGui = true;
 
     // HUD
     @Switch(

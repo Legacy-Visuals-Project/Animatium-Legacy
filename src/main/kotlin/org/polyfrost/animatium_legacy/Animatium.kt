@@ -11,6 +11,7 @@ import cc.polyfrost.oneconfig.utils.gui.GuiUtils
 import dulkirmod.config.Config
 import dulkirmod.config.DulkirConfig
 import net.minecraft.client.Minecraft
+import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.Loader
 import net.minecraftforge.fml.common.Mod
 import net.minecraftforge.fml.common.event.FMLInitializationEvent
@@ -19,16 +20,17 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import org.polyfrost.animatium_legacy.command.AnimatiumCommand
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings
 import org.polyfrost.animatium_legacy.gui.PleaseMigrateDulkirModGui
+import org.polyfrost.animatium_legacy.init.CustomModelBakery
 import java.net.URI
 
 @Mod(
-    modid = Animatium.MODID,
+    modid = Animatium.MOD_ID,
     name = Animatium.NAME,
     version = Animatium.VERSION,
     modLanguageAdapter = "cc.polyfrost.oneconfig.utils.KotlinLanguageAdapter"
 )
 object Animatium {
-    const val MODID: String = "@ID@"
+    const val MOD_ID: String = "@ID@"
     const val NAME: String = "@NAME@"
     const val VERSION: String = "@VER@"
 
@@ -56,6 +58,7 @@ object Animatium {
         AnimatiumSettings.INSTANCE.preload()
         CommandManager.INSTANCE.registerCommand(AnimatiumCommand())
         EventManager.INSTANCE.register(this)
+        MinecraftForge.EVENT_BUS.register(CustomModelBakery)
     }
 
     @Mod.EventHandler
@@ -103,26 +106,21 @@ object Animatium {
     private const val DEFAULT_NOTIFICATION_DURATION = 4000F
 
     @JvmStatic
-    fun sendNotification(message: String, duration: Float, action: Runnable?) {
+    fun sendNotification(message: String, duration: Float, action: Runnable?) =
         Notifications.INSTANCE.send(NAME, message, duration, action)
-    }
 
     @JvmStatic
-    fun sendNotification(message: String, action: Runnable?) {
+    fun sendNotification(message: String, action: Runnable?) =
         sendNotification(message, DEFAULT_NOTIFICATION_DURATION, action)
-    }
 
     @JvmStatic
-    fun sendNotification(message: String, time: Float) {
+    fun sendNotification(message: String, time: Float) =
         sendNotification(message, time, null)
-    }
 
     @JvmStatic
-    fun sendNotification(message: String) {
+    fun sendNotification(message: String) =
         sendNotification(message, DEFAULT_NOTIFICATION_DURATION)
-    }
 
-    private fun dulkirTrollage() {
+    private fun dulkirTrollage() =
         GuiUtils.displayScreen(PleaseMigrateDulkirModGui())
-    }
 }

@@ -22,7 +22,7 @@ public abstract class EntityPickupFXMixin {
     @Inject(method = "renderParticle", at = @At(value = "FIELD", opcode = Opcodes.GETFIELD, target = "Lnet/minecraft/client/particle/EntityPickupFX;field_174841_aA:F"))
     private void animatium$factorInEyeHeight(final WorldRenderer worldRendererIn, final Entity entityIn, final float tickDelta, final float rotationX, final float rotationZ, final float rotationYZ, final float rotationXY, final float rotationXZ, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled) {
-            if (AnimatiumSettings.oldPickup) {
+            if (AnimatiumSettings.oldPickupAnimationPosition) {
                 this.field_174841_aA = (this.field_174843_ax.getEyeHeight() / 2);
             }
 

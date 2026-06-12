@@ -20,7 +20,7 @@ public abstract class RenderSnowballMixin<T extends Entity> extends Render<T> {
 
     @ModifyArg(method = "doRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V", ordinal = 0), index = 0)
     private float animatium$fixRotationY(final float original) {
-        if (AnimatiumSettings.INSTANCE.enabled && (AnimatiumSettings.itemSprites || AnimatiumSettings.oldProjectiles)) {
+        if (AnimatiumSettings.INSTANCE.enabled && (AnimatiumSettings.itemSprites || AnimatiumSettings.oldProjectilesPosition)) {
             return original + 180.0F;
         } else {
             return original;
@@ -29,12 +29,12 @@ public abstract class RenderSnowballMixin<T extends Entity> extends Render<T> {
 
     @ModifyArg(method = "doRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V", ordinal = 1), index = 0)
     private float animatium$fixRotationX(final float original) {
-        return (AnimatiumSettings.INSTANCE.enabled && (AnimatiumSettings.itemSprites || AnimatiumSettings.oldProjectiles) ? -1F : 1F) * original;
+        return (AnimatiumSettings.INSTANCE.enabled && (AnimatiumSettings.itemSprites || AnimatiumSettings.oldProjectilesPosition) ? -1F : 1F) * original;
     }
 
     @Inject(method = "doRender", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RenderItem;renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V"))
     private void animatium$shiftProjectile(final T entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldProjectiles) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldProjectilesPosition) {
             GlStateManager.translate(0.0F, 0.25F, 0.0F);
         }
     }

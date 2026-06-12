@@ -468,8 +468,8 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Fishing Rod Line Position"
     )
     Runnable resetFishingLine = (() -> {
-        fishingLinePositionX = AnimatiumSettings.fishingRodPosition ? -0.5f : -0.36f;
+        fishingLinePositionX = AnimatiumSettings.firstPersonFishingRodPosition ? -0.5f : -0.36f;
         fishingLinePositionY = 0.03f;
-        fishingLinePositionZ = AnimatiumSettings.fishingRodPosition ? 0.8f : 0.35f;
+        fishingLinePositionZ = AnimatiumSettings.firstPersonFishingRodPosition ? 0.8f : 0.35f;
     });
 }

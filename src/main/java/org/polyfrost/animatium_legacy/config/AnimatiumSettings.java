@@ -12,36 +12,103 @@ import org.polyfrost.animatium_legacy.hooks.AnimationExportUtils;
 import org.polyfrost.animatium_legacy.hooks.PotionColors;
 
 public class AnimatiumSettings extends Config {
-    // 2D Items
+    // Item Tweaks
     @Switch(
-            name = "2D Dropped Items",
-            description = "Renders items as sprites rather than as models.",
-            subcategory = "2D Dropped Items"
+            name = "1.7 First-Person Item Positions",
+            description = "Brings back the old item positions from 1.7.",
+            subcategory = "Item Tweaks"
     )
-    public static boolean itemSprites = false;
-
-    @Checkbox(name = "1.7 Item Sprite Colors",
-            description = "Changes the colors of the dropped item sprites to be brighter just like in 1.7.",
-            subcategory = "2D Dropped Items"
-    )
-    public static boolean itemSpritesColor = false;
-
-    @Checkbox(
-            name = "Remove Glint From Sprites",
-            description = "This will disable the enchantment glint for both dropped items and projectiles. Only works with 2D items enabled.",
-            subcategory = "2D Dropped Items"
-    )
-    public static boolean spritesGlint = false;
+    public static boolean firstPersonItemPositions = true;
 
     @Switch(
-            name = "Rotation Fix",
-            description = "Allows dropped items to face the player properly without being stuck on the Y-Axis.",
-            subcategory = "2D Dropped Items"
+            name = "1.7 Third-Person Item Positions",
+            description = "Brings back the old item positions from 1.7.",
+            subcategory = "Item Tweaks"
     )
-    public static boolean rotationFix = true;
+    public static boolean thirdPersonItemPositions = true;
+
+    @Switch(
+            name = "1.7 First-Person Carpet Position",
+            description = "Brings back the old carpet position from 1.7.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean firstPersonCarpetPosition = true;
+
+    @Switch(
+            name = "1.7 Third-Person Carpet Position",
+            description = "Brings back the old carpet position from 1.7.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean thirdPersonCarpetPosition = true;
+
+    @Switch(
+            name = "1.7 Third-Person Arm Block Position",
+            description = "Brings back the old arm rotation while blocking from 1.7.",
+            subcategory = "Item Tweaks")
+    public static boolean oldArmPosition = true;
+
+    @Switch(
+            name = "1.7 Third-Person Sword Block Position",
+            description = "Brings back the old sword rotation while blocking from 1.7.",
+            subcategory = "Item Tweaks"
+    )
+    @VigilanceName(
+            name = "1.7 3rd Person Block Animation",
+            category = "Animations",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean thirdPersonBlock = true;
+
+    @Switch(
+            name = "1.7 First-Person Fishing Rod Position",
+            description = "Brings back the old fishing rod position from 1.7.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean firstPersonFishingRodPosition = true;
+
+    @Switch(
+            name = "1.7 Third-Person Fishing Rod Position",
+            description = "Brings back the old fishing rod position from 1.7.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean thirdPersonFishingRodPosition = true;
+
+    @Switch(
+            name = "1.7 Third-Person Fishing Rod Cast Texture",
+            description = "For some reason, in 1.7, when a fishing rod is cast, the third person texture becomes a stick rather than the fishing rod texture. This feature brings back that questionable feature.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean fishingRodStickCastTexture = false;
+
+    @Switch(
+            name = "1.7 Pickup Animation Position",
+            description = "Brings back the old item pickup position from 1.7.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean oldPickupAnimationPosition = true;
+
+    @Switch(
+            name = "1.7 Projectiles Positions",
+            description = "Mirrors and transforms projectiles so that they're facing the correct direction and in the same position as 1.7 or 1.9+.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean oldProjectilesPosition = true;
+
+    @Switch(
+            name = "1.7 XP Orbs Position",
+            description = "Brings back the old XP Orbs position from 1.7.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean oldXPOrbsPosition = true;
+
+    @Switch(
+            name = "1.7 Skull Sprites",
+            description = "Brings back 2D skull sprites from 1.7.",
+            subcategory = "Item Tweaks"
+    )
+    public static boolean oldSkullModels = false;
 
     // Smooth Sneaking
-
     @Switch(
             name = "1.7 Smoother Sneaking",
             description = "Smoothens the player camera to appear just like the 1.7 smoother sneaking camera.",
@@ -153,83 +220,35 @@ public class AnimatiumSettings extends Config {
     )
     public static boolean usagePunchingParticles = true;
 
-    // Positions
+    // 2D Items
     @Switch(
-            name = "1.7 First-Person Item Transformations",
-            description = "Brings back the old item positions from 1.7.",
-            subcategory = "Position"
+            name = "2D Dropped Items",
+            description = "Renders items as sprites rather than as models.",
+            subcategory = "2D Dropped Items"
     )
-    public static boolean firstPersonTransformations = true;
+    public static boolean itemSprites = false;
 
-    @Switch(
-            name = "1.7 Third-Person Item Transformations",
-            description = "Brings back the old item positions from 1.7.",
-            subcategory = "Position"
+    @Checkbox(name = "1.7 Item Sprite Colors",
+            description = "Changes the colors of the dropped item sprites to be brighter just like in 1.7.",
+            subcategory = "2D Dropped Items"
     )
-    public static boolean thirdPersonTransformations = true;
+    public static boolean itemSpritesColor = false;
 
     @Checkbox(
-            name = "1.7 First-Person Fishing Rod Position",
-            description = "Brings back the old fishing rod position from 1.7.",
-            subcategory = "Position"
+            name = "Remove Glint From Sprites",
+            description = "This will disable the enchantment glint for both dropped items and projectiles. Only works with 2D items enabled.",
+            subcategory = "2D Dropped Items"
     )
-    public static boolean fishingRodPosition = true;
-
-    @Checkbox(
-            name = "1.7 First-Person Carpet Position",
-            description = "Brings back the old carpet position from 1.7.",
-            subcategory = "Position"
-    )
-    public static boolean firstPersonCarpetPosition = true;
-
-    @Checkbox(
-            name = "1.7 Third-Person Carpet Position",
-            description = "Brings back the old carpet position from 1.7.",
-            subcategory = "Position"
-    )
-    public static boolean thirdPersonCarpetPosition = true;
+    public static boolean spritesGlint = false;
 
     @Switch(
-            name = "1.7 Projectiles Transformations",
-            description = "Mirrors and transforms projectiles so that they're facing the correct direction and in the same position as 1.7 or 1.9+.",
-            subcategory = "Position"
+            name = "Rotation Fix",
+            description = "Allows dropped items to face the player properly without being stuck on the Y-Axis.",
+            subcategory = "2D Dropped Items"
     )
-    public static boolean oldProjectiles = true;
-
-    @Switch(
-            name = "1.7 Third-Person Arm Block Position",
-            description = "Brings back the old arm rotation while blocking from 1.7.",
-            subcategory = "Position")
-    public static boolean oldArmPosition = true;
-
-    @Switch(
-            name = "1.7 Third-Person Sword Block Position",
-            description = "Brings back the old sword rotation while blocking from 1.7.",
-            subcategory = "Position"
-    )
-    @VigilanceName(
-            name = "1.7 3rd Person Block Animation",
-            category = "Animations",
-            subcategory = "Position"
-    )
-    public static boolean thirdPersonBlock = true;
-
-    @Switch(
-            name = "1.7 XP Orbs Position",
-            description = "Brings back the old XP Orbs position from 1.7.",
-            subcategory = "Position"
-    )
-    public static boolean oldXPOrbs = true;
-
-    @Switch(
-            name = "1.7 Pickup Animation Position",
-            description = "Brings back the old item pickup position from 1.7.",
-            subcategory = "Position"
-    )
-    public static boolean oldPickup = true;
+    public static boolean rotationFix = true;
 
     // Enchantment Glint
-
     @Switch(
             name = "1.7 Enchantment Glint",
             description = "Brings back the old enchantment glint from 1.7.",
@@ -269,22 +288,6 @@ public class AnimatiumSettings extends Config {
 //            subcategory = "Enchantment Glint"
 //    )
 //    public static boolean oldPotionsGui = false;
-
-    // Item Changes
-
-//    @Switch(
-//            name = "1.7 Skulls",
-//            description = "Displays skulls as a 2D sprite rather than a 3D model, like in 1.7.",
-//            subcategory = "Item Changes"
-//    )
-//    public static boolean oldSkulls = false;
-
-    @Switch(
-            name = "1.7 Third-Person Fishing Rod Cast Texture",
-            description = "For some reason, in 1.7, when a fishing rod is cast, the third person texture becomes a stick rather than the fishing rod texture. This feature brings back that questionable feature.",
-            subcategory = "Item Changes"
-    )
-    public static boolean fishingStick = false;
 
     // HUD
     @Switch(
@@ -828,7 +831,7 @@ public class AnimatiumSettings extends Config {
     public static final AnimatiumSettings INSTANCE = new AnimatiumSettings();
 
     public AnimatiumSettings() {
-        super(new Mod(Animatium.NAME, ModType.PVP, "/" + Animatium.MODID + "_dark.svg", new VigilanceMigrator("./config/sk1eroldanimations.toml")), Animatium.MODID + ".json");
+        super(new Mod(Animatium.NAME, ModType.PVP, "/" + Animatium.MOD_ID + "_dark.svg", new VigilanceMigrator("./config/sk1eroldanimations.toml")), Animatium.MOD_ID + ".json");
         initialize();
 
         addListener("modernPotColors", PotionColors::reloadColor);

@@ -41,7 +41,7 @@ public abstract class ItemRendererMixin {
     private static float animatium$swingProgress = 0.0F;
 
     @ModifyVariable(method = "renderItemInFirstPerson", at = @At(value = "STORE"), name = "f1")
-    private float animatium$captureF1(final float original) {
+    private float animatium$captureSwingProgress(final float original) {
         animatium$swingProgress = original;
         return original;
     }
@@ -64,7 +64,7 @@ public abstract class ItemRendererMixin {
 
     @Inject(method = "doBowTransformations", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;scale(FFF)V"))
     private void animatium$preBowTransform(final float tickDelta, final AbstractClientPlayer clientPlayer, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstPersonTransformations && !AnimatiumSettings.lunarPositions) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstPersonItemPositions && !AnimatiumSettings.lunarPositions) {
             GlStateManager.rotate(-335.0F, 0.0F, 0.0F, 1.0F);
             GlStateManager.rotate(-50.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.translate(0.0F, 0.5F, 0.0F);
@@ -73,7 +73,7 @@ public abstract class ItemRendererMixin {
 
     @Inject(method = "doBowTransformations", at = @At(value = "TAIL"))
     private void animatium$postBowTransform(final float tickDelta, final AbstractClientPlayer clientPlayer, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstPersonTransformations && !AnimatiumSettings.lunarPositions) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.firstPersonItemPositions && !AnimatiumSettings.lunarPositions) {
             GlStateManager.translate(0.0F, -0.5F, 0.0F);
             GlStateManager.rotate(50.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.rotate(335.0F, 0.0F, 0.0F, 1.0F);
@@ -83,10 +83,10 @@ public abstract class ItemRendererMixin {
     @Inject(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;renderItem(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V"))
     private void animatium$firstPersonItemPositions(final float tickDelta, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && !AnimatiumSettings.lunarPositions && !itemRenderer.shouldRenderItemIn3D(itemToRender)) {
-            if ((AnimatiumSettings.fishingRodPosition && itemToRender.getItem().shouldRotateAroundWhenRendering())) {
+            if ((AnimatiumSettings.firstPersonFishingRodPosition && itemToRender.getItem().shouldRotateAroundWhenRendering())) {
                 GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 animatium$applyItemTransforms();
-            } else if (AnimatiumSettings.firstPersonTransformations && !(itemToRender.getItem() instanceof ItemSword && AnimatiumSettings.lunarBlockhit)) {
+            } else if (AnimatiumSettings.firstPersonItemPositions && !(itemToRender.getItem() instanceof ItemSword && AnimatiumSettings.lunarBlockhit)) {
                 animatium$applyItemTransforms();
             }
         }

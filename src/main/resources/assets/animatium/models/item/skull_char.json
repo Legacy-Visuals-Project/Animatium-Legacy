@@ -1,7 +1,7 @@
 {
-	"parent": "builtin/generated",
+	"parent": "minecraft:builtin/generated",
 	"textures": {
-		"layer0": "items/skull_steve"
+		"layer0": "animatium:items/skull_steve"
 	},
 	"display": {
 		"thirdperson": {

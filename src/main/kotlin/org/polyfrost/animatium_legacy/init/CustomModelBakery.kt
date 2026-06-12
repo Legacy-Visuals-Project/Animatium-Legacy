@@ -9,11 +9,10 @@ import net.minecraftforge.client.event.TextureStitchEvent
 import net.minecraftforge.client.model.IModel
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.client.model.ModelLoaderRegistry
-import net.minecraftforge.common.MinecraftForge
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.polyfrost.animatium_legacy.Animatium
 
-enum class CustomModelBakery(modelPath: String) {
+enum class CustomModelBakery(path: String) {
     BOTTLE_OVERLAY("item/bottle_overlay"),
     BOTTLE_DRINKABLE_EMPTY("item/bottle_drinkable_empty"),
     BOTTLE_SPLASH_EMPTY("item/bottle_splash_empty"),
@@ -23,14 +22,14 @@ enum class CustomModelBakery(modelPath: String) {
     SKULL_WITHER("item/skull_wither"),
     SKULL_ZOMBIE("item/skull_zombie");
 
-    private val resourceLocation = ResourceLocation(Animatium.MODID, modelPath)
+    private val location = ResourceLocation(Animatium.MOD_ID, path)
     private lateinit var loadedModel: IModel
     lateinit var bakedModel: IBakedModel
         private set
 
     private fun stitch(map: TextureMap) {
-        loadedModel =
-            ModelLoaderRegistry.getModel(resourceLocation).apply { textures.forEach { map.registerSprite(it) } }
+        loadedModel = ModelLoaderRegistry.getMissingModel()
+//            ModelLoaderRegistry.getModel(location).apply { textures.forEach { map.registerSprite(it) } }
     }
 
     private fun bake() {
@@ -39,10 +38,6 @@ enum class CustomModelBakery(modelPath: String) {
     }
 
     companion object {
-        init {
-            MinecraftForge.EVENT_BUS.register(this)
-        }
-
         @SubscribeEvent
         fun onStitch(event: TextureStitchEvent.Pre) {
             CustomModelBakery.entries.forEach { it.stitch(event.map) }

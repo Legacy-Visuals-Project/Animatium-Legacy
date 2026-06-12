@@ -27,7 +27,7 @@ public abstract class RenderFishMixin {
             double xCoord = vec3.xCoord;
             double yCoord = vec3.yCoord;
             double zCoord = vec3.zCoord;
-            if (AnimatiumSettings.fishingRodPosition && !AnimatiumSettings.fixRod) {
+            if (AnimatiumSettings.firstPersonFishingRodPosition && !AnimatiumSettings.fixRod) {
                 xCoord = -0.5D + (isParallaxOffset ? -0.1D : 0.0D);
                 yCoord = 0.03D;
                 zCoord = 0.8D;
@@ -51,7 +51,7 @@ public abstract class RenderFishMixin {
 
     @ModifyConstant(method = "doRender(Lnet/minecraft/entity/projectile/EntityFishHook;DDDFF)V", constant = @Constant(doubleValue = 0.8D))
     private double animatium$moveLinePosition(final double constant) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fishingStick) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fishingRodStickCastTexture) {
             return 0.85D;
         } else {
             return constant;

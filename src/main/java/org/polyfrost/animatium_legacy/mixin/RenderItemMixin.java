@@ -118,14 +118,14 @@ public abstract class RenderItemMixin {
             }
 
             if (cameraTransformType == ItemCameraTransforms.TransformType.FIRST_PERSON && !AnimatiumSettings.lunarPositions) {
-                if (AnimatiumSettings.fishingRodPosition && isRod) {
+                if (AnimatiumSettings.firstPersonFishingRodPosition && isRod) {
                     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                     GlStateManager.rotate(50.0F, 0.0F, 0.0F, 1.0F);
-                } else if (AnimatiumSettings.firstPersonTransformations && AnimatiumSettings.firstPersonCarpetPosition && isCarpet) {
+                } else if (AnimatiumSettings.firstPersonItemPositions && AnimatiumSettings.firstPersonCarpetPosition && isCarpet) {
                     GlStateManager.translate(0.0F, -5.25F * 0.0625F, 0.0F);
                 }
-            } else if (AnimatiumSettings.thirdPersonTransformations && cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && (this.animatium$entityLivingBase instanceof EntityPlayer || !AnimatiumSettings.disableEntityItemTransforms)) {
-                if (isRod) {
+            } else if (AnimatiumSettings.thirdPersonItemPositions && cameraTransformType == ItemCameraTransforms.TransformType.THIRD_PERSON && (this.animatium$entityLivingBase instanceof EntityPlayer || !AnimatiumSettings.disableEntityItemTransforms)) {
+                if (AnimatiumSettings.thirdPersonFishingRodPosition && isRod) {
                     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                     GlStateManager.rotate(110.0F, 0.0F, 0.0F, 1.0F);
                     GlStateManager.translate(0.002F, 0.037F, -0.003F);

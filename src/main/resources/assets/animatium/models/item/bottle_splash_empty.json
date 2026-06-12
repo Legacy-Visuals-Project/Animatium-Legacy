@@ -1,7 +1,7 @@
 {
-	"parent": "builtin/generated",
+	"parent": "minecraft:builtin/generated",
 	"textures": {
-		"layer0": "items/potion_bottle_splash"
+		"layer0": "minecraft:items/potion_bottle_splash"
 	},
 	"display": {
 		"thirdperson": {

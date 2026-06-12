@@ -50,7 +50,7 @@ public abstract class LayerHeldItemMixin {
 
     @Redirect(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
     private Item animatium$replaceStack(final ItemStack instance) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fishingStick) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fishingRodStickCastTexture) {
             return this.animatium$stack.getItem();
         } else {
             return instance.getItem();
@@ -67,7 +67,7 @@ public abstract class LayerHeldItemMixin {
                 GlStateManager.rotate(-60.0F, 0.0F, 0.0F, 1.0F);
             }
 
-            if (AnimatiumSettings.thirdPersonTransformations && (entitylivingbaseIn instanceof EntityPlayer || !AnimatiumSettings.disableEntityItemTransforms) && !Minecraft.getMinecraft().getRenderItem().shouldRenderItemIn3D(stack) && !(stack.getItem() instanceof ItemSkull || stack.getItem() instanceof ItemBanner)) {
+            if (AnimatiumSettings.thirdPersonItemPositions && (entitylivingbaseIn instanceof EntityPlayer || !AnimatiumSettings.disableEntityItemTransforms) && !Minecraft.getMinecraft().getRenderItem().shouldRenderItemIn3D(stack) && !(stack.getItem() instanceof ItemSkull || stack.getItem() instanceof ItemBanner)) {
                 float scale = 1.5F * 0.625F;
                 if (item instanceof ItemBow) {
                     GlStateManager.rotate(-12.0F, 0.0f, 1.0f, 0.0f);
@@ -79,7 +79,7 @@ public abstract class LayerHeldItemMixin {
                     GlStateManager.translate(0.022F, -0.01F, -0.108F);
                     GlStateManager.scale(scale, scale, scale);
                 } else if (item.isFull3D()) {
-                    if (item.shouldRotateAroundWhenRendering()) {
+                    if (AnimatiumSettings.thirdPersonFishingRodPosition && item.shouldRotateAroundWhenRendering()) {
                         GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
                     }
 
@@ -102,7 +102,7 @@ public abstract class LayerHeldItemMixin {
 
     @ModifyArg(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;renderItem(Lnet/minecraft/entity/EntityLivingBase;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemCameraTransforms$TransformType;)V"))
     private ItemStack animatium$replaceStack2(final ItemStack heldStack) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fishingStick) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fishingRodStickCastTexture) {
             return this.animatium$stack;
         } else {
             return heldStack;

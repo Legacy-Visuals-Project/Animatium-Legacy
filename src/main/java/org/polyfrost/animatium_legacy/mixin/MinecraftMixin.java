@@ -74,8 +74,8 @@ public abstract class MinecraftMixin {
 
     @Inject(method = "clickMouse", at = @At(value = "TAIL"))
     private void animatium$onHitParticles(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fakeMissPenaltySwing && this.leftClickCounter > 0) {
-            if (this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && !this.objectMouseOver.entityHit.hitByEntity(thePlayer) && this.objectMouseOver.entityHit instanceof EntityLivingBase) {
+        if (AnimatiumSettings.INSTANCE.enabled && this.leftClickCounter > 0) {
+            if (AnimatiumSettings.fakeMissPenaltyParticles && this.objectMouseOver != null && this.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY && !this.objectMouseOver.entityHit.hitByEntity(thePlayer) && this.objectMouseOver.entityHit instanceof EntityLivingBase) {
                 if (this.thePlayer.fallDistance > 0.0F && !this.thePlayer.onGround && !this.thePlayer.isOnLadder() && !this.thePlayer.isInWater() && !this.thePlayer.isPotionActive(Potion.blindness) && this.thePlayer.ridingEntity == null) {
                     this.thePlayer.onCriticalHit(this.objectMouseOver.entityHit);
                 }
@@ -85,7 +85,9 @@ public abstract class MinecraftMixin {
                 }
             }
 
-            SwingHook.swingItem();
+            if (AnimatiumSettings.fakeMissPenaltySwing) {
+                SwingHook.swingItem();
+            }
         }
     }
 

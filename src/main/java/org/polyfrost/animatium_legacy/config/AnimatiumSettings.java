@@ -154,11 +154,18 @@ public class AnimatiumSettings extends Config {
     public static boolean oldBlockhitting = true;
 
     @Switch(
-            name = "1.7 Miss Penalty Swing Animation",
-            description = "This option is purely visual. During the miss penalty, the player's arm will still swing and show particles just like in 1.7.",
+            name = "1.7 Miss Penalty Swing",
+            description = "This option is purely visual. During the miss penalty, the player's arm will still swing just like in 1.7.",
             subcategory = "Interaction"
     )
     public static boolean fakeMissPenaltySwing = true;
+
+    @Switch(
+            name = "1.7 Miss Penalty Particles",
+            description = "This option is purely visual. During the miss penalty, it will show how particles just like in 1.7.",
+            subcategory = "Interaction"
+    )
+    public static boolean fakeMissPenaltyParticles = true;
 
     @Switch(
             name = "1.7 Punching During Usage",

@@ -17,7 +17,7 @@ public abstract class ItemPotionMixin {
     @Inject(method = "getColorFromItemStack", at = @At("HEAD"), cancellable = true)
     private void animatium$allowPotColors(final ItemStack stack, final int renderPass, final CallbackInfoReturnable<Integer> cir) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.coloredBottles) {
-            cir.setReturnValue(getColorFromDamage(stack.getMetadata()));
+            cir.setReturnValue(this.getColorFromDamage(stack.getMetadata()));
         }
     }
 }

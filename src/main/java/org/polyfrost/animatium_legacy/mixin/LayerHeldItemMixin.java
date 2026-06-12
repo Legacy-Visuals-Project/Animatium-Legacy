@@ -29,6 +29,13 @@ public abstract class LayerHeldItemMixin {
         this.animatium$stack = entitylivingbaseIn.getHeldItem();
     }
 
+    @Inject(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
+    private void animatium$changeItemToStick(final EntityLivingBase entitylivingbaseIn, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
+        if (entitylivingbaseIn instanceof EntityPlayer && ((EntityPlayer) entitylivingbaseIn).fishEntity != null) {
+            this.animatium$stack = new ItemStack(Items.stick, 0);
+        }
+    }
+
     @Inject(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/model/ModelBiped;postRenderArm(F)V"))
     private void animatium$applyOldSneaking(final EntityLivingBase entitylivingbaseIn, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && entitylivingbaseIn.isSneaking()) {
@@ -39,13 +46,6 @@ public abstract class LayerHeldItemMixin {
     @Redirect(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;isSneaking()Z"))
     private boolean animatium$cancelNewSneaking(final EntityLivingBase instance) {
         return !AnimatiumSettings.INSTANCE.enabled && instance.isSneaking();
-    }
-
-    @Inject(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))
-    private void animatium$changeItemToStick(final EntityLivingBase entitylivingbaseIn, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
-        if (entitylivingbaseIn instanceof EntityPlayer && ((EntityPlayer) entitylivingbaseIn).fishEntity != null) {
-            this.animatium$stack = new ItemStack(Items.stick, 0);
-        }
     }
 
     @Redirect(method = "doRenderLayer", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;getItem()Lnet/minecraft/item/Item;"))

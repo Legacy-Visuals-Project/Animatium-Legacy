@@ -459,7 +459,7 @@ public class AnimatiumSettings extends Config {
             category = "Misc", subcategory = "Fishing Rod Line",
             instant = true
     )
-    public float rodThickness = 0.0F;
+    public float rodThickness = 1.0F;
 
     @Switch(
             name = "Block Breaking Fixes",

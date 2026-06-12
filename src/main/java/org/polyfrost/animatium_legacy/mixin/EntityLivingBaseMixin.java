@@ -29,7 +29,7 @@ public abstract class EntityLivingBaseMixin extends Entity {
     public abstract PotionEffect getActivePotionEffect(final Potion potion);
 
     @Shadow
-    protected abstract float updateDistance(final float p_110146_1_, final float p_110146_2_);
+    protected abstract float updateDistance(final float yaw, final float pitch);
 
     @Shadow
     public float swingProgress;
@@ -67,10 +67,10 @@ public abstract class EntityLivingBaseMixin extends Entity {
         final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         if (settings.enabled && AnimatiumSettings.globalPositions) {
             int length = 6;
-            if (isPotionActive(Potion.digSpeed) && !AnimatiumSettings.ignoreHaste) {
+            if (!AnimatiumSettings.ignoreHaste && isPotionActive(Potion.digSpeed)) {
                 length -= (1 + getActivePotionEffect(Potion.digSpeed).getAmplifier());
                 cir.setReturnValue(Math.max((int) (length * Math.exp(-settings.itemSwingSpeedHaste)), 1));
-            } else if (isPotionActive(Potion.digSlowdown) && !AnimatiumSettings.ignoreFatigue) {
+            } else if (!AnimatiumSettings.ignoreFatigue && isPotionActive(Potion.digSlowdown)) {
                 length += (1 + getActivePotionEffect(Potion.digSlowdown).getAmplifier()) * 2;
                 cir.setReturnValue(Math.max((int) (length * Math.exp(-settings.itemSwingSpeedFatigue)), 1));
             } else {

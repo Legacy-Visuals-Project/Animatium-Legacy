@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerControllerMP.class)
-public abstract class PlayerControllerMPMixin {
+public abstract class   PlayerControllerMPMixin {
     @Shadow
     protected abstract boolean isHittingPosition(final BlockPos pos);
 

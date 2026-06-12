@@ -25,15 +25,15 @@ public abstract class GuiIngameForgeMixin extends GuiIngame {
 
     @Redirect(method = "renderHUDText", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/FontRenderer;drawString(Ljava/lang/String;III)I"))
     private int animatium$removeShadow(final FontRenderer fontRenderer, final String text, final int x, final int y, final int color) {
-        return fontRenderer.drawString(
-                text,
-                x, y,
-                color,
-                AnimatiumSettings.INSTANCE.enabled && !AnimatiumSettings.INSTANCE.debugScreenMode().hasBackground());
+        if (AnimatiumSettings.INSTANCE.enabled) {
+            return fontRenderer.drawString(text, x, y, color, !AnimatiumSettings.INSTANCE.debugScreenMode().hasBackground());
+        } else {
+            return fontRenderer.drawString(text, x, y, color);
+        }
     }
 
     @ModifyVariable(method = "renderHealth", at = @At(value = "LOAD", ordinal = 1), remap = false, name = "highlight")
     private boolean animatium$cancelFlash(final boolean original) {
-        return (!AnimatiumSettings.oldHealth || !AnimatiumSettings.INSTANCE.enabled) && original;
+        return (!AnimatiumSettings.INSTANCE.enabled || !AnimatiumSettings.oldHealth) && original;
     }
 }

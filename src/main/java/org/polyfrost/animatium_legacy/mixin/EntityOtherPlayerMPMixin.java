@@ -11,16 +11,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = EntityOtherPlayerMP.class, priority = 980)
 public abstract class EntityOtherPlayerMPMixin extends EntityLivingBaseMixin {
-    public EntityOtherPlayerMPMixin(final World worldIn) {
-        super(worldIn);
+    public EntityOtherPlayerMPMixin(final World world) {
+        super(world);
     }
 
     @Inject(method = "onLivingUpdate", at = @At("HEAD"))
     private void animatium$updateHeadYaw(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.headYawFix && animatium$headYawLerpWeight > 0) {
-            rotationYawHead += MathHelper.wrapAngleTo180_float(animatium$newHeadYaw - rotationYawHead) / animatium$headYawLerpWeight;
-            rotationYawHead = MathHelper.wrapAngleTo180_float(rotationYawHead);
-            animatium$headYawLerpWeight--;
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.headYawFix && this.animatium$headYawLerpWeight > 0) {
+            this.rotationYawHead += MathHelper.wrapAngleTo180_float(this.animatium$newHeadYaw - this.rotationYawHead) / this.animatium$headYawLerpWeight;
+            this.rotationYawHead = MathHelper.wrapAngleTo180_float(this.rotationYawHead);
+            this.animatium$headYawLerpWeight--;
         }
     }
 }

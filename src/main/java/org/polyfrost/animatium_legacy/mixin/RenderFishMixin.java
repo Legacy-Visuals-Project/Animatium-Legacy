@@ -70,7 +70,7 @@ public abstract class RenderFishMixin {
     @Inject(method = "doRender(Lnet/minecraft/entity/projectile/EntityFishHook;DDDFF)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/WorldRenderer;begin(ILnet/minecraft/client/renderer/vertex/VertexFormat;)V", ordinal = 1))
     private void animatium$modifyLineThickness(final EntityFishHook entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled) {
-            GL11.glLineWidth(AnimatiumSettings.INSTANCE.rodThickness + 1.0F);
+            GL11.glLineWidth(AnimatiumSettings.INSTANCE.rodThickness);
         }
     }
 }

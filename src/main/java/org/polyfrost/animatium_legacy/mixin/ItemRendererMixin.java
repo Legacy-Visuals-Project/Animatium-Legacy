@@ -93,15 +93,15 @@ public abstract class ItemRendererMixin {
     }
 
     @Redirect(method = "renderItemInFirstPerson", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemRenderer;rotateWithPlayerRotations(Lnet/minecraft/client/entity/EntityPlayerSP;F)V"))
-    private void animatium$removeRotations(final ItemRenderer instance, final EntityPlayerSP entityPlayerSP, final float tickDelta) {
-        if (!AnimatiumSettings.oldItemRotations || !AnimatiumSettings.INSTANCE.enabled) {
-            this.rotateWithPlayerRotations(entityPlayerSP, tickDelta);
+    private void animatium$removeRotations(final ItemRenderer instance, final EntityPlayerSP player, final float tickDelta) {
+        if (!AnimatiumSettings.INSTANCE.enabled || !AnimatiumSettings.oldItemRotations) {
+            this.rotateWithPlayerRotations(player, tickDelta);
         }
     }
 
     @Unique
     private static void animatium$applyItemTransforms() {
-        final float scale = 1.5F / 1.7F;
+        final float scale = 0.8823529411764706F;
         GlStateManager.scale(scale, scale, scale);
         GlStateManager.rotate(5.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.translate(-0.29F, 0.149F, -0.0328F);
@@ -112,15 +112,8 @@ public abstract class ItemRendererMixin {
         return AnimatiumSettings.INSTANCE.enabled ? AnimatiumSettings.INSTANCE.reequipSpeed : original;
     }
 
-    @Inject(method = "resetEquippedProgress", at = @At(value = "HEAD"), cancellable = true)
-    private void animatium$disableReEquip1(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode() == ItemSwitchMode.DISABLED) {
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "resetEquippedProgress2", at = @At(value = "HEAD"), cancellable = true)
-    private void animatium$disableReEquip2(final CallbackInfo ci) {
+    @Inject(method = {"resetEquippedProgress", "resetEquippedProgress2"}, at = @At(value = "HEAD"), cancellable = true)
+    private void animatium$disableReEquip(final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.itemSwitchMode() == ItemSwitchMode.DISABLED) {
             ci.cancel();
         }

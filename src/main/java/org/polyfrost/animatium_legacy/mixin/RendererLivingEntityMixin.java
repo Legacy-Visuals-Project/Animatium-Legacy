@@ -34,20 +34,20 @@ public abstract class RendererLivingEntityMixin<T extends EntityLivingBase> exte
     }
 
     @Inject(method = "rotateCorpse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;rotate(FFFF)V", shift = At.Shift.AFTER))
-    private void animatium$rotateCorpse(final T bat, final float p_77043_2_, final float p_77043_3_, final float partialTicks, final CallbackInfo ci) {
-        final boolean isLocalPlayer = bat.getName().equals(Minecraft.getMinecraft().thePlayer.getName());
+    private void animatium$rotateCorpse(final T entity, final float p_77043_2_, final float p_77043_3_, final float partialTicks, final CallbackInfo ci) {
+        final boolean isLocalPlayer = entity.getName().equals(Minecraft.getMinecraft().thePlayer.getName());
         if (AnimatiumSettings.INSTANCE.enabled) {
             if (AnimatiumSettings.dinnerBoneMode && isLocalPlayer) {
-                animatium$dinnerboneRotation(bat);
+                animatium$dinnerboneRotation(entity);
             } else if (AnimatiumSettings.dinnerBoneModeEntities && !isLocalPlayer) {
-                animatium$dinnerboneRotation(bat);
+                animatium$dinnerboneRotation(entity);
             }
         }
     }
 
     @Unique
     private static void animatium$dinnerboneRotation(final EntityLivingBase entity) {
-        GlStateManager.translate(0.0f, entity.height + 0.1f, 0.0f);
-        GlStateManager.rotate(180.0f, 0.0f, 0.0f, 1.0f);
+        GlStateManager.translate(0.0F, entity.height + 0.1F, 0.0F);
+        GlStateManager.rotate(180.0F, 0.0F, 0.0F, 1.0F);
     }
 }

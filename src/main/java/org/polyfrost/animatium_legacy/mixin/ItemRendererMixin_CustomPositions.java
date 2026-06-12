@@ -22,8 +22,7 @@ public abstract class ItemRendererMixin_CustomPositions {
 
     @Inject(method = "transformFirstPersonItem(FF)V", at = @At("HEAD"), cancellable = true)
     private void animatium$itemTransform(final float equipProgress, final float swingProgress, final CallbackInfo ci) {
-        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        if (settings.enabled) {
+        if (AnimatiumSettings.INSTANCE.enabled) {
             final Item item = this.itemToRender.getItem();
             if (AnimatiumSettings.lunarPositions && item != null) {
                 if (item instanceof ItemSword) {
@@ -47,6 +46,7 @@ public abstract class ItemRendererMixin_CustomPositions {
             }
 
             if (AnimatiumSettings.globalPositions) {
+                final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
                 GlStateManager.translate(0.56f * (1.0F + settings.itemPositionX), -0.52f * (1.0F - settings.itemPositionY), -0.72f * (1.0F + settings.itemPositionZ));
                 GlStateManager.translate(0.0f, equipProgress * -0.6f, 0.0f);
                 GlStateManager.rotate(settings.itemRotationPitch, 1.0f, 0.0f, 0.0f);

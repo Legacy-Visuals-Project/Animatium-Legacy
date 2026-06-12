@@ -55,14 +55,10 @@ public abstract class RendererLivingEntityMixin<T extends EntityLivingBase> exte
             float f2 = f1 - f;
             float f7 = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * tickDelta;
             float f8 = handleRotationFloat(entity, tickDelta);
-            float f5 = entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * tickDelta;
+            float f5 = Math.min(entity.prevLimbSwingAmount + (entity.limbSwingAmount - entity.prevLimbSwingAmount) * tickDelta, 1.0F);
             float f6 = entity.limbSwing - entity.limbSwingAmount * (1.0f - tickDelta);
             if (entity.isChild()) {
                 f6 *= 3.0f;
-            }
-
-            if (f5 > 1.0f) {
-                f5 = 1.0f;
             }
 
             final boolean hurt = entity.hurtTime > 0 || entity.deathTime > 0;

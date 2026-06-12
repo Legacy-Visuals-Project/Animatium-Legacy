@@ -58,12 +58,14 @@ loom {
             }
         }
     }
+
     // Configures the mixins if we are building for forge, useful for when we are dealing with cross-platform projects.
     if (project.platform.isForge) {
         forge {
             mixinConfig("mixins.${mod_id}.json")
         }
     }
+
     // Configures the name of the mixin "refmap" using an experimental loom api.
     mixin.defaultRefmapName.set("mixins.${mod_id}.refmap.json")
 }

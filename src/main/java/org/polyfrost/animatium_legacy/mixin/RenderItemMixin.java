@@ -157,34 +157,38 @@ public abstract class RenderItemMixin {
     @Redirect(method = "renderItemIntoGUI", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/ItemModelMesher;getItemModel(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/client/resources/model/IBakedModel;"))
     private IBakedModel animatium$rodBowModelTexture(final ItemModelMesher instance, final ItemStack stack) {
         final EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.rodBowGuiFix && player != null) {
-            final Item item = stack.getItem();
-            if (stack == player.getHeldItem()) {
-                ModelResourceLocation location = null;
-
-                final int itemInUseTicks = player.getItemInUseCount();
-                if (item instanceof ItemBow && player.getItemInUse() != null) {
-                    final int ticks = stack.getMaxItemUseDuration() - itemInUseTicks;
-                    if (ticks >= 18) {
-                        location = animatium$inventoryModel("bow_pulling_2");
-                    } else if (ticks > 13) {
-                        location = animatium$inventoryModel("bow_pulling_1");
-                    } else if (ticks > 0) {
-                        location = animatium$inventoryModel("bow_pulling_0");
-                    }
-                } else if (item instanceof ItemFishingRod && player.fishEntity != null) {
-                    location = animatium$inventoryModel("fishing_rod_cast");
-                } else {
-                    location = item.getModel(stack, player, itemInUseTicks);
-                }
-
-                if (location != null) {
-                    return instance.getModelManager().getModel(location);
-                }
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.rodBowGuiFix && player != null && stack == player.getHeldItem()) {
+            final ModelResourceLocation location = animatium$getUsageLocation(player, stack);
+            if (location != null) {
+                return instance.getModelManager().getModel(location);
             }
         }
 
         return instance.getItemModel(stack);
+    }
+
+    @Unique
+    private static ModelResourceLocation animatium$getUsageLocation(final EntityPlayer player, final ItemStack stack) {
+        ModelResourceLocation location = null;
+
+        final Item item = stack.getItem();
+        final int itemInUseTicks = player.getItemInUseCount();
+        if (item instanceof ItemBow && player.getItemInUse() != null) {
+            final int ticks = stack.getMaxItemUseDuration() - itemInUseTicks;
+            if (ticks >= 18) {
+                location = animatium$inventoryModel("bow_pulling_2");
+            } else if (ticks > 13) {
+                location = animatium$inventoryModel("bow_pulling_1");
+            } else if (ticks > 0) {
+                location = animatium$inventoryModel("bow_pulling_0");
+            }
+        } else if (item instanceof ItemFishingRod && player.fishEntity != null) {
+            location = animatium$inventoryModel("fishing_rod_cast");
+        } else {
+            location = item.getModel(stack, player, itemInUseTicks);
+        }
+
+        return location;
     }
 
     @Unique

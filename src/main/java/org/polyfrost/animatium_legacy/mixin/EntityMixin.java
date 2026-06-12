@@ -1,6 +1,7 @@
 package org.polyfrost.animatium_legacy.mixin;
 
-import cc.polyfrost.oneconfig.libs.universal.UMinecraft;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,10 +23,11 @@ public abstract class EntityMixin {
 
     @Inject(method = "setVelocity", at = @At("HEAD"))
     private void directionalHurtCam(final double x, final double y, final double z, final CallbackInfo ci) {
-        if (AnimatiumSettings.damageTilt && (Object) this == UMinecraft.getPlayer()) {
-            final float result = (float) (Math.atan2(z - motionZ, x - motionX) * (180D / Math.PI) - (double) rotationYaw);
+        final EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.damageTilt && (Object) this == player) {
+            final float result = (float) (Math.atan2(z - this.motionZ, x - this.motionX) * (180D / Math.PI) - (double) this.rotationYaw);
             if (Float.isFinite(result)) {
-                UMinecraft.getPlayer().attackedAtYaw = result;
+                player.attackedAtYaw = result;
             }
         }
     }

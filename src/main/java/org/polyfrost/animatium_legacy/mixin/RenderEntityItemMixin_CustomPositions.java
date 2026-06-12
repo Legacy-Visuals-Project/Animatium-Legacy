@@ -15,8 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class RenderEntityItemMixin_CustomPositions {
     @Inject(method = "func_177077_a", at = @At("TAIL"))
     private void animatium$droppedItemTransforms(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_, CallbackInfoReturnable<Integer> cir) {
-        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        if (settings.enabled && AnimatiumSettings.globalPositions) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.globalPositions) {
             final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
             GlStateManager.translate(advanced.droppedPositionX, advanced.droppedPositionY, advanced.droppedPositionZ);
             GlStateManager.rotate(advanced.droppedRotationPitch, 1.0f, 0.0f, 0.0f);

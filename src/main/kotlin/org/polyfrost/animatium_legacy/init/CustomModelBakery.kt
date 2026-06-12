@@ -12,24 +12,24 @@ import net.minecraftforge.client.model.ModelLoaderRegistry
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import org.polyfrost.animatium_legacy.Animatium
 
-enum class CustomModelBakery(path: String) {
-    BOTTLE_OVERLAY("item/bottle_overlay"),
-    BOTTLE_DRINKABLE_EMPTY("item/bottle_drinkable_empty"),
-    BOTTLE_SPLASH_EMPTY("item/bottle_splash_empty"),
-    SKULL_CHAR("item/skull_char"),
-    SKULL_CREEPER("item/skull_creeper"),
-    SKULL_SKELETON("item/skull_skeleton"),
-    SKULL_WITHER("item/skull_wither"),
-    SKULL_ZOMBIE("item/skull_zombie");
+enum class CustomModelBakery(name: String) {
+    BOTTLE_OVERLAY("bottle_overlay"),
+    BOTTLE_DRINKABLE_EMPTY("bottle_drinkable_empty"),
+    BOTTLE_SPLASH_EMPTY("bottle_splash_empty"),
+    SKULL_CHAR("skull_char"),
+    SKULL_CREEPER("skull_creeper"),
+    SKULL_SKELETON("skull_skeleton"),
+    SKULL_WITHER("skull_wither"),
+    SKULL_ZOMBIE("skull_zombie");
 
-    private val location = ResourceLocation(Animatium.MOD_ID, path)
+    private val modelLocation = ResourceLocation(Animatium.MOD_ID, "item/$name")
     private lateinit var loadedModel: IModel
     lateinit var bakedModel: IBakedModel
         private set
 
     private fun stitch(map: TextureMap) {
-        loadedModel = ModelLoaderRegistry.getMissingModel()
-//            ModelLoaderRegistry.getModel(location).apply { textures.forEach { map.registerSprite(it) } }
+        loadedModel =
+            ModelLoaderRegistry.getModel(modelLocation).apply { textures.forEach { map.registerSprite(it) } }
     }
 
     private fun bake() {

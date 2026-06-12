@@ -5,6 +5,7 @@
 	"refmap": "mixins.${id}.refmap.json",
 	"verbose": true,
 	"client": [
+		"DefaultResourcePackMixin",
 		"EntityLivingBaseMixin",
 		"EntityMixin",
 		"EntityOtherPlayerMPMixin",

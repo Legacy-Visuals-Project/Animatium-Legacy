@@ -365,7 +365,7 @@ public class AnimatiumSettings extends Config {
             description = "Back-ports the 1.15 walking animation.",
             category = "Misc", subcategory = "Modern"
     )
-    public static boolean modernMovement = true;
+    public static boolean dontRotateBackwardsWalking = true;
 
     @Switch(
             name = "1.14+ View Bobbing",

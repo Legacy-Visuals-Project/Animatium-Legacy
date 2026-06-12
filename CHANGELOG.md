@@ -11,3 +11,4 @@
 - Removed block breaking stop-age when using a item as it caused issues (flagged anti-cheats)
 - Fix "1.15+ Item Drop Swing" setting functionality & Remove now un-needed fix setting
 - Fixed usage swinging without a item (Logic now matches modern Animatium)
+- Fix "1.15+ Backwards Walk Animation" applying even when mod is disabled

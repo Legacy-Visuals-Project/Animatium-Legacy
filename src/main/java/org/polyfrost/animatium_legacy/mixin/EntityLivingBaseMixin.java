@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -29,10 +29,10 @@ public abstract class EntityLivingBaseMixin extends Entity {
     public abstract PotionEffect getActivePotionEffect(final Potion potion);
 
     @Shadow
-    public float swingProgress;
+    protected abstract float updateDistance(final float p_110146_1_, final float p_110146_2_);
 
     @Shadow
-    public float renderYawOffset;
+    public float swingProgress;
 
     @Shadow
     public float rotationYawHead;
@@ -54,7 +54,7 @@ public abstract class EntityLivingBaseMixin extends Entity {
 
     @Inject(method = "onLivingUpdate", at = @At("HEAD"))
     private void animatium$updateHeadYaw(final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.headYawFix && animatium$headYawLerpWeight > 0) {
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.headYawFix && this.animatium$headYawLerpWeight > 0) {
             this.rotationYawHead += MathHelper.wrapAngleTo180_float(this.animatium$newHeadYaw - this.rotationYawHead) / this.animatium$headYawLerpWeight;
             this.rotationYawHead = MathHelper.wrapAngleTo180_float(this.rotationYawHead);
             this.animatium$headYawLerpWeight--;
@@ -79,26 +79,14 @@ public abstract class EntityLivingBaseMixin extends Entity {
         }
     }
 
-    // TODO: see if i can write this better
-    @ModifyArg(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;updateDistance(FF)F"), index = 0)
-    private float animatium$modifyYaw(final float yaw) {
-        final double xDiff = this.posX - this.prevPosX;
-        final double zDiff = this.posZ - this.prevPosZ;
-        final float mvE = (float) (xDiff * xDiff + zDiff * zDiff);
-
-        float yawOffset = this.renderYawOffset;
-        if (this.swingProgress > 0.0F) {
-            yawOffset = this.rotationYaw;
-        } else if (mvE > 0.0025000002F) {
-            final float f1 = (float) MathHelper.atan2(zDiff, xDiff) * 180.0F / 3.1415927F - 90.0F;
-            final float g = MathHelper.abs(MathHelper.wrapAngleTo180_float(this.rotationYaw) - f1);
-            yawOffset = f1 - (95.0F < g && g < 265.0F ? 180.0F : 0.0F);
+    @Redirect(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;updateDistance(FF)F"))
+    private float animatium$dontRotateBackwardsWalking(final EntityLivingBase instance, final float yaw, final float pitch) {
+        float newYaw = yaw;
+        if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.dontRotateBackwardsWalking && !(this.swingProgress > 0.0F) && pitch != 0.0F) {
+            final float offsetAngle = MathHelper.abs(MathHelper.wrapAngleTo180_float(this.rotationYaw) - yaw);
+            newYaw = yaw - (95.0F < offsetAngle && offsetAngle < 265.0F ? 180.0F : 0.0F);
         }
 
-        if (AnimatiumSettings.modernMovement) {
-            return yawOffset;
-        } else {
-            return yaw;
-        }
+        return this.updateDistance(newYaw, pitch);
     }
 }

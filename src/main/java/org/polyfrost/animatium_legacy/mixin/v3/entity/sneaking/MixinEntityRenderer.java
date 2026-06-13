@@ -32,9 +32,7 @@ public abstract class MixinEntityRenderer {
 
     @Inject(method = "setupCameraTransform", at = @At("HEAD"))
     protected void animatium$getInterpolatedEyeHeight(final float tickDelta, final int pass, final CallbackInfo ci) {
-        if (AnimatiumSettings.INSTANCE.enabled) {
-            SmoothSneakHook.setSneakingHeight(MathUtils.lerp(tickDelta, this.animatium$previousHeight, this.animatium$height));
-        }
+        SmoothSneakHook.setSmoothSneak(MathUtils.lerp(tickDelta, this.animatium$previousHeight, this.animatium$height));
     }
 
     @ModifyVariable(method = "orientCamera", at = @At(value = "STORE", ordinal = 0), name = "f")
@@ -73,7 +71,7 @@ public abstract class MixinEntityRenderer {
                 if (eyeHeight < this.animatium$height) {
                     this.animatium$height = eyeHeight;
                 } else {
-                    this.animatium$height += (eyeHeight - this.animatium$height) * 0.5f;
+                    this.animatium$height += (eyeHeight - this.animatium$height) * 0.5F;
                 }
             } else {
                 this.animatium$height = eyeHeight;

@@ -23,12 +23,12 @@ public abstract class MixinLayerSpiderEyes {
     private void animatium$renderHitColor(final EntitySpider spider, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             final boolean hurt = spider.hurtTime > 0 || spider.deathTime > 0;
-            HitColorHook.renderHitColorPre(spider, hurt, tickDelta, this.spiderRenderer);
+            HitColorHook.preHitColor(spider, hurt, tickDelta, this.spiderRenderer);
             if (hurt) {
                 this.spiderRenderer.getMainModel().render(spider, f, g, h, i, j, scale);
             }
 
-            HitColorHook.renderHitColorPost(hurt);
+            HitColorHook.postHitColor(hurt);
         }
     }
 }

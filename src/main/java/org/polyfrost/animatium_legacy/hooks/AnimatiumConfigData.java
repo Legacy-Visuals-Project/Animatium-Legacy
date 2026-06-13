@@ -4,126 +4,126 @@ import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
 import org.polyfrost.animatium_legacy.config.ItemPositionAdvancedSettings;
 
 public final class AnimatiumConfigData {
-    public float itemPositionX = 0.0F;
+    public float itemPositionX;
 
-    public float itemPositionY = 0.0F;
+    public float itemPositionY;
 
-    public float itemPositionZ = 0.0F;
+    public float itemPositionZ;
 
-    public float itemRotationYaw = 0.0F;
+    public float itemRotationYaw;
 
-    public float itemRotationPitch = 0.0F;
+    public float itemRotationPitch;
 
-    public float itemRotationRoll = 0.0F;
+    public float itemRotationRoll;
 
-    public float itemScale = 0.0F;
+    public float itemScale;
 
     // Swing Position Customization
-    public float itemSwingPositionX = 0.0F;
+    public float itemSwingPositionX;
 
-    public float itemSwingPositionY = 0.0F;
+    public float itemSwingPositionY;
 
-    public float itemSwingPositionZ = 0.0F;
+    public float itemSwingPositionZ;
 
-    public float itemSwingSpeed = 0.0F;
+    public float itemSwingSpeed;
 
-    public float itemSwingSpeedHaste = 0.0F;
+    public float itemSwingSpeedHaste;
 
-    public float itemSwingSpeedFatigue = 0.0F;
+    public float itemSwingSpeedFatigue;
 
     public boolean shouldScaleSwing = false;
 
     // Eating/Drinking Position
-    public float consumePositionX = 0.0F;
+    public float consumePositionX;
 
-    public float consumePositionY = 0.0F;
+    public float consumePositionY;
 
-    public float consumePositionZ = 0.0F;
+    public float consumePositionZ;
 
-    public float consumeRotationYaw = 0.0F;
+    public float consumeRotationYaw;
 
-    public float consumeRotationPitch = 0.0F;
+    public float consumeRotationPitch;
 
-    public float consumeRotationRoll = 0.0F;
+    public float consumeRotationRoll;
 
-    public float consumeScale = 0.0F;
+    public float consumeScale;
 
-    public float consumeIntensity = 0.0F;
+    public float consumeIntensity;
 
-    public float consumeSpeed = 0.0F;
+    public float consumeSpeed;
 
     public boolean shouldScaleEat = false;
 
     // Sword Block Position
-    public float blockedPositionX = 0.0F;
+    public float blockedPositionX;
 
-    public float blockedPositionY = 0.0F;
+    public float blockedPositionY;
 
-    public float blockedPositionZ = 0.0F;
+    public float blockedPositionZ;
 
-    public float blockedRotationYaw = 0.0F;
+    public float blockedRotationYaw;
 
-    public float blockedRotationPitch = 0.0F;
+    public float blockedRotationPitch;
 
-    public float blockedRotationRoll = 0.0F;
+    public float blockedRotationRoll;
 
-    public float blockedScale = 0.0F;
+    public float blockedScale;
 
     // Projectiles Position
-    public float projectilePositionX = 0.0F;
+    public float projectilePositionX;
 
-    public float projectilePositionY = 0.0F;
+    public float projectilePositionY;
 
-    public float projectilePositionZ = 0.0F;
+    public float projectilePositionZ;
 
-    public float projectileRotationYaw = 0.0F;
+    public float projectileRotationYaw;
 
-    public float projectileRotationPitch = 0.0F;
+    public float projectileRotationPitch;
 
-    public float projectileRotationRoll = 0.0F;
+    public float projectileRotationRoll;
 
-    public float projectileScale = 0.0F;
+    public float projectileScale;
 
     public AnimatiumConfigData() {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
-        itemPositionX = settings.itemPositionX;
-        itemPositionY = settings.itemPositionY;
-        itemPositionZ = settings.itemPositionZ;
-        itemRotationYaw = settings.itemRotationYaw;
-        itemRotationPitch = settings.itemRotationPitch;
-        itemRotationRoll = settings.itemRotationRoll;
-        itemScale = settings.itemScale;
-        itemSwingPositionX = advanced.itemSwingPositionX;
-        itemSwingPositionY = advanced.itemSwingPositionY;
-        itemSwingPositionZ = advanced.itemSwingPositionZ;
-        itemSwingSpeed = settings.itemSwingSpeed;
-        itemSwingSpeedHaste = settings.itemSwingSpeedHaste;
-        itemSwingSpeedFatigue = settings.itemSwingSpeedFatigue;
-        shouldScaleSwing = settings.swingSetting == 1;
-        consumePositionX = advanced.consumePositionX;
-        consumePositionY = advanced.consumePositionY;
-        consumePositionZ = advanced.consumePositionZ;
-        consumeRotationYaw = advanced.consumeRotationYaw;
-        consumeRotationPitch = advanced.consumeRotationPitch;
-        consumeRotationRoll = advanced.consumeRotationRoll;
-        consumeScale = advanced.consumeScale;
-        consumeIntensity = advanced.consumeIntensity;
-        consumeSpeed = advanced.consumeSpeed;
-        shouldScaleEat = ItemPositionAdvancedSettings.shouldScaleEat;
-        blockedPositionX = advanced.blockedPositionX;
-        blockedPositionY = advanced.blockedPositionY;
-        blockedPositionZ = advanced.blockedPositionZ;
-        blockedRotationYaw = advanced.blockedRotationYaw;
-        blockedRotationPitch = advanced.blockedRotationPitch;
-        blockedRotationRoll = advanced.blockedRotationRoll;
-        blockedScale = advanced.blockedScale;
-        projectilePositionX = advanced.projectilePositionX;
-        projectilePositionY = advanced.projectilePositionY;
-        projectilePositionZ = advanced.projectilePositionZ;
-        projectileRotationYaw = advanced.projectileRotationYaw;
-        projectileRotationPitch = advanced.projectileRotationPitch;
-        projectileRotationRoll = advanced.projectileRotationRoll;
-        projectileScale = advanced.projectileScale;
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
+        this.itemPositionX = settings.itemPositionX;
+        this.itemPositionY = settings.itemPositionY;
+        this.itemPositionZ = settings.itemPositionZ;
+        this.itemRotationYaw = settings.itemRotationYaw;
+        this.itemRotationPitch = settings.itemRotationPitch;
+        this.itemRotationRoll = settings.itemRotationRoll;
+        this.itemScale = settings.itemScale;
+        this.itemSwingPositionX = advanced.itemSwingPositionX;
+        this.itemSwingPositionY = advanced.itemSwingPositionY;
+        this.itemSwingPositionZ = advanced.itemSwingPositionZ;
+        this.itemSwingSpeed = settings.itemSwingSpeed;
+        this.itemSwingSpeedHaste = settings.itemSwingSpeedHaste;
+        this.itemSwingSpeedFatigue = settings.itemSwingSpeedFatigue;
+        this.shouldScaleSwing = settings.swingSetting == 1;
+        this.consumePositionX = advanced.consumePositionX;
+        this.consumePositionY = advanced.consumePositionY;
+        this.consumePositionZ = advanced.consumePositionZ;
+        this.consumeRotationYaw = advanced.consumeRotationYaw;
+        this.consumeRotationPitch = advanced.consumeRotationPitch;
+        this.consumeRotationRoll = advanced.consumeRotationRoll;
+        this.consumeScale = advanced.consumeScale;
+        this.consumeIntensity = advanced.consumeIntensity;
+        this.consumeSpeed = advanced.consumeSpeed;
+        this.shouldScaleEat = ItemPositionAdvancedSettings.shouldScaleEat;
+        this.blockedPositionX = advanced.blockedPositionX;
+        this.blockedPositionY = advanced.blockedPositionY;
+        this.blockedPositionZ = advanced.blockedPositionZ;
+        this.blockedRotationYaw = advanced.blockedRotationYaw;
+        this.blockedRotationPitch = advanced.blockedRotationPitch;
+        this.blockedRotationRoll = advanced.blockedRotationRoll;
+        this.blockedScale = advanced.blockedScale;
+        this.projectilePositionX = advanced.projectilePositionX;
+        this.projectilePositionY = advanced.projectilePositionY;
+        this.projectilePositionZ = advanced.projectilePositionZ;
+        this.projectileRotationYaw = advanced.projectileRotationYaw;
+        this.projectileRotationPitch = advanced.projectileRotationPitch;
+        this.projectileRotationRoll = advanced.projectileRotationRoll;
+        this.projectileScale = advanced.projectileScale;
     }
 }

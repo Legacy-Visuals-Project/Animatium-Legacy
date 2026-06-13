@@ -601,21 +601,21 @@ public class AnimatiumSettings extends Config {
             category = "Customize Item Positions"
     )
     Runnable resetGlobally = (() -> {
-        itemPositionX = 0.0F;
-        itemPositionY = 0.0F;
-        itemPositionZ = 0.0F;
-        itemRotationYaw = 0.0F;
-        itemRotationPitch = 0.0F;
-        itemRotationRoll = 0.0F;
-        itemScale = 0.0F;
+        this.itemPositionX = 0.0F;
+        this.itemPositionY = 0.0F;
+        this.itemPositionZ = 0.0F;
+        this.itemRotationYaw = 0.0F;
+        this.itemRotationPitch = 0.0F;
+        this.itemRotationRoll = 0.0F;
+        this.itemScale = 0.0F;
 
         advancedSettings.itemSwingPositionX = 0.0F;
         advancedSettings.itemSwingPositionY = 0.0F;
         advancedSettings.itemSwingPositionZ = 0.0F;
-        itemSwingSpeed = 0.0F;
-        itemSwingSpeedHaste = 0.0F;
-        itemSwingSpeedFatigue = 0.0F;
-        swingSetting = 0;
+        this.itemSwingSpeed = 0.0F;
+        this.itemSwingSpeedHaste = 0.0F;
+        this.itemSwingSpeedFatigue = 0.0F;
+        this.swingSetting = 0;
         ignoreHaste = false;
 
         advancedSettings.consumePositionX = 0.0F;
@@ -788,10 +788,10 @@ public class AnimatiumSettings extends Config {
             category = "Customize Item Positions", subcategory = "Item Swing"
     )
     Runnable resetSpeed = (() -> {
-        itemSwingSpeed = 0.0F;
-        itemSwingSpeedHaste = 0.0F;
-        itemSwingSpeedFatigue = 0.0F;
-        swingSetting = 0;
+        this.itemSwingSpeed = 0.0F;
+        this.itemSwingSpeedHaste = 0.0F;
+        this.itemSwingSpeedFatigue = 0.0F;
+        this.swingSetting = 0;
         ignoreHaste = false;
         ignoreFatigue = false;
     });
@@ -816,13 +816,13 @@ public class AnimatiumSettings extends Config {
             category = "Customize Item Positions", subcategory = "Item Position"
     )
     Runnable resetItem = (() -> {
-        itemPositionX = 0.0F;
-        itemPositionY = 0.0F;
-        itemPositionZ = 0.0F;
-        itemRotationYaw = 0.0F;
-        itemRotationPitch = 0.0F;
-        itemRotationRoll = 0.0F;
-        itemScale = 0.0F;
+        this.itemPositionX = 0.0F;
+        this.itemPositionY = 0.0F;
+        this.itemPositionZ = 0.0F;
+        this.itemRotationYaw = 0.0F;
+        this.itemRotationPitch = 0.0F;
+        this.itemRotationRoll = 0.0F;
+        this.itemScale = 0.0F;
     });
 
     @Page(
@@ -848,6 +848,7 @@ public class AnimatiumSettings extends Config {
         addDependency("rotationFix", "itemSprites");
         addDependency("spritesGlint", "itemSprites");
         addDependency("itemSpritesColor", "itemSprites");
+
         // Interactions
         addDependency("punching", "oldBlockhitting");
         addDependency("punchingParticles", "oldBlockhitting");
@@ -857,10 +858,12 @@ public class AnimatiumSettings extends Config {
         addDependency("punchingParticles", "punching");
         addDependency("adventureParticles", "punching");
         addDependency("adventurePunching", "punching");
+
         // Transformations
         addDependency("firstPersonCarpetPosition", "itemTransformations");
         addDependency("fixRod", "itemTransformations");
         addDependency("entityTransforms", "thirdTransformations");
+
         // Sneaking
         addDependency("longerUnsneak", "smoothSneaking");
     }

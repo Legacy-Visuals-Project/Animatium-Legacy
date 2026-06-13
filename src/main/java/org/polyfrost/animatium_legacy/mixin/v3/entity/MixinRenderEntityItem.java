@@ -43,13 +43,13 @@ public abstract class MixinRenderEntityItem extends Render<EntityItem> {
 
     @Inject(method = "doRender(Lnet/minecraft/entity/item/EntityItem;DDDFF)V", at = @At(value = "HEAD"))
     private void animatium$setHook(final EntityItem entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
-        DroppedItemHook.isItemDropped = true;
+        DroppedItemHook.setItemDropped(true);
         this.animatium$stack = entity.getEntityItem();
     }
 
     @Inject(method = "doRender(Lnet/minecraft/entity/item/EntityItem;DDDFF)V", at = @At(value = "TAIL"))
     private void animatium$setHook2(final EntityItem entity, final double x, final double y, final double z, final float entityYaw, final float tickDelta, final CallbackInfo ci) {
-        DroppedItemHook.isItemDropped = false;
+        DroppedItemHook.setItemDropped(false);
     }
 
     @ModifyVariable(method = "func_177077_a", at = @At("STORE"), name = "flag")

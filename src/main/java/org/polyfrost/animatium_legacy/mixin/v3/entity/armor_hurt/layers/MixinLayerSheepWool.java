@@ -28,12 +28,12 @@ public abstract class MixinLayerSheepWool {
     private void animatium$renderHitColor(final EntitySheep sheep, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             final boolean hurt = sheep.hurtTime > 0 || sheep.deathTime > 0;
-            HitColorHook.renderHitColorPre(sheep, hurt, tickDelta, this.sheepRenderer);
+            HitColorHook.preHitColor(sheep, hurt, tickDelta, this.sheepRenderer);
             if (hurt) {
                 this.sheepModel.render(sheep, f, g, h, i, j, scale);
             }
 
-            HitColorHook.renderHitColorPost(hurt);
+            HitColorHook.postHitColor(hurt);
         }
     }
 }

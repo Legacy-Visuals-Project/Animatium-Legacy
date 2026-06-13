@@ -28,12 +28,12 @@ public abstract class MixinLayerSlimeGel {
     private void animatium$renderHitColor(final EntitySlime slime, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             final boolean hurt = slime.hurtTime > 0 || slime.deathTime > 0;
-            HitColorHook.renderHitColorPre(slime, hurt, tickDelta, this.slimeRenderer);
+            HitColorHook.preHitColor(slime, hurt, tickDelta, this.slimeRenderer);
             if (hurt) {
                 this.slimeModel.render(slime, f, g, h, i, j, scale);
             }
 
-            HitColorHook.renderHitColorPost(hurt);
+            HitColorHook.postHitColor(hurt);
         }
     }
 }

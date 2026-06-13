@@ -16,7 +16,7 @@ public abstract class MixinItemModelMesher {
     @Inject(method = "getItemModel(Lnet/minecraft/item/ItemStack;)Lnet/minecraft/client/resources/model/IBakedModel;", at = @At(value = "HEAD"), cancellable = true)
     private void animatium$useCustomSkullModels(final ItemStack stack, final CallbackInfoReturnable<IBakedModel> cir) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.oldSkullModels && stack != null && stack.getItem() instanceof ItemSkull) {
-            cir.setReturnValue(SkullModelHook.INSTANCE.getSkullModel(stack));
+            cir.setReturnValue(SkullModelHook.getSkullModel(stack));
         }
     }
 }

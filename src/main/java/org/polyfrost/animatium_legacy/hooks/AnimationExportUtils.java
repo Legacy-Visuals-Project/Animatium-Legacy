@@ -56,8 +56,8 @@ public final class AnimationExportUtils {
     }
 
     public static void importAnimatium(final AnimatiumConfigData importSettings) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
+        final ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
         settings.itemPositionX = importSettings.itemPositionX;
         settings.itemPositionY = importSettings.itemPositionY;
         settings.itemPositionZ = importSettings.itemPositionZ;
@@ -96,13 +96,11 @@ public final class AnimationExportUtils {
         advanced.projectileRotationPitch = importSettings.projectileRotationPitch;
         advanced.projectileRotationRoll = importSettings.projectileRotationRoll;
         advanced.projectileScale = importSettings.projectileScale;
-
         settings.save();
     }
 
     public static void importDulkir(final DulkirConfigData importSettings) {
-        AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
-        ItemPositionAdvancedSettings advanced = AnimatiumSettings.advancedSettings;
+        final AnimatiumSettings settings = AnimatiumSettings.INSTANCE;
         settings.itemPositionX = importSettings.getX();
         settings.itemPositionY = importSettings.getY();
         settings.itemPositionZ = importSettings.getZ();
@@ -116,7 +114,6 @@ public final class AnimationExportUtils {
         AnimatiumSettings.ignoreHaste = importSettings.getIgnoreHaste();
         settings.swingSetting = importSettings.getScaleSwing() ? 1 : 0;
         ItemPositionAdvancedSettings.shouldScaleEat = importSettings.getDrinkingFix() == 2;
-
         settings.save();
     }
 
@@ -133,6 +130,7 @@ public final class AnimationExportUtils {
             Animatium.sendNotification("Failed to backup configs! Click here if you want to continue despite this error.", AnimationExportUtils::importDulkirConfig);
             return;
         }
+
         AnimationExportUtils.importDulkirConfig();
     }
 

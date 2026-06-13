@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack
 import org.polyfrost.animatium_legacy.init.CustomModelBakery
 
 object SkullModelHook {
+    @JvmStatic
     fun getSkullModel(stack: ItemStack): IBakedModel {
         return when (stack.metadata) {
             0 -> CustomModelBakery.SKULL_SKELETON.bakedModel

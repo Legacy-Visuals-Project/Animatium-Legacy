@@ -30,7 +30,7 @@ public abstract class MixinPotionHelper {
     private static int animatium$recolorPotions(final Potion instance, final Collection<PotionEffect> collection) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.modernPotColors) {
             for (final PotionEffect potionEffect : collection) {
-                return PotionColors.POTION_COLORS.get(potionEffect.getPotionID());
+                return PotionColors.MAP.get(potionEffect.getPotionID());
             }
         }
 
@@ -42,7 +42,7 @@ public abstract class MixinPotionHelper {
         if (PotionColors.shouldReload) {
             PotionColors.shouldReload = false;
             DATAVALUE_COLORS.clear();
-            for (final int index : PotionColors.POTION_COLORS.values()) {
+            for (final int index : PotionColors.MAP.values()) {
                 final int color = calcPotionLiquidColor(getPotionEffects(index, false));
                 final Integer integer = IntegerCache.getInteger(index);
                 DATAVALUE_COLORS.put(integer, color);

@@ -23,12 +23,12 @@ public abstract class MixinLayerWolfCollar {
     private void animatium$renderHitColor(final EntityWolf wolf, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             final boolean hurt = wolf.hurtTime > 0 || wolf.deathTime > 0;
-            HitColorHook.renderHitColorPre(wolf, hurt, tickDelta, this.wolfRenderer);
+            HitColorHook.preHitColor(wolf, hurt, tickDelta, this.wolfRenderer);
             if (hurt) {
                 this.wolfRenderer.getMainModel().render(wolf, f, g, h, i, j, scale);
             }
 
-            HitColorHook.renderHitColorPost(hurt);
+            HitColorHook.postHitColor(hurt);
         }
     }
 }

@@ -30,12 +30,12 @@ public abstract class MixinLayerArmorBase<T extends ModelBase> implements LayerR
             final T armorModel = this.getArmorModel(slot);
 
             final boolean hurt = livingEntity.hurtTime > 0 || livingEntity.deathTime > 0;
-            HitColorHook.renderHitColorPre(livingEntity, hurt, tickDelta, renderer);
+            HitColorHook.preHitColor(livingEntity, hurt, tickDelta, renderer);
             if (hurt) {
                 armorModel.render(livingEntity, p_177182_2_, p_177182_3_, p_177182_5_, p_177182_6_, p_177182_7_, scale);
             }
 
-            HitColorHook.renderHitColorPost(hurt);
+            HitColorHook.postHitColor(hurt);
         }
     }
 }

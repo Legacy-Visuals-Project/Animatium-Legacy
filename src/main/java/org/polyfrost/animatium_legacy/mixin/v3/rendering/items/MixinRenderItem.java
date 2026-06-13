@@ -199,14 +199,14 @@ public abstract class MixinRenderItem {
     @Inject(method = "renderItemIntoGUI", at = @At(value = "TAIL"))
     private void animatium$renderGuiGlint(final ItemStack stack, final int x, final int y, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && !Animatium.isNEUPresent && AnimatiumSettings.enchantmentGlintGui && stack.hasEffect() && !((AnimatiumSettings.potionGlint || AnimatiumSettings.oldPotionsGui) && stack.getItem() instanceof ItemPotion)) {
-            GlintModelHook.INSTANCE.renderGlintGui(x, y, RES_ITEM_GLINT);
+            GlintModelHook.renderGlintGui(x, y, RES_ITEM_GLINT);
         }
     }
 
     @ModifyArg(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/resources/model/IBakedModel;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/entity/RenderItem;renderEffect(Lnet/minecraft/client/resources/model/IBakedModel;)V"))
     private IBakedModel animatium$replaceModel(final IBakedModel model) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.enchantmentGlint) {
-            return GlintModelHook.INSTANCE.getGlint(model);
+            return GlintModelHook.getGlint(model);
         } else {
             return model;
         }

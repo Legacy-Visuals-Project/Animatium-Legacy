@@ -63,12 +63,12 @@ public abstract class MixinRendererLivingEntity<T extends EntityLivingBase> exte
             }
 
             final boolean hurt = entity.hurtTime > 0 || entity.deathTime > 0;
-            HitColorHook.renderHitColorPre(entity, hurt, tickDelta, (RendererLivingEntity<?>) (Object) this);
+            HitColorHook.preHitColor(entity, hurt, tickDelta, (RendererLivingEntity<?>) (Object) this);
             if (hurt) {
                 this.mainModel.render(entity, f6, f5, f8, f2, f7, 0.0625f);
             }
 
-            HitColorHook.renderHitColorPost(hurt);
+            HitColorHook.postHitColor(hurt);
         }
     }
 

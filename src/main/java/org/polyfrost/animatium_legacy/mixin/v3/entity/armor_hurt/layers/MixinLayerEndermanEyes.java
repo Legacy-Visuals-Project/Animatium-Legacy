@@ -23,12 +23,12 @@ public abstract class MixinLayerEndermanEyes {
     private void animatium$renderHitColor(final EntityEnderman enderman, final float f, final float g, final float tickDelta, final float h, final float i, final float j, final float scale, final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_7) {
             final boolean hurt = enderman.hurtTime > 0 || enderman.deathTime > 0;
-            HitColorHook.renderHitColorPre(enderman, hurt, tickDelta, this.endermanRenderer);
+            HitColorHook.preHitColor(enderman, hurt, tickDelta, this.endermanRenderer);
             if (hurt) {
                 this.endermanRenderer.getMainModel().render(enderman, f, g, h, i, j, scale);
             }
 
-            HitColorHook.renderHitColorPost(hurt);
+            HitColorHook.postHitColor(hurt);
         }
     }
 }

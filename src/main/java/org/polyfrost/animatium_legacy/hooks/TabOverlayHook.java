@@ -12,7 +12,7 @@ import net.minecraft.scoreboard.Score;
 import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.EnumChatFormatting;
-import org.polyfrost.animatium_legacy.mixin.interfaces.GuiPlayerTabOverlayInvoker;
+import org.polyfrost.animatium_legacy.mixin.accessor.GuiPlayerTabOverlayAccessor;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public final class TabOverlayHook {
         int var19 = (var6 - var17 * var46) / 2;
         byte var47 = 10;
         drawRect(var19 - 1, var47 - 1, var19 + var46 * var17, var47 + 9 * var16, Integer.MIN_VALUE);
-        GuiPlayerTabOverlayInvoker accessor = (GuiPlayerTabOverlayInvoker) instance;
+        GuiPlayerTabOverlayAccessor accessor = (GuiPlayerTabOverlayAccessor) instance;
         for (var21 = 0; var21 < var15; ++var21) {
             var22 = var19 + var21 % var17 * var46;
             var23 = var47 + var21 / var17 * 9;

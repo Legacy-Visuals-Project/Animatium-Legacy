@@ -13,7 +13,7 @@ import net.minecraft.client.resources.model.SimpleBakedModel
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.ResourceLocation
 import org.lwjgl.opengl.GL11
-import org.polyfrost.animatium_legacy.mixin.interfaces.RenderItemInvoker
+import org.polyfrost.animatium_legacy.mixin.accessor.RenderItemAccessor
 
 object GlintModelHook {
     private val glintMap = hashMapOf<HashedModel, IBakedModel>()
@@ -64,7 +64,7 @@ object GlintModelHook {
         GlStateManager.color(red, green, blue, alpha)
 
         GlStateManager.pushMatrix()
-        (mc.renderItem as RenderItemInvoker).`animatium$setupGuiTransform`(x, y, false)
+        (mc.renderItem as RenderItemAccessor).`animatium$setupGuiTransform`(x, y, false)
         GlStateManager.scale(0.5F, 0.5F, 0.5F)
         GlStateManager.translate(-0.5F, -0.5F, -0.5F)
 

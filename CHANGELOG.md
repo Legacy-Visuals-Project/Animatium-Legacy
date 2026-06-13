@@ -13,4 +13,4 @@
 - Fix "1.15+ Backwards Walk Animation" applying even when mod is disabled
 - Fixed usage swinging without a item (Logic now matches modern Animatium)
 - Fix "Enabling 1.7 style F3 menu and going outside vertical world boundaries crashes the game" (https://github.com/Legacy-Visuals-Project/Animatium-Legacy/issues/28)
-- Fix/Added "Seperate Always Swing and Always Show Particles" (https://github.com/Legacy-Visuals-Project/Animatium-Legacy/issues/27)
+- Fix/Added "Separate Always Swing and Always Show Particles" (https://github.com/Legacy-Visuals-Project/Animatium-Legacy/issues/27)

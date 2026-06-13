@@ -6,14 +6,14 @@ import net.minecraft.client.renderer.entity.RendererLivingEntity;
 import net.minecraft.entity.EntityLivingBase;
 import org.lwjgl.opengl.GL11;
 import org.polyfrost.animatium_legacy.Animatium;
-import org.polyfrost.animatium_legacy.mixin.interfaces.RendererLivingEntityInvoker;
+import org.polyfrost.animatium_legacy.mixin.accessor.RendererLivingEntityAccessor;
 import org.polyfrost.damagetint.config.DamageTintConfig;
 
 public final class HitColorHook {
     public static void renderHitColorPre(final EntityLivingBase livingEntity, final boolean hurt, final float tickDelta, final RendererLivingEntity<?> instance) {
         float brightness = livingEntity.getBrightness(tickDelta);
 
-        final int colorMultiplier = ((RendererLivingEntityInvoker) instance).animatium$getColorMultiplier(livingEntity, brightness, tickDelta);
+        final int colorMultiplier = ((RendererLivingEntityAccessor) instance).animatium$getColorMultiplier(livingEntity, brightness, tickDelta);
         final boolean flag = (colorMultiplier >> 24 & 0xFF) > 0;
 
         final boolean isDT = Animatium.isDamageTintPresent;

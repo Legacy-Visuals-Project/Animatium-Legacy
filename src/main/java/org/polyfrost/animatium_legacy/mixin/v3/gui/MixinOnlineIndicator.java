@@ -1,0 +1,22 @@
+package org.polyfrost.animatium_legacy.mixin.v3.gui;
+
+import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
+import org.polyfrost.animatium_legacy.config.TabMode;
+import org.spongepowered.asm.mixin.Dynamic;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+@Pseudo
+@Mixin(targets = "gg.essential.handlers.OnlineIndicator", remap = false)
+public abstract class MixinOnlineIndicator {
+    @Dynamic("Essential")
+    @Inject(method = "drawTabIndicator", at = @At("HEAD"), cancellable = true, remap = false)
+    private static void animatium$removeTabIndicator(final CallbackInfo ci) {
+        if (AnimatiumSettings.INSTANCE.enabled && TabMode.DISABLE_HEADS.equals(AnimatiumSettings.INSTANCE.tabMode())) {
+            ci.cancel(); // TODO: WrapMethod
+        }
+    }
+}

@@ -10,10 +10,7 @@ import org.polyfrost.animatium_legacy.config.ArmorTintStyle;
 import org.polyfrost.animatium_legacy.hooks.HitColorHook;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RendererLivingEntity.class)
@@ -72,7 +69,7 @@ public abstract class MixinRendererLivingEntity<T extends EntityLivingBase> exte
         }
     }
 
-    @ModifyArg(method = "setBrightness", at = @At(value = "INVOKE", target = "Ljava/nio/FloatBuffer;put(F)Ljava/nio/FloatBuffer;", ordinal = 3), index = 0)
+    @ModifyConstant(method = "setBrightness", constant = @Constant(floatValue = 0.3F))
     private float animatium$orangesHitColor(final float original) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.INSTANCE.armorDamageTintStyle() == ArmorTintStyle.V1_8_ORANGE_MARSHALL) {
             return 0.5F;

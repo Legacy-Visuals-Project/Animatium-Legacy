@@ -424,6 +424,13 @@ public class AnimatiumSettings extends Config {
     )
     public static boolean damageTilt = false;
 
+    @Switch(
+            name = "Beta Hand Swing",
+            description = "Allows you to keep swinging visually like in older minecraft beta versions.",
+            category = "Misc", subcategory = "Modern"
+    )
+    public static boolean betaHandSwing = false;
+
     @Slider(
             name = "Item Re-equip Animation Speed",
             min = 0.1F, max = 1.0F,

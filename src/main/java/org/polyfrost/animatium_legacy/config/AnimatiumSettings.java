@@ -424,12 +424,13 @@ public class AnimatiumSettings extends Config {
     )
     public static boolean damageTilt = false;
 
-    @Switch(
+    // TODO/FIX: Issue when mining blocks
+    /*@Switch(
             name = "Beta Hand Swing",
             description = "Allows you to keep swinging visually like in older minecraft beta versions.",
             category = "Misc", subcategory = "Modern"
     )
-    public static boolean betaHandSwing = false;
+    public static boolean betaHandSwing = false;*/
 
     @Slider(
             name = "Item Re-equip Animation Speed",

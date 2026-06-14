@@ -19,8 +19,8 @@ import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent
 import org.polyfrost.animatium_legacy.command.AnimatiumCommand
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings
-import org.polyfrost.animatium_legacy.gui.PleaseMigrateDulkirModGui
 import org.polyfrost.animatium_legacy.init.CustomModelBakery
+import org.polyfrost.animatium_legacy.screens.PleaseMigrateDulkirModScreen
 import java.net.URI
 
 @Mod(
@@ -122,5 +122,5 @@ object Animatium {
         sendNotification(message, DEFAULT_NOTIFICATION_DURATION)
 
     private fun dulkirTrollage() =
-        GuiUtils.displayScreen(PleaseMigrateDulkirModGui())
+        GuiUtils.displayScreen(PleaseMigrateDulkirModScreen())
 }

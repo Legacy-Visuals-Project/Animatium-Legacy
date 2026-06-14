@@ -6,7 +6,6 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import org.objectweb.asm.Opcodes;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -80,14 +79,14 @@ public abstract class MixinEntityLivingBase extends Entity {
         }
     }
 
-    @Redirect(method = "swingItem", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/EntityLivingBase;isSwingInProgress:Z", opcode = Opcodes.GETFIELD))
+    /*@Redirect(method = "swingItem", at = @At(value = "FIELD", target = "Lnet/minecraft/entity/EntityLivingBase;isSwingInProgress:Z", opcode = Opcodes.GETFIELD))
     private boolean animatium$alwaysSwingOverride(final EntityLivingBase instance) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.betaHandSwing) {
             return false;
         } else {
             return instance.isSwingInProgress;
         }
-    }
+    }*/
 
     @Redirect(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/EntityLivingBase;updateDistance(FF)F"))
     private float animatium$dontRotateBackwardsWalking(final EntityLivingBase instance, final float yaw, final float pitch) {

@@ -17,8 +17,8 @@ import java.util.zip.ZipFile;
 public final class ModDetectorPlugin implements IFMLLoadingPlugin {
     public ModDetectorPlugin() {
         try {
-            File modsFolder = new File(Launch.minecraftHome, "mods");
-            File[] modFolder = modsFolder.listFiles((dir, name) -> name.endsWith(".jar"));
+            final File modsFolder = new File(Launch.minecraftHome, "mods");
+            final File[] modFolder = modsFolder.listFiles((dir, name) -> name.endsWith(".jar"));
             if (modFolder != null) {
                 final JsonParser PARSER = new JsonParser();
                 File oldFile = null;
@@ -28,9 +28,10 @@ public final class ModDetectorPlugin implements IFMLLoadingPlugin {
                             ZipEntry entry = mod.getEntry("mcmod.info");
                             if (entry != null) {
                                 try (InputStream inputStream = mod.getInputStream(entry)) {
-                                    byte[] availableBytes = new byte[inputStream.available()];
-                                    inputStream.read(availableBytes, 0, inputStream.available());
-                                    JsonObject modInfo = PARSER.parse(new String(availableBytes)).getAsJsonArray().get(0).getAsJsonObject();
+                                    final byte[] availableBytes = new byte[inputStream.available()];
+
+                                    final int length = inputStream.read(availableBytes, 0, inputStream.available());
+                                    final JsonObject modInfo = PARSER.parse(new String(availableBytes, 0, length)).getAsJsonArray().get(0).getAsJsonObject();
                                     if (!modInfo.has("modid") || !modInfo.has("version")) {
                                         continue;
                                     }
@@ -49,70 +50,55 @@ public final class ModDetectorPlugin implements IFMLLoadingPlugin {
                     }
                 }
 
-                if (oldFile != null) {
-                    if (!oldFile.delete()) {
-                        oldFile.deleteOnExit();
-                        try {
-                            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                if (oldFile == null) {
+                    return;
+                }
 
-                        final JFrame frame = new JFrame();
-                        frame.setUndecorated(true);
-                        frame.setAlwaysOnTop(true);
-                        frame.setLocationRelativeTo(null);
-                        frame.setVisible(true);
-
-                        JOptionPane.showMessageDialog(
-                                frame,
-                                "You have both Sk1er Old Animations and Animatium Legacy installed.\n" +
-                                        "Please remove Sk1er Old Animations from your mod folder, as Animatium Legacy replaces it.\n" +
-                                        "It is in " + oldFile.getAbsolutePath(),
-                                "Sk1er Old Animations detected!", JOptionPane.ERROR_MESSAGE
-                        );
-                        try {
-                            Method exit = Class.forName("java.lang.Shutdown").getDeclaredMethod("exit", int.class);
-                            exit.setAccessible(true);
-                            exit.invoke(null, 1);
-                        } catch (final Exception exception) {
-                            exception.printStackTrace();
-                            System.exit(1);
-                        }
-                    } else {
-                        try {
-                            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-                        } catch (final Exception exception) {
-                            exception.printStackTrace();
-                        }
-
-                        final JFrame frame = new JFrame();
-                        frame.setUndecorated(true);
-                        frame.setAlwaysOnTop(true);
-                        frame.setLocationRelativeTo(null);
-                        frame.setVisible(true);
-
-                        JOptionPane.showMessageDialog(
-                                frame,
-                                "You had both Sk1er Old Animations and Animatium Legacy installed, so Animatium Legacy removed Sk1er OAM.\n" +
-                                        "This is because Animatium Legacy replaces it.\n" +
-                                        "Close this and restart your game.",
-                                "Sk1er Old Animations detected!",
-                                JOptionPane.ERROR_MESSAGE
-                        );
-                        try {
-                            Method exit = Class.forName("java.lang.Shutdown").getDeclaredMethod("exit", int.class);
-                            exit.setAccessible(true);
-                            exit.invoke(null, 1);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            System.exit(1);
-                        }
-                    }
+                if (!oldFile.delete()) {
+                    oldFile.deleteOnExit();
+                    this.showErrorDialog(
+                            "Sk1er Old Animations detected!",
+                            "You have both Sk1er Old Animations and Animatium Legacy installed.\n" +
+                                    "Please remove Sk1er Old Animations from your mod folder, as Animatium Legacy replaces it.\n" +
+                                    "It is in " + oldFile.getAbsolutePath()
+                    );
+                } else {
+                    this.showErrorDialog(
+                            "Sk1er Old Animations detected!",
+                            "You had both Sk1er Old Animations and Animatium Legacy installed, so Animatium Legacy removed Sk1er OAM.\n" +
+                                    "This is because Animatium Legacy replaces it.\n" +
+                                    "Close this and restart your game."
+                    );
                 }
             }
-
         } catch (final Exception ignored) {
+        }
+    }
+
+    private void showErrorDialog(final String title, final String message) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (final Exception exception) {
+            exception.printStackTrace();
+        }
+
+        final JFrame frame = new JFrame();
+        frame.setUndecorated(true);
+        frame.setAlwaysOnTop(true);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+        JOptionPane.showMessageDialog(frame, message, title, JOptionPane.ERROR_MESSAGE);
+        this.attemptExit();
+    }
+
+    private void attemptExit() {
+        try {
+            final Method exit = Class.forName("java.lang.Shutdown").getDeclaredMethod("exit", int.class);
+            exit.setAccessible(true);
+            exit.invoke(null, 1);
+        } catch (final Exception exception) {
+            exception.printStackTrace();
+            System.exit(1);
         }
     }
 

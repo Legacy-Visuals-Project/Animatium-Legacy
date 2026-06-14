@@ -66,7 +66,7 @@ public abstract class MixinMinecraft {
                 }
 
                 if ((!AnimatiumSettings.disableAdventureBlockHit || !isAdventure)) {
-                    SwingHook.swingHand();
+                    SwingHook.swingHand(true);
                 }
             }
         }
@@ -86,7 +86,7 @@ public abstract class MixinMinecraft {
             }
 
             if (AnimatiumSettings.fakeMissPenaltySwing) {
-                SwingHook.swingHand();
+                SwingHook.swingHand(false);
             }
         }
     }
@@ -95,7 +95,7 @@ public abstract class MixinMinecraft {
     private void animatium$fakeBlockHit(final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.fakeBlockHit) {
             while (this.gameSettings.keyBindAttack.isPressed()) {
-                SwingHook.swingHand();
+                SwingHook.swingHand(true);
             }
         }
     }
@@ -103,7 +103,7 @@ public abstract class MixinMinecraft {
     @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/entity/EntityPlayerSP;dropOneItem(Z)Lnet/minecraft/entity/item/EntityItem;", shift = At.Shift.AFTER))
     private void animatium$dropItemSwing(final CallbackInfo ci) {
         if (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.modernDropSwing && this.thePlayer.getHeldItem() != null) {
-            SwingHook.swingHand();
+            SwingHook.swingHand(true);
         }
     }
 

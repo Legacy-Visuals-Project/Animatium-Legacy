@@ -38,9 +38,9 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Item Swing Position"
     )
     Runnable resetSwing = (() -> {
-        itemSwingPositionX = 0.0F;
-        itemSwingPositionY = 0.0F;
-        itemSwingPositionZ = 0.0F;
+        this.itemSwingPositionX = 0.0F;
+        this.itemSwingPositionY = 0.0F;
+        this.itemSwingPositionZ = 0.0F;
     });
 
     // Eating/Drinking Position
@@ -122,15 +122,15 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Eating/Drinking Position"
     )
     Runnable resetConsume = (() -> {
-        consumePositionX = 0.0F;
-        consumePositionY = 0.0F;
-        consumePositionZ = 0.0F;
-        consumeRotationYaw = 0.0F;
-        consumeRotationPitch = 0.0F;
-        consumeRotationRoll = 0.0F;
-        consumeScale = 0.0F;
-        consumeIntensity = 0.0F;
-        consumeSpeed = 0.0F;
+        this.consumePositionX = 0.0F;
+        this.consumePositionY = 0.0F;
+        this.consumePositionZ = 0.0F;
+        this.consumeRotationYaw = 0.0F;
+        this.consumeRotationPitch = 0.0F;
+        this.consumeRotationRoll = 0.0F;
+        this.consumeScale = 0.0F;
+        this.consumeIntensity = 0.0F;
+        this.consumeSpeed = 0.0F;
         shouldScaleEat = false;
     });
 
@@ -204,13 +204,13 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Sword Block Position"
     )
     Runnable resetBlockItem = (() -> {
-        blockedPositionX = 0.0F;
-        blockedPositionY = 0.0F;
-        blockedPositionZ = 0.0F;
-        blockedRotationYaw = 0.0F;
-        blockedRotationPitch = 0.0F;
-        blockedRotationRoll = 0.0F;
-        blockedScale = 0.0F;
+        this.blockedPositionX = 0.0F;
+        this.blockedPositionY = 0.0F;
+        this.blockedPositionZ = 0.0F;
+        this.blockedRotationYaw = 0.0F;
+        this.blockedRotationPitch = 0.0F;
+        this.blockedRotationRoll = 0.0F;
+        this.blockedScale = 0.0F;
     });
 
     // Dropped Item Position
@@ -276,13 +276,13 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Dropped Item Position"
     )
     Runnable resetDropped = (() -> {
-        droppedPositionX = 0.0F;
-        droppedPositionY = 0.0F;
-        droppedPositionZ = 0.0F;
-        droppedRotationYaw = 0.0F;
-        droppedRotationPitch = 0.0F;
-        droppedRotationRoll = 0.0F;
-        droppedScale = 0.0F;
+        this.droppedPositionX = 0.0F;
+        this.droppedPositionY = 0.0F;
+        this.droppedPositionZ = 0.0F;
+        this.droppedRotationYaw = 0.0F;
+        this.droppedRotationPitch = 0.0F;
+        this.droppedRotationRoll = 0.0F;
+        this.droppedScale = 0.0F;
     });
 
     // Projectiles Position
@@ -348,13 +348,13 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Thrown Projectile Position"
     )
     Runnable resetProjectile = (() -> {
-        projectilePositionX = 0.0F;
-        projectilePositionY = 0.0F;
-        projectilePositionZ = 0.0F;
-        projectileRotationYaw = 0.0F;
-        projectileRotationPitch = 0.0F;
-        projectileRotationRoll = 0.0F;
-        projectileScale = 0.0F;
+        this.projectilePositionX = 0.0F;
+        this.projectilePositionY = 0.0F;
+        this.projectilePositionZ = 0.0F;
+        this.projectileRotationYaw = 0.0F;
+        this.projectileRotationPitch = 0.0F;
+        this.projectileRotationRoll = 0.0F;
+        this.projectileScale = 0.0F;
     });
 
     // Fireball Position
@@ -420,13 +420,13 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Fireball Projectile Position"
     )
     Runnable resetFireball = (() -> {
-        fireballPositionX = 0.0F;
-        fireballPositionY = 0.0F;
-        fireballPositionZ = 0.0F;
-        fireballRotationYaw = 0.0F;
-        fireballRotationPitch = 0.0F;
-        fireballRotationRoll = 0.0F;
-        fireballScale = 0.0F;
+        this.fireballPositionX = 0.0F;
+        this.fireballPositionY = 0.0F;
+        this.fireballPositionZ = 0.0F;
+        this.fireballRotationYaw = 0.0F;
+        this.fireballRotationPitch = 0.0F;
+        this.fireballRotationRoll = 0.0F;
+        this.fireballScale = 0.0F;
     });
 
     // Fishing Line Position
@@ -452,7 +452,7 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Fishing Rod Line Position",
             instant = true
     )
-    public float fishingLinePositionY = 0.03f;
+    public float fishingLinePositionY = 0.03F;
 
     @Slider(
             name = "Fishing Line Z Position",
@@ -460,7 +460,7 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Fishing Rod Line Position",
             instant = true
     )
-    public float fishingLinePositionZ = 0.35f;
+    public float fishingLinePositionZ = 0.35F;
 
     @Button(
             name = "Reset Fishing Rod Line Transformations",
@@ -468,8 +468,8 @@ public class ItemPositionAdvancedSettings {
             category = "Customize Item Positions", subcategory = "Fishing Rod Line Position"
     )
     Runnable resetFishingLine = (() -> {
-        fishingLinePositionX = AnimatiumSettings.firstPersonFishingRodPosition ? -0.5f : -0.36f;
-        fishingLinePositionY = 0.03f;
-        fishingLinePositionZ = AnimatiumSettings.firstPersonFishingRodPosition ? 0.8f : 0.35f;
+        this.fishingLinePositionX = AnimatiumSettings.firstPersonFishingRodPosition ? -0.5F : -0.36F;
+        this.fishingLinePositionY = 0.03F;
+        this.fishingLinePositionZ = AnimatiumSettings.firstPersonFishingRodPosition ? 0.8F : 0.35F;
     });
 }

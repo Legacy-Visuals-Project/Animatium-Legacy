@@ -8,6 +8,7 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.EnumSkyBlock;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.polyfrost.animatium_legacy.config.AnimatiumSettings;
@@ -23,9 +24,17 @@ public final class DebugOverlayHook {
     public static List<String> getDebugInfoLeft() {
         final Minecraft mc = Minecraft.getMinecraft();
         final Entity entity = mc.getRenderViewEntity();
-        final BlockPos blockPos = new BlockPos(entity.posX, entity.getEntityBoundingBox().minY, entity.posZ);
+        final World level = entity.worldObj;
+
         final EnumFacing horizontalFacing = entity.getHorizontalFacing();
-        final Chunk chunk = mc.theWorld.getChunkFromBlockCoords(blockPos);
+        final double x = entity.posX;
+        final double y = entity.posY;
+        final double z = entity.posZ;
+        final float yaw = entity.rotationYaw;
+
+        final double minY = entity.getEntityBoundingBox().minY;
+        final BlockPos blockPos = new BlockPos(entity.posX, minY, entity.posZ);
+        final Chunk chunk = level.getChunkFromBlockCoords(blockPos);
 
         int lightSubtracted = 0;
         int blockLight = 0;
@@ -40,15 +49,15 @@ public final class DebugOverlayHook {
                 "Minecraft 1.8.9 (" + Minecraft.getDebugFPS() + " fps" + ", " + RenderChunk.renderChunksUpdated + " chunk updates)",
                 mc.renderGlobal.getDebugInfoRenders(),
                 mc.renderGlobal.getDebugInfoEntities(),
-                "P: " + mc.effectRenderer.getStatistics() + ". T: " + mc.theWorld.getDebugLoadedEntities(),
-                mc.theWorld.getProviderName(),
+                "P: " + mc.effectRenderer.getStatistics() + ". T: " + level.getDebugLoadedEntities(),
+                level.getProviderName(),
                 "",
-                String.format("x: %.5f (%d) // c: %d (%d)", mc.thePlayer.posX, MathHelper.floor_double(mc.thePlayer.posX), MathHelper.floor_double(mc.thePlayer.posX) >> 4, MathHelper.floor_double(mc.thePlayer.posX) & 15),
-                String.format("y: %.3f (feet pos, %.3f eyes pos)", mc.thePlayer.getEntityBoundingBox().minY, mc.thePlayer.posY + (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.smoothSneaking ? eyeHeight : mc.thePlayer.getEyeHeight())),
-                String.format("z: %.5f (%d) // c: %d (%d)", mc.thePlayer.posZ, MathHelper.floor_double(mc.thePlayer.posZ), MathHelper.floor_double(mc.thePlayer.posZ) >> 4, MathHelper.floor_double(mc.thePlayer.posZ) & 15),
-                "f: " + (MathHelper.floor_double((double) (mc.thePlayer.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) + " (" + horizontalFacing.toString().toUpperCase() + ") / " + MathHelper.wrapAngleTo180_float(mc.thePlayer.rotationYaw),
-                String.format("ws: %.3f, fs: %.3f, g: %b, fl: %.0f", mc.thePlayer.capabilities.getWalkSpeed(), mc.thePlayer.capabilities.getFlySpeed(), mc.thePlayer.onGround, mc.thePlayer.posY),
-                String.format("lc: " + lightSubtracted + " b: " + chunk.getBiome(blockPos, mc.theWorld.getWorldChunkManager()).biomeName) + " bl: " + blockLight + " sl: " + skyLight + " rl: " + lightSubtracted
+                String.format("x: %.5f (%d) // c: %d (%d)", x, MathHelper.floor_double(x), MathHelper.floor_double(x) >> 4, MathHelper.floor_double(x) & 15),
+                String.format("y: %.3f (feet pos, %.3f eyes pos)", minY, y + (AnimatiumSettings.INSTANCE.enabled && AnimatiumSettings.smoothSneaking ? eyeHeight : entity.getEyeHeight())),
+                String.format("z: %.5f (%d) // c: %d (%d)", z, MathHelper.floor_double(z), MathHelper.floor_double(z) >> 4, MathHelper.floor_double(z) & 15),
+                "f: " + (MathHelper.floor_double((double) (yaw * 4.0F / 360.0F) + 0.5D) & 3) + " (" + horizontalFacing.toString().toUpperCase() + ") / " + MathHelper.wrapAngleTo180_float(yaw),
+                String.format("ws: %.3f, fs: %.3f, g: %b, fl: %.0f", mc.thePlayer.capabilities.getWalkSpeed(), mc.thePlayer.capabilities.getFlySpeed(), entity.onGround, y),
+                String.format("lc: " + lightSubtracted + " b: " + chunk.getBiome(blockPos, level.getWorldChunkManager()).biomeName) + " bl: " + blockLight + " sl: " + skyLight + " rl: " + lightSubtracted
         );
         if (mc.entityRenderer != null && mc.entityRenderer.isShaderActive()) {
             list.add("shader: " + mc.entityRenderer.getShaderGroup().getShaderGroupName());
